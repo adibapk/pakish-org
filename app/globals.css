@@ -153,3 +153,40 @@ html {
     @apply bg-background text-foreground;
   }
 }
+
+/* Minimal marquee styles (avoid @devnomic/marquee/dist/index.css preflight reset) */
+@keyframes marquee-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-100% - var(--gap)));
+  }
+}
+
+.animate-marquee-left {
+  animation: marquee-left var(--duration, 40s) linear infinite;
+}
+
+@keyframes marquee-up {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(calc(-100% - var(--gap)));
+  }
+}
+
+.animate-marquee-up {
+  animation: marquee-up var(--duration, 40s) linear infinite;
+}
+
+.group:hover .group-hover\:\[animation-play-state\:paused\] {
+  animation-play-state: paused;
+}
+
+/* Marquee layout utilities used by @devnomic/marquee internals */
+.marquee-flex {
+  display: flex;
+  overflow: hidden;
+}

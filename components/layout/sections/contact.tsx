@@ -43,7 +43,7 @@ export const ContactSection = () => {
       firstName: "",
       lastName: "",
       email: "",
-      subject: "Web Development",
+      subject: "Course Enrollment",
       message: "",
     },
   });
@@ -52,7 +52,7 @@ export const ContactSection = () => {
     const { firstName, lastName, email, subject, message } = values;
     console.log(values);
 
-    const mailToLink = `mailto:leomirandadev@gmail.com?subject=${subject}&body=Hello I am ${firstName} ${lastName}, my Email is ${email}. %0D%0A${message}`;
+    const mailToLink = `mailto:info@pakish.org?subject=${subject}&body=Hello I am ${firstName} ${lastName}, my Email is ${email}. %0D%0A${message}`;
 
     window.location.href = mailToLink;
   }
@@ -69,8 +69,9 @@ export const ContactSection = () => {
             <h2 className="text-3xl md:text-4xl font-bold">Connect With Us</h2>
           </div>
           <p className="mb-8 text-muted-foreground lg:w-5/6">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum
-            ipsam sint enim exercitationem ex autem corrupti quas tenetur
+            Ready to start your tech journey or support our mission? Reach out
+            to enroll in a course, visit our campuses, or learn how you can
+            contribute to empowering women in IT and AI across Pakistan.
           </p>
 
           <div className="flex flex-col gap-4">
@@ -80,7 +81,7 @@ export const ContactSection = () => {
                 <div className="font-bold">Find us</div>
               </div>
 
-              <div>742 Evergreen Terrace, Springfield, IL 62704</div>
+              <div>Karachi Campus &amp; Lodhran Campus, Pakistan</div>
             </div>
 
             <div>
@@ -89,7 +90,7 @@ export const ContactSection = () => {
                 <div className="font-bold">Call us</div>
               </div>
 
-              <div>+1 (619) 123-4567</div>
+              <div>+92 (300) 000-0000</div>
             </div>
 
             <div>
@@ -98,7 +99,7 @@ export const ContactSection = () => {
                 <div className="font-bold">Mail US</div>
               </div>
 
-              <div>leomirandadev@gmail.com</div>
+              <div>info@pakish.org</div>
             </div>
 
             <div>
@@ -108,8 +109,8 @@ export const ContactSection = () => {
               </div>
 
               <div>
-                <div>Monday - Friday</div>
-                <div>8AM - 4PM</div>
+                <div>Monday - Saturday</div>
+                <div>9AM - 5PM</div>
               </div>
             </div>
           </div>
@@ -131,7 +132,7 @@ export const ContactSection = () => {
                       <FormItem className="w-full">
                         <FormLabel>First Name</FormLabel>
                         <FormControl>
-                          <Input placeholder="Leopoldo" {...field} />
+                          <Input placeholder="Your first name" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -144,7 +145,7 @@ export const ContactSection = () => {
                       <FormItem className="w-full">
                         <FormLabel>Last Name</FormLabel>
                         <FormControl>
-                          <Input placeholder="Miranda" {...field} />
+                          <Input placeholder="Your last name" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -162,7 +163,7 @@ export const ContactSection = () => {
                         <FormControl>
                           <Input
                             type="email"
-                            placeholder="leomirandadev@gmail.com"
+                            placeholder="you@example.com"
                             {...field}
                           />
                         </FormControl>
@@ -189,18 +190,20 @@ export const ContactSection = () => {
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            <SelectItem value="Web Development">
-                              Web Development
+                            <SelectItem value="Course Enrollment">
+                              Course Enrollment
                             </SelectItem>
-                            <SelectItem value="Mobile Development">
-                              Mobile Development
+                            <SelectItem value="1-Month Fast-Track">
+                              1-Month Fast-Track
                             </SelectItem>
-                            <SelectItem value="Figma Design">
-                              Figma Design
+                            <SelectItem value="3-Month Advanced">
+                              3-Month Advanced
                             </SelectItem>
-                            <SelectItem value="REST API">REST API</SelectItem>
-                            <SelectItem value="FullStack Project">
-                              FullStack Project
+                            <SelectItem value="6-Month Pro Developer">
+                              6-Month Pro Developer
+                            </SelectItem>
+                            <SelectItem value="Support Our Cause">
+                              Support Our Cause
                             </SelectItem>
                           </SelectContent>
                         </Select>

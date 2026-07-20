@@ -13,32 +13,33 @@ interface FAQProps {
 
 const FAQList: FAQProps[] = [
   {
-    question: "Is this template free?",
-    answer: "Yes. It is a free NextJS Shadcn template.",
+    question: "Who can enroll in Pakish.ORG programs?",
+    answer:
+      "Our programs are designed for women and youth in Pakistan who want to build a career in IT, AI, or digital freelancing. No prior tech experience is required for the Fast-Track program.",
     value: "item-1",
   },
   {
-    question: "Duis aute irure dolor in reprehenderit in voluptate velit?",
+    question: "Are the courses really free or subsidized?",
     answer:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint labore quidem quam consectetur sapiente, iste rerum reiciendis animi nihil nostrum sit quo, modi quod.",
+      "Yes. As a non-profit Fi Sabilillah initiative backed by Pakish Group, we offer free and subsidized training. We provide dedicated workspaces, internet, and mentorship to remove barriers to entry.",
     value: "item-2",
   },
   {
-    question:
-      "Lorem ipsum dolor sit amet Consectetur natus dolor minus quibusdam?",
+    question: "Can I attend classes online?",
     answer:
-      "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Labore qui nostrum reiciendis veritatis.",
+      "Absolutely. In addition to our Karachi and Lodhran campuses, all programs are available online via Zoom so you can learn from anywhere in Pakistan.",
     value: "item-3",
   },
   {
-    question: "Excepteur sint occaecat cupidata non proident sunt?",
-    answer: "Lorem ipsum dolor sit amet consectetur, adipisicing elit.",
+    question: "What is the difference between the three programs?",
+    answer:
+      "The 1-Month Fast-Track covers freelancing basics with Canva and ChatGPT. The 3-Month Advanced program focuses on WordPress, SMM, SEO, and prompt engineering. The 6-Month Pro Developer track teaches Next.js, AI integration, and high-ticket global freelancing.",
     value: "item-4",
   },
   {
-    question:
-      "Enim ad minim veniam, quis nostrud exercitation ullamco laboris?",
-    answer: "consectetur adipisicing elit. Sint labore.",
+    question: "How can I support or sponsor Pakish.ORG?",
+    answer:
+      "You can support our cause through donations, sponsorships, or by referring students. Visit our contact section or reach out to us directly to learn how you can contribute to empowering women in tech.",
     value: "item-5",
   },
 ];

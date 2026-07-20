@@ -10,40 +10,40 @@ interface FeaturesProps {
 
 const featureList: FeaturesProps[] = [
   {
-    icon: "TabletSmartphone",
-    title: "Mobile Friendly",
+    icon: "GraduationCap",
+    title: "Free & Subsidized Programs",
     description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. A odio velit cum aliquam, consectetur.",
+      "Quality IT and AI training accessible to women and youth who need financial support to start their tech journey.",
   },
   {
-    icon: "BadgeCheck",
-    title: "Social Proof",
+    icon: "MapPin",
+    title: "Karachi & Lodhran Campuses",
     description:
-      "Lorem ipsum dolor sit amet consectetur. Natus consectetur, odio ea accusamus aperiam.",
+      "On-site learning at our fully equipped campuses with mentors, workspace, and high-speed internet.",
   },
   {
-    icon: "Goal",
-    title: "Targeted Content",
+    icon: "Video",
+    title: "Online via Zoom",
     description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. odio ea accusamus aperiam.",
+      "Cannot attend in person? Join live classes remotely and learn from anywhere in Pakistan.",
   },
   {
-    icon: "PictureInPicture",
-    title: "Strong Visuals",
+    icon: "Bot",
+    title: "Generative AI Focus",
     description:
-      "Lorem elit. A odio velit cum aliquam. Natus consectetur dolores, odio ea accusamus aperiam.",
+      "Master ChatGPT, prompt engineering, and AI-powered tools that are reshaping the global freelance market.",
   },
   {
-    icon: "MousePointerClick",
-    title: "Clear CTA",
+    icon: "Globe",
+    title: "Global Freelancing",
     description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing. odio ea accusamus consectetur.",
+      "From Canva micro-tasks to Next.js development — programs tailored for international remote income.",
   },
   {
-    icon: "Newspaper",
-    title: "Clear Headline",
+    icon: "Shield",
+    title: "25-Year Legacy",
     description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. A odio velit cum aliquam. Natus consectetur.",
+      "Backed by Pakish Group, a software house established in 1999 with decades of real-world industry experience.",
   },
 ];
 
@@ -51,17 +51,17 @@ export const FeaturesSection = () => {
   return (
     <section id="features" className="container py-24 sm:py-32">
       <h2 className="text-lg text-primary text-center mb-2 tracking-wider">
-        Features
+        Why Pakish.ORG
       </h2>
 
       <h2 className="text-3xl md:text-4xl text-center font-bold mb-4">
-        What Makes Us Different
+        Built for Women Entering Tech
       </h2>
 
-      <h3 className="md:w-1/2 mx-auto text-xl text-center text-muted-foreground mb-8">
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptatem
-        fugiat, odit similique quasi sint reiciendis quidem iure veritatis optio
-        facere tenetur.
+      <h3 className="md:w-2/3 mx-auto text-xl text-center text-muted-foreground mb-8">
+        A family-led initiative combining decades of software expertise with a
+        mission to close Pakistan&apos;s tech gender gap through practical,
+        career-ready training.
       </h3>
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">

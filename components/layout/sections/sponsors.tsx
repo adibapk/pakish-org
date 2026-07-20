@@ -1,71 +1,67 @@
 "use client";
 
-import { Icon } from "@/components/ui/icon";
 import { Marquee } from "@devnomic/marquee";
-import "@devnomic/marquee/dist/index.css";
-import { icons } from "lucide-react";
-interface sponsorsProps {
-  icon: string;
+import Image from "next/image";
+
+interface SponsorPartner {
   name: string;
+  logoSrc: string;
 }
 
-const sponsors: sponsorsProps[] = [
+const partners: SponsorPartner[] = [
   {
-    icon: "Crown",
-    name: "Acmebrand",
+    name: "Pakish Group — Est. 1999",
+    logoSrc: "/sponsors/pakish-group.svg",
   },
   {
-    icon: "Vegan",
-    name: "Acmelogo",
+    name: "Pakish.NET",
+    logoSrc: "/sponsors/pakish-net.svg",
   },
   {
-    icon: "Ghost",
-    name: "Acmesponsor",
+    name: "Pakish.ORG",
+    logoSrc: "/sponsors/pakish-org.svg",
   },
   {
-    icon: "Puzzle",
-    name: "Acmeipsum",
+    name: "Fi Sabilillah Initiative",
+    logoSrc: "/sponsors/fi-sabilillah.svg",
   },
   {
-    icon: "Squirrel",
-    name: "Acme",
+    name: "Korangi Campus, Karachi",
+    logoSrc: "/sponsors/korangi-campus.svg",
   },
   {
-    icon: "Cookie",
-    name: "Accmee",
-  },
-  {
-    icon: "Drama",
-    name: "Acmetech",
+    name: "Lodhran Campus, Dunyapur",
+    logoSrc: "/sponsors/lodhran-campus.svg",
   },
 ];
 
 export const SponsorsSection = () => {
   return (
-    <section id="sponsors" className="max-w-[75%] mx-auto pb-24 sm:pb-32">
+    <section id="sponsors" className="max-w-[90%] md:max-w-[75%] mx-auto pb-24 sm:pb-32">
       <h2 className="text-lg md:text-xl text-center mb-6">
-        Our Platinum Sponsors
+        Our Partners &amp; Ecosystem
       </h2>
 
-      <div className="mx-auto">
+      <div className="mx-auto overflow-hidden">
         <Marquee
           className="gap-[3rem]"
           fade
           innerClassName="gap-[3rem]"
           pauseOnHover
         >
-          {sponsors.map(({ icon, name }) => (
+          {partners.map(({ name, logoSrc }) => (
             <div
               key={name}
-              className="flex items-center text-xl md:text-2xl font-medium"
+              className="flex items-center shrink-0"
+              title={name}
             >
-              <Icon
-                name={icon as keyof typeof icons}
-                size={32}
-                color="white"
-                className="mr-2"
+              <Image
+                src={logoSrc}
+                alt={name}
+                width={200}
+                height={48}
+                className="h-10 md:h-12 w-auto object-contain"
               />
-              {name}
             </div>
           ))}
         </Marquee>

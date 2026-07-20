@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Check } from "lucide-react";
+import Link from "next/link";
 
 enum PopularPlan {
   NO = 0,
@@ -17,7 +18,7 @@ enum PopularPlan {
 interface PlanProps {
   title: string;
   popular: PopularPlan;
-  price: number;
+  duration: string;
   description: string;
   buttonText: string;
   benefitList: string[];
@@ -25,70 +26,72 @@ interface PlanProps {
 
 const plans: PlanProps[] = [
   {
-    title: "Free",
+    title: "1-Month Fast-Track",
     popular: 0,
-    price: 0,
+    duration: "1 Month",
     description:
-      "Lorem ipsum dolor sit, amet ipsum consectetur adipisicing elit.",
-    buttonText: "Start Free Trial",
+      "Basics of Freelancing, Canva, ChatGPT. Perfect for quick micro-tasking income.",
+    buttonText: "Enroll Now",
     benefitList: [
-      "1 team member",
-      "1 GB storage",
-      "Upto 2 pages",
-      "Community support",
-      "AI assistance",
+      "Freelancing fundamentals",
+      "Canva for digital design",
+      "ChatGPT for productivity",
+      "Micro-tasking income strategies",
+      "WFH setup guidance",
     ],
   },
   {
-    title: "Premium",
+    title: "3-Month Advanced",
     popular: 1,
-    price: 45,
+    duration: "3 Months",
     description:
-      "Lorem ipsum dolor sit, amet ipsum consectetur adipisicing elit.",
-    buttonText: "Get starterd",
+      "WordPress, SMM, Basic SEO, Prompt Engineering. Build a career as a remote digital marketer.",
+    buttonText: "Enroll Now",
     benefitList: [
-      "4 team member",
-      "8 GB storage",
-      "Upto 6 pages",
-      "Priority support",
-      "AI assistance",
+      "WordPress website building",
+      "Social media marketing (SMM)",
+      "Basic SEO techniques",
+      "Prompt engineering",
+      "Remote digital marketing career path",
     ],
   },
   {
-    title: "Enterprise",
+    title: "6-Month Pro Developer",
     popular: 0,
-    price: 120,
+    duration: "6 Months",
     description:
-      "Lorem ipsum dolor sit, amet ipsum consectetur adipisicing elit.",
-    buttonText: "Contact US",
+      "Next.js, Generative AI integration, Cursor Pro/Copilot Management. High-ticket global freelancing.",
+    buttonText: "Enroll Now",
     benefitList: [
-      "10 team member",
-      "20 GB storage",
-      "Upto 10 pages",
-      "Phone & email support",
-      "AI assistance",
+      "Next.js web development",
+      "Generative AI integration",
+      "Cursor Pro & Copilot management",
+      "High-ticket freelancing strategies",
+      "Portfolio & client acquisition",
     ],
   },
 ];
 
 export const PricingSection = () => {
   return (
-    <section className="container py-24 sm:py-32">
+    <section id="courses" className="container py-24 sm:py-32">
       <h2 className="text-lg text-primary text-center mb-2 tracking-wider">
-        Pricing
+        Courses
       </h2>
 
       <h2 className="text-3xl md:text-4xl text-center font-bold mb-4">
-        Get unlimitted access
+        Training Programs
       </h2>
 
-      <h3 className="md:w-1/2 mx-auto text-xl text-center text-muted-foreground pb-14">
-        Lorem ipsum dolor sit amet consectetur adipisicing reiciendis.
+      <h3 className="md:w-2/3 mx-auto text-xl text-center text-muted-foreground pb-14">
+        Free and subsidized courses designed to take you from beginner to
+        professional — whether you want quick freelance income or a full
+        development career.
       </h3>
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-4">
         {plans.map(
-          ({ title, popular, price, description, buttonText, benefitList }) => (
+          ({ title, popular, duration, description, buttonText, benefitList }) => (
             <Card
               key={title}
               className={
@@ -105,8 +108,8 @@ export const PricingSection = () => {
                 </CardDescription>
 
                 <div>
-                  <span className="text-3xl font-bold">${price}</span>
-                  <span className="text-muted-foreground"> /month</span>
+                  <span className="text-3xl font-bold">{duration}</span>
+                  <span className="text-muted-foreground"> program</span>
                 </div>
               </CardHeader>
 
@@ -114,7 +117,7 @@ export const PricingSection = () => {
                 <div className="space-y-4">
                   {benefitList.map((benefit) => (
                     <span key={benefit} className="flex">
-                      <Check className="text-primary mr-2" />
+                      <Check className="text-primary mr-2 shrink-0" />
                       <h3>{benefit}</h3>
                     </span>
                   ))}
@@ -123,12 +126,13 @@ export const PricingSection = () => {
 
               <CardFooter>
                 <Button
+                  asChild
                   variant={
                     popular === PopularPlan?.YES ? "default" : "secondary"
                   }
                   className="w-full"
                 >
-                  {buttonText}
+                  <Link href="#contact">{buttonText}</Link>
                 </Button>
               </CardFooter>
             </Card>

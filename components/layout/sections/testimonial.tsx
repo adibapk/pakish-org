@@ -26,53 +26,44 @@ interface ReviewProps {
 
 const reviewList: ReviewProps[] = [
   {
-    image: "https://github.com/shadcn.png",
-    name: "John Doe",
-    userName: "Product Manager",
+    image: "/demo-img.jpg",
+    name: "Ayesha Khan",
+    userName: "Fast-Track Graduate",
     comment:
-      "Wow NextJs + Shadcn is awesome!. This template lets me change colors, fonts and images to match my brand identity. ",
+      "The 1-month program gave me the confidence to start freelancing on Canva and ChatGPT. Within weeks I was earning from home while caring for my family.",
     rating: 5.0,
   },
   {
-    image: "https://github.com/shadcn.png",
-    name: "Sophia Collins",
-    userName: "Cybersecurity Analyst",
+    image: "/demo-img.jpg",
+    name: "Fatima Zahra",
+    userName: "Digital Marketing Student",
     comment:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna. ",
+      "The WordPress and SMM training opened doors I never thought possible. My mentors at Pakish.ORG treated me like family and guided me every step of the way.",
     rating: 4.8,
   },
-
   {
-    image: "https://github.com/shadcn.png",
-    name: "Adam Johnson",
-    userName: "Chief Technology Officer",
+    image: "/demo-img.jpg",
+    name: "Sana Malik",
+    userName: "Pro Developer Track",
     comment:
-      "Lorem ipsum dolor sit amet,exercitation. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+      "Learning Next.js and AI tools at Pakish.ORG transformed my career. I now work with international clients remotely thanks to the skills I gained here.",
     rating: 4.9,
   },
   {
-    image: "https://github.com/shadcn.png",
-    name: "Ethan Parker",
-    userName: "Data Scientist",
+    image: "/demo-img.jpg",
+    name: "Hira Abbas",
+    userName: "Lodhran Campus Student",
     comment:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod labore et dolore magna aliqua. Ut enim ad minim veniam.",
+      "Having a dedicated workspace with internet in Lodhran made all the difference. The subsidized fees meant I could focus on learning instead of worrying about costs.",
     rating: 5.0,
   },
   {
-    image: "https://github.com/shadcn.png",
-    name: "Ava Mitchell",
-    userName: "IT Project Manager",
+    image: "/demo-img.jpg",
+    name: "Nadia Sheikh",
+    userName: "Online via Zoom",
     comment:
-      "Lorem ipsum dolor sit amet, tempor incididunt  aliqua. Ut enim ad minim veniam, quis nostrud incididunt consectetur adipiscing elit.",
+      "I joined classes from home through Zoom and still received the same quality mentorship. Pakish.ORG truly makes tech education accessible to every woman in Pakistan.",
     rating: 5.0,
-  },
-  {
-    image: "https://github.com/shadcn.png",
-    name: "Isabella Reed",
-    userName: "DevOps Engineer",
-    comment:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    rating: 4.9,
   },
 ];
 
@@ -85,7 +76,7 @@ export const TestimonialSection = () => {
         </h2>
 
         <h2 className="text-3xl md:text-4xl text-center font-bold mb-4">
-          Hear What Our 1000+ Clients Say
+          Stories from Our Students
         </h2>
       </div>
 
@@ -117,10 +108,15 @@ export const TestimonialSection = () => {
                   <div className="flex flex-row items-center gap-4">
                     <Avatar>
                       <AvatarImage
-                        src="https://avatars.githubusercontent.com/u/75042455?v=4"
-                        alt="radix"
+                        src={review.image}
+                        alt={review.name}
                       />
-                      <AvatarFallback>SV</AvatarFallback>
+                      <AvatarFallback>
+                        {review.name
+                          .split(" ")
+                          .map((n) => n[0])
+                          .join("")}
+                      </AvatarFallback>
                     </Avatar>
 
                     <div className="flex flex-col">

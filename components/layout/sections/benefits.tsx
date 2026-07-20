@@ -10,28 +10,28 @@ interface BenefitsProps {
 
 const benefitList: BenefitsProps[] = [
   {
-    icon: "Blocks",
-    title: "Build Brand Trust",
+    icon: "Heart",
+    title: "Fi Sabilillah Initiative",
     description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. A odio velit cum aliquam. Natus consectetur dolores.",
+      "A non-profit, family-led mission to uplift women and youth through accessible technology education.",
   },
   {
-    icon: "LineChart",
-    title: "More Leads",
+    icon: "Building2",
+    title: "Dedicated Workspaces",
     description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. A odio velit cum aliquam, natus consectetur.",
+      "Fully equipped campuses in Karachi and Lodhran with internet, computers, and a supportive learning environment.",
   },
   {
-    icon: "Wallet",
-    title: "Higher Conversions",
+    icon: "Users",
+    title: "Family of Mentors",
     description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus consectetur. A odio velit cum aliquam",
+      "Learn directly from the Pakish Group family — experienced professionals who have built software since 1999.",
   },
   {
-    icon: "Sparkle",
-    title: "Test Marketing Ideas",
+    icon: "Laptop",
+    title: "Work-From-Home Ready",
     description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. A odio velit cum aliquam. Natus consectetur dolores.",
+      "Every program is designed to help you earn remotely through freelancing, digital marketing, or development.",
   },
 ];
 
@@ -40,15 +40,15 @@ export const BenefitsSection = () => {
     <section id="benefits" className="container py-24 sm:py-32">
       <div className="grid lg:grid-cols-2 place-items-center lg:gap-24">
         <div>
-          <h2 className="text-lg text-primary mb-2 tracking-wider">Benefits</h2>
+          <h2 className="text-lg text-primary mb-2 tracking-wider">About</h2>
 
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Your Shortcut to Success
+            Our Mission (Fi Sabilillah Initiative)
           </h2>
           <p className="text-xl text-muted-foreground mb-8">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Non
-            ducimus reprehenderit architecto rerum similique facere odit
-            deleniti necessitatibus quo quae.
+            We are transforming a 25-year software house legacy into a community
+            empowerment project. We offer dedicated workspaces, internet, and
+            mentorship to bridge the tech gender gap in Pakistan.
           </p>
         </div>
 

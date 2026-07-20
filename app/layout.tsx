@@ -28,7 +28,7 @@ export default function RootLayout({
         >
           <Navbar />
 
-          {children}
+          <main className="flex-1 w-full">{children}</main>
         </ThemeProvider>
       </body>
     </html>
