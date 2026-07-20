@@ -22,7 +22,6 @@ import {
 } from "../ui/navigation-menu";
 import { Button } from "../ui/button";
 import Link from "next/link";
-import Image from "next/image";
 import { ToggleTheme } from "./toogle-theme";
 import { cn } from "@/lib/utils";
 
@@ -169,30 +168,25 @@ export const Navbar = () => {
                 Courses
               </NavigationMenuTrigger>
               <NavigationMenuContent>
-                <div className="flex w-[560px] gap-5 p-4">
-                  <Image
-                    src="/demo-img.jpg"
-                    alt="Pakish.ORG training programs"
-                    className="h-full w-1/2 rounded-md object-cover"
-                    width={280}
-                    height={280}
-                  />
-                  <ul className="flex w-1/2 flex-col gap-2">
-                    {featureList.map(({ title, description }) => (
-                      <li
-                        key={title}
-                        className="rounded-md p-3 text-sm hover:bg-muted"
-                      >
-                        <p className="mb-1 font-semibold leading-none text-foreground">
-                          {title}
-                        </p>
-                        <p className="line-clamp-2 text-muted-foreground">
-                          {description}
-                        </p>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                <ul className="flex w-[400px] flex-col gap-1 p-4">
+                  {featureList.map(({ title, description }) => (
+                    <li key={title}>
+                      <NavigationMenuLink asChild>
+                        <Link
+                          href={homeHref("#courses")}
+                          className="block rounded-md p-3 text-sm hover:bg-muted"
+                        >
+                          <p className="mb-1 font-semibold leading-none text-foreground">
+                            {title}
+                          </p>
+                          <p className="line-clamp-2 text-muted-foreground">
+                            {description}
+                          </p>
+                        </Link>
+                      </NavigationMenuLink>
+                    </li>
+                  ))}
+                </ul>
               </NavigationMenuContent>
             </NavigationMenuItem>
 
@@ -223,18 +217,23 @@ export const Navbar = () => {
               </NavigationMenuContent>
             </NavigationMenuItem>
 
-            {routeList.map(({ href, label }) => (
-              <NavigationMenuItem key={href}>
-                <NavigationMenuLink asChild>
-                  <Link
-                    href={homeHref(href)}
-                    className={cn(navigationMenuTriggerStyle(), "bg-card text-base")}
-                  >
-                    {label}
-                  </Link>
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-            ))}
+            {routeList
+              .filter(({ href }) => href !== "#courses")
+              .map(({ href, label }) => (
+                <NavigationMenuItem key={href}>
+                  <NavigationMenuLink asChild>
+                    <Link
+                      href={homeHref(href)}
+                      className={cn(
+                        navigationMenuTriggerStyle(),
+                        "bg-card text-base"
+                      )}
+                    >
+                      {label}
+                    </Link>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+              ))}
           </NavigationMenuList>
         </NavigationMenu>
 

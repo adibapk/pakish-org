@@ -14,10 +14,10 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { uiAvatar } from "@/lib/avatar";
 import { Star } from "lucide-react";
 
 interface ReviewProps {
-  image: string;
   name: string;
   userName: string;
   comment: string;
@@ -26,7 +26,6 @@ interface ReviewProps {
 
 const reviewList: ReviewProps[] = [
   {
-    image: "/demo-img.jpg",
     name: "Ayesha Khan",
     userName: "Fast-Track Graduate",
     comment:
@@ -34,7 +33,6 @@ const reviewList: ReviewProps[] = [
     rating: 5.0,
   },
   {
-    image: "/demo-img.jpg",
     name: "Fatima Zahra",
     userName: "Digital Marketing Student",
     comment:
@@ -42,7 +40,6 @@ const reviewList: ReviewProps[] = [
     rating: 4.8,
   },
   {
-    image: "/demo-img.jpg",
     name: "Sana Malik",
     userName: "Pro Developer Track",
     comment:
@@ -50,7 +47,6 @@ const reviewList: ReviewProps[] = [
     rating: 4.9,
   },
   {
-    image: "/demo-img.jpg",
     name: "Hira Abbas",
     userName: "Lodhran Campus Student",
     comment:
@@ -58,7 +54,6 @@ const reviewList: ReviewProps[] = [
     rating: 5.0,
   },
   {
-    image: "/demo-img.jpg",
     name: "Nadia Sheikh",
     userName: "Online via Zoom",
     comment:
@@ -108,7 +103,7 @@ export const TestimonialSection = () => {
                   <div className="flex flex-row items-center gap-4">
                     <Avatar>
                       <AvatarImage
-                        src={review.image}
+                        src={uiAvatar(review.name, 128)}
                         alt={review.name}
                       />
                       <AvatarFallback>

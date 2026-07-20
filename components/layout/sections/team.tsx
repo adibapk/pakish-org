@@ -4,10 +4,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { uiAvatar } from "@/lib/avatar";
 import Image from "next/image";
 
 interface TeamProps {
-  imageUrl: string;
   firstName: string;
   lastName: string;
   positions: string[];
@@ -16,37 +16,31 @@ interface TeamProps {
 export const TeamSection = () => {
   const teamList: TeamProps[] = [
     {
-      imageUrl: "/demo-img.jpg",
       firstName: "Wasim",
       lastName: "Ullah",
       positions: ["Founder & Top-Level Tech Advisor"],
     },
     {
-      imageUrl: "/demo-img.jpg",
       firstName: "Razia",
       lastName: "Kausar",
       positions: ["Director & Lead Organizer"],
     },
     {
-      imageUrl: "/demo-img.jpg",
       firstName: "Adiba",
       lastName: "Batool",
       positions: ["Senior IT Mentor & Project Manager"],
     },
     {
-      imageUrl: "/demo-img.jpg",
       firstName: "Afifa",
       lastName: "Batool",
       positions: ["Generative AI Instructor"],
     },
     {
-      imageUrl: "/demo-img.jpg",
       firstName: "Ulma",
       lastName: "Batool",
       positions: ["Design & Freelancing Coach"],
     },
     {
-      imageUrl: "/demo-img.jpg",
       firstName: "Qasim",
       lastName: "Ullah",
       positions: ["Technical Support & Coordinator"],
@@ -70,23 +64,25 @@ export const TeamSection = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {teamList.map(
-          ({ imageUrl, firstName, lastName, positions }, index) => (
+        {teamList.map(({ firstName, lastName, positions }, index) => {
+          const fullName = `${firstName} ${lastName}`;
+
+          return (
             <Card
               key={index}
-              className="bg-muted/60 dark:bg-card flex flex-col h-full overflow-hidden group/hoverimg"
+              className="bg-muted/60 dark:bg-card flex flex-col h-full overflow-hidden"
             >
               <CardHeader className="p-0 gap-0">
-                <div className="h-full overflow-hidden">
+                <div className="flex justify-center pt-8 pb-2">
                   <Image
-                    src={imageUrl}
-                    alt={`${firstName} ${lastName}`}
-                    width={300}
-                    height={300}
-                    className="w-full aspect-square object-cover saturate-0 transition-all duration-200 ease-linear size-full group-hover/hoverimg:saturate-100 group-hover/hoverimg:scale-[1.01]"
+                    src={uiAvatar(fullName)}
+                    alt={fullName}
+                    width={128}
+                    height={128}
+                    className="size-32 rounded-full object-cover ring-4 ring-primary/20"
                   />
                 </div>
-                <CardTitle className="py-6 pb-4 px-6">
+                <CardTitle className="py-4 pb-4 px-6 text-center">
                   {firstName}
                   <span className="text-primary ml-2">{lastName}</span>
                 </CardTitle>
@@ -94,7 +90,7 @@ export const TeamSection = () => {
               {positions.map((position, posIndex) => (
                 <CardContent
                   key={posIndex}
-                  className={`pb-0 text-muted-foreground ${
+                  className={`pb-0 text-muted-foreground text-center ${
                     posIndex === positions.length - 1 && "pb-6"
                   }`}
                 >
@@ -102,8 +98,8 @@ export const TeamSection = () => {
                 </CardContent>
               ))}
             </Card>
-          )
-        )}
+          );
+        })}
       </div>
     </section>
   );

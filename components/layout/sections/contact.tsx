@@ -87,10 +87,17 @@ export const ContactSection = () => {
             <div>
               <div className="flex gap-2 mb-1">
                 <Phone />
-                <div className="font-bold">Call us</div>
+                <div className="font-bold">Call / WhatsApp</div>
               </div>
 
-              <div>+92 (300) 000-0000</div>
+              <a
+                href="https://wa.me/923008222456"
+                className="hover:text-primary transition-colors"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                +92 300 8222456
+              </a>
             </div>
 
             <div>
