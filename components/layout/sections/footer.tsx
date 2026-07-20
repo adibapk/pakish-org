@@ -11,7 +11,10 @@ const quickLinks = [
 ];
 
 const socialLinks = [
-  { href: "#", label: "Facebook" },
+  {
+    href: "https://www.facebook.com/pakishinstitute/",
+    label: "Facebook",
+  },
   { href: "#", label: "LinkedIn" },
   { href: "#", label: "YouTube" },
 ];
@@ -64,13 +67,16 @@ export const FooterSection = () => {
             <div className="pt-2">
               <h3 className="font-bold text-lg mb-2">Social</h3>
               {socialLinks.map(({ href, label }) => (
-                <Link
+                <a
                   key={label}
                   href={href}
                   className="block opacity-60 hover:opacity-100 transition-opacity"
+                  {...(href.startsWith("http")
+                    ? { target: "_blank", rel: "noopener noreferrer" }
+                    : {})}
                 >
                   {label}
-                </Link>
+                </a>
               ))}
             </div>
           </div>

@@ -4,6 +4,7 @@ import { ContactSection } from "@/components/layout/sections/contact";
 import { FAQSection } from "@/components/layout/sections/faq";
 import { FeaturesSection } from "@/components/layout/sections/features";
 import { FooterSection } from "@/components/layout/sections/footer";
+import { GlimpsesSection } from "@/components/layout/sections/glimpses";
 import { HeroSection } from "@/components/layout/sections/hero";
 import { PricingSection } from "@/components/layout/sections/pricing";
 import { SponsorsSection } from "@/components/layout/sections/sponsors";
@@ -39,6 +40,7 @@ export default function Home() {
       <FeaturesSection />
       <PricingSection />
       <TestimonialSection />
+      <GlimpsesSection />
       <TeamSection />
       <CommunitySection />
       <ContactSection />
