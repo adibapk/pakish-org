@@ -23,25 +23,25 @@ export const TeamSection = () => {
     {
       firstName: "Razia",
       lastName: "Kausar",
-      positions: ["Director & Lead Organizer"],
+      positions: ["Co Founder & Lead Organizer"],
     },
     {
       firstName: "Adiba",
       lastName: "Batool",
-      positions: ["Senior IT Mentor & Project Manager"],
+      positions: ["Freelancing Coach & Project Manager"],
     },
     {
       firstName: "Afifa",
       lastName: "Batool",
-      positions: ["Generative AI Instructor"],
+      positions: ["Freelancing Coach & Project Manager"],
     },
     {
-      firstName: "Ulma",
+      firstName: "Ilma",
       lastName: "Batool",
       positions: ["Design & Freelancing Coach"],
     },
     {
-      firstName: "Qasim",
+      firstName: "Qaseem",
       lastName: "Ullah",
       positions: ["Technical Support & Coordinator"],
     },

@@ -18,6 +18,13 @@ export const metadata = createPageMetadata({
     "Join free and subsidized IT, AI, and freelancing programs at Pakish.ORG. On-site campuses in Karachi and Lodhran, plus online classes for women across Pakistan.",
   path: "/",
   absoluteTitle: true,
+  keywords: [
+    "free IT training for women",
+    "AI courses Pakistan",
+    "Pakish.ORG",
+    "women freelancing Pakistan",
+    "Generative AI training",
+  ],
 });
 
 export default function Home() {

@@ -14,14 +14,30 @@ import {
 
 const inter = Inter({ subsets: ["latin"] });
 
+const DEFAULT_TITLE =
+  "Pakish.ORG | Free IT & AI Training for Women in Pakistan";
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Pakish.ORG | Free IT & AI Training for Women in Pakistan",
+    default: DEFAULT_TITLE,
     template: `%s | ${SITE_NAME}`,
   },
   description: DEFAULT_DESCRIPTION,
   applicationName: SITE_NAME,
+  keywords: [
+    "Pakish.ORG",
+    "women in tech Pakistan",
+    "free IT training",
+    "AI education for women",
+    "freelancing courses Pakistan",
+    "Karachi IT campus",
+    "Lodhran IT campus",
+  ],
+  authors: [{ name: SITE_NAME, url: SITE_URL }],
+  creator: SITE_NAME,
+  publisher: SITE_NAME,
+  category: "education",
   robots: {
     index: true,
     follow: true,
@@ -30,11 +46,18 @@ export const metadata: Metadata = {
       follow: true,
       "max-image-preview": "large",
       "max-snippet": -1,
+      "max-video-preview": -1,
     },
+  },
+  alternates: {
+    canonical: SITE_URL,
   },
   openGraph: {
     type: "website",
     locale: "en_US",
+    url: SITE_URL,
+    title: DEFAULT_TITLE,
+    description: DEFAULT_DESCRIPTION,
     siteName: SITE_NAME,
     images: [
       {
@@ -47,6 +70,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
+    title: DEFAULT_TITLE,
+    description: DEFAULT_DESCRIPTION,
+    images: [absoluteUrl(DEFAULT_OG_IMAGE)],
   },
 };
 
@@ -58,6 +84,33 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={cn("min-h-screen bg-background", inter.className)}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@graph": [
+                {
+                  "@type": "Organization",
+                  "@id": `${SITE_URL}/#organization`,
+                  name: SITE_NAME,
+                  url: SITE_URL,
+                  description: DEFAULT_DESCRIPTION,
+                  logo: absoluteUrl(DEFAULT_OG_IMAGE),
+                },
+                {
+                  "@type": "WebSite",
+                  "@id": `${SITE_URL}/#website`,
+                  url: SITE_URL,
+                  name: SITE_NAME,
+                  description: DEFAULT_DESCRIPTION,
+                  publisher: { "@id": `${SITE_URL}/#organization` },
+                  inLanguage: "en-US",
+                },
+              ],
+            }),
+          }}
+        />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

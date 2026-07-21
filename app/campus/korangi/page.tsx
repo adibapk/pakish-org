@@ -6,7 +6,7 @@ export const metadata = createPageMetadata({
   title: korangiCampus.metaTitle,
   description: korangiCampus.metaDescription,
   path: "/campus/korangi",
-  image: "/gallary/pakish-event-images-4-karachi-pakistan.png",
+  image: "/gallary/event-image-2.jpg",
   absoluteTitle: true,
 });
 

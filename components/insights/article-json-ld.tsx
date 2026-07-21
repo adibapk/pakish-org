@@ -1,6 +1,7 @@
 import type { InsightArticle } from "@/lib/insights/types";
 import { SITE_URL } from "@/lib/insights/site";
 import { insightUrl } from "@/lib/insights/utils";
+import { DEFAULT_OG_IMAGE, absoluteUrl } from "@/lib/seo";
 
 interface ArticleJsonLdProps {
   article: InsightArticle;
@@ -8,12 +9,14 @@ interface ArticleJsonLdProps {
 
 export function ArticleJsonLd({ article }: ArticleJsonLdProps) {
   const url = insightUrl(article.slug);
+  const imageUrl = absoluteUrl(DEFAULT_OG_IMAGE);
 
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: article.title,
     description: article.description,
+    image: [imageUrl],
     author: {
       "@type": "Organization",
       name: article.author,
@@ -23,6 +26,10 @@ export function ArticleJsonLd({ article }: ArticleJsonLdProps) {
       "@type": "Organization",
       name: "Pakish.ORG",
       url: SITE_URL,
+      logo: {
+        "@type": "ImageObject",
+        url: imageUrl,
+      },
     },
     datePublished: article.publishedAt,
     dateModified: article.updatedAt,
