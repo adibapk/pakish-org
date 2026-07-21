@@ -1,3 +1,4 @@
+import { domainInfrastructureArticle } from "./domain-infrastructure-and-women-empowerment";
 import { freelancingGuideArticle } from "./freelancing-guide";
 import { genAiRoadmapArticle } from "./genai-roadmap";
 import { jehanAraArticle } from "./jehan-ara";
@@ -11,4 +12,5 @@ export const insightArticles: InsightArticle[] = [
   sairaOsamaArticle,
   freelancingGuideArticle,
   genAiRoadmapArticle,
+  domainInfrastructureArticle,
 ];

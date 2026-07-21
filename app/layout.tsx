@@ -7,10 +7,12 @@ import { ThemeProvider } from "@/components/layout/theme-provider";
 import {
   DEFAULT_DESCRIPTION,
   DEFAULT_OG_IMAGE,
+  SITE_LOGO,
   SITE_NAME,
   SITE_URL,
   absoluteUrl,
 } from "@/lib/seo";
+import { SITE_ICONS } from "@/lib/site-icons";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -52,6 +54,8 @@ export const metadata: Metadata = {
   alternates: {
     canonical: SITE_URL,
   },
+  icons: SITE_ICONS,
+  manifest: "/site.webmanifest",
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -96,7 +100,7 @@ export default function RootLayout({
                   name: SITE_NAME,
                   url: SITE_URL,
                   description: DEFAULT_DESCRIPTION,
-                  logo: absoluteUrl(DEFAULT_OG_IMAGE),
+                  logo: absoluteUrl(SITE_LOGO),
                 },
                 {
                   "@type": "WebSite",

@@ -1,5 +1,6 @@
 "use client";
-import { ChevronsDown, Menu } from "lucide-react";
+import { BrandLogo } from "@/components/brand/brand-logo";
+import { Menu } from "lucide-react";
 import { usePathname } from "next/navigation";
 import React from "react";
 import {
@@ -70,12 +71,12 @@ const featureList: FeatureProps[] = [
       "Freelancing, Canva, and ChatGPT — start earning through micro-tasks quickly.",
   },
   {
-    title: "3-Month Advanced",
+    title: "3-Month Professional",
     description:
       "WordPress, SMM, SEO, and prompt engineering for digital marketing careers.",
   },
   {
-    title: "6-Month Pro Developer",
+    title: "6-Month Mastery",
     description:
       "Next.js, AI integration, and high-ticket global freelancing skills.",
   },
@@ -93,10 +94,11 @@ export const Navbar = () => {
   return (
     <header className="relative z-50 w-[90%] md:w-[70%] lg:w-[75%] lg:max-w-screen-xl top-5 mx-auto sticky border border-secondary rounded-2xl bg-card shadow-inner">
       <div className="flex items-center justify-between gap-2 p-2">
-        <Link href="/" className="font-bold text-lg flex items-center shrink-0">
-          <ChevronsDown className="bg-gradient-to-tr border-secondary from-primary via-primary/70 to-primary rounded-lg w-9 h-9 mr-2 border text-white" />
-          <span className="hidden sm:inline">Pakish.ORG</span>
-        </Link>
+        <BrandLogo
+          href="/"
+          className="text-lg shrink-0"
+          wordmarkClassName="hidden sm:inline"
+        />
 
         <div className="flex items-center lg:hidden">
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -112,15 +114,12 @@ export const Navbar = () => {
             >
               <div>
                 <SheetHeader className="mb-4 ml-4">
-                  <SheetTitle className="flex items-center">
-                    <Link
+                  <SheetTitle>
+                    <BrandLogo
                       href="/"
-                      className="flex items-center"
+                      className="text-base"
                       onClick={() => setIsOpen(false)}
-                    >
-                      <ChevronsDown className="bg-gradient-to-tr border-secondary from-primary via-primary/70 to-primary rounded-lg w-9 h-9 mr-2 border text-white" />
-                      Pakish.ORG
-                    </Link>
+                    />
                   </SheetTitle>
                 </SheetHeader>
 

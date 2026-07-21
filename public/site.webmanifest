@@ -1,0 +1,18 @@
+{
+  "name": "Pakish.ORG",
+  "short_name": "Pakish.ORG",
+  "description": "Free and subsidized IT and AI training for women in Pakistan",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#118C4F",
+  "lang": "en-PK",
+  "icons": [
+    {
+      "src": "/favicon-48x48.svg",
+      "sizes": "48x48",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

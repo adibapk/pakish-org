@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
+import { SITE_LOGO } from "@/lib/site-icons";
 
 export const SITE_URL = "https://pakish.org";
 export const SITE_NAME = "Pakish.ORG";
+
+export { SITE_LOGO };
 
 export const DEFAULT_DESCRIPTION =
   "Pakish.ORG empowers women through free and subsidized IT and AI education, training, and community — building Pakistan's next generation of tech leaders.";

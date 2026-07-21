@@ -23,9 +23,9 @@ const featureList: FeaturesProps[] = [
   },
   {
     icon: "Video",
-    title: "Online via Zoom",
+    title: "Online via Zoom & Google Meet",
     description:
-      "Cannot attend in person? Join live classes remotely and learn from anywhere in Pakistan.",
+      "Cannot attend in person? Join live instructor-led classes remotely and learn from anywhere in Pakistan.",
   },
   {
     icon: "Bot",

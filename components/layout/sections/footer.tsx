@@ -1,5 +1,7 @@
+import { BrandLogo } from "@/components/brand/brand-logo";
+import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { ChevronsDownIcon } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 const quickLinks = [
@@ -26,14 +28,34 @@ export const FooterSection = () => {
       <div className="p-10 bg-card border border-secondary rounded-2xl">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-12 gap-y-8">
           <div className="sm:col-span-2">
-            <Link href="/" className="flex font-bold items-center">
-              <ChevronsDownIcon className="w-9 h-9 mr-2 bg-gradient-to-tr from-primary via-primary/70 to-primary rounded-lg border border-secondary" />
-              <h3 className="text-2xl">Pakish.ORG</h3>
-            </Link>
+            <BrandLogo href="/" className="text-2xl" wordmarkClassName="text-2xl" />
             <p className="mt-4 text-muted-foreground max-w-sm">
               Empowering women in tech through free and subsidized IT &amp; AI
               training across Pakistan.
             </p>
+            <div className="mt-6">
+              <p className="mb-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                Authorized Partner
+              </p>
+              <a
+                href="https://pakish.net"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-3 rounded-xl border border-secondary bg-secondary/30 px-4 py-2.5 opacity-80 transition-opacity hover:opacity-100"
+                aria-label="Primary Infrastructure Partner — Pakish.NET"
+              >
+                <Image
+                  src="/sponsors/pakish-net.svg"
+                  alt="Pakish.NET"
+                  width={100}
+                  height={28}
+                  className="h-7 w-auto"
+                />
+                <Badge variant="outline" className="text-xs font-normal">
+                  Primary Infrastructure Partner
+                </Badge>
+              </a>
+            </div>
           </div>
 
           <div className="flex flex-col gap-2">

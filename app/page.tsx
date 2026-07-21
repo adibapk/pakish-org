@@ -1,11 +1,14 @@
 import { BenefitsSection } from "@/components/layout/sections/benefits";
 import { CommunitySection } from "@/components/layout/sections/community";
 import { ContactSection } from "@/components/layout/sections/contact";
+import { CurriculumSection } from "@/components/layout/sections/curriculum";
 import { FAQSection } from "@/components/layout/sections/faq";
 import { FeaturesSection } from "@/components/layout/sections/features";
 import { FooterSection } from "@/components/layout/sections/footer";
 import { GlimpsesSection } from "@/components/layout/sections/glimpses";
 import { HeroSection } from "@/components/layout/sections/hero";
+import { LearningOptionsSection } from "@/components/layout/sections/learning-options";
+import { PathwaysSection } from "@/components/layout/sections/pathways";
 import { PricingSection } from "@/components/layout/sections/pricing";
 import { SponsorsSection } from "@/components/layout/sections/sponsors";
 import { TeamSection } from "@/components/layout/sections/team";
@@ -34,6 +37,9 @@ export default function Home() {
       <SponsorsSection />
       <BenefitsSection />
       <FeaturesSection />
+      <CurriculumSection />
+      <LearningOptionsSection />
+      <PathwaysSection />
       <PricingSection />
       <TestimonialSection />
       <GlimpsesSection />

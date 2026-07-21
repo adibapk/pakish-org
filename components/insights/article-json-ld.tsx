@@ -1,7 +1,7 @@
 import type { InsightArticle } from "@/lib/insights/types";
 import { SITE_URL } from "@/lib/insights/site";
 import { insightUrl } from "@/lib/insights/utils";
-import { DEFAULT_OG_IMAGE, absoluteUrl } from "@/lib/seo";
+import { DEFAULT_OG_IMAGE, SITE_LOGO, absoluteUrl } from "@/lib/seo";
 
 interface ArticleJsonLdProps {
   article: InsightArticle;
@@ -10,6 +10,7 @@ interface ArticleJsonLdProps {
 export function ArticleJsonLd({ article }: ArticleJsonLdProps) {
   const url = insightUrl(article.slug);
   const imageUrl = absoluteUrl(DEFAULT_OG_IMAGE);
+  const logoUrl = absoluteUrl(SITE_LOGO);
 
   const articleSchema = {
     "@context": "https://schema.org",
@@ -28,7 +29,7 @@ export function ArticleJsonLd({ article }: ArticleJsonLdProps) {
       url: SITE_URL,
       logo: {
         "@type": "ImageObject",
-        url: imageUrl,
+        url: logoUrl,
       },
     },
     datePublished: article.publishedAt,
