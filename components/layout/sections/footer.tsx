@@ -3,6 +3,7 @@ import { ChevronsDownIcon } from "lucide-react";
 import Link from "next/link";
 
 const quickLinks = [
+  { href: "/insights", label: "Insights" },
   { href: "/#benefits", label: "Mission" },
   { href: "/#courses", label: "Courses" },
   { href: "/#team", label: "Team" },

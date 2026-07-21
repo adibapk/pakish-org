@@ -55,6 +55,7 @@ const campusLinks: CampusLinkProps[] = [
 ];
 
 const routeList: RouteProps[] = [
+  { href: "/insights", label: "Insights" },
   { href: "#courses", label: "Courses" },
   { href: "#benefits", label: "Mission" },
   { href: "#team", label: "Team" },
@@ -84,8 +85,10 @@ export const Navbar = () => {
   const [isOpen, setIsOpen] = React.useState(false);
   const pathname = usePathname();
 
-  const homeHref = (hash: string) =>
-    pathname === "/" ? hash : `/${hash}`;
+  const resolveHref = (href: string) => {
+    if (href.startsWith("/")) return href;
+    return pathname === "/" ? href : `/${href}`;
+  };
 
   return (
     <header className="relative z-50 w-[90%] md:w-[70%] lg:w-[75%] lg:max-w-screen-xl top-5 mx-auto sticky border border-secondary rounded-2xl bg-card shadow-inner">
@@ -147,7 +150,7 @@ export const Navbar = () => {
                       variant="ghost"
                       className="justify-start text-base"
                     >
-                      <Link href={homeHref(href)}>{label}</Link>
+                      <Link href={resolveHref(href)}>{label}</Link>
                     </Button>
                   ))}
                 </div>
@@ -173,7 +176,7 @@ export const Navbar = () => {
                     <li key={title}>
                       <NavigationMenuLink asChild>
                         <Link
-                          href={homeHref("#courses")}
+                          href={resolveHref("#courses")}
                           className="block rounded-md p-3 text-sm hover:bg-muted"
                         >
                           <p className="mb-1 font-semibold leading-none text-foreground">
@@ -223,7 +226,7 @@ export const Navbar = () => {
                 <NavigationMenuItem key={href}>
                   <NavigationMenuLink asChild>
                     <Link
-                      href={homeHref(href)}
+                      href={resolveHref(href)}
                       className={cn(
                         navigationMenuTriggerStyle(),
                         "bg-card text-base"
