@@ -10,26 +10,15 @@ import { PricingSection } from "@/components/layout/sections/pricing";
 import { SponsorsSection } from "@/components/layout/sections/sponsors";
 import { TeamSection } from "@/components/layout/sections/team";
 import { TestimonialSection } from "@/components/layout/sections/testimonial";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata = {
-  title: "Pakish.ORG - Women's IT & AI Institute",
+export const metadata = createPageMetadata({
+  title: "Pakish.ORG | Free IT & AI Training for Women in Pakistan",
   description:
-    "Pakish.ORG empowers women through IT and AI education, training, and community — building Pakistan's next generation of tech leaders.",
-  openGraph: {
-    type: "website",
-    url: "https://pakish.org",
-    title: "Pakish.ORG - Women's IT & AI Institute",
-    description:
-      "Pakish.ORG empowers women through IT and AI education, training, and community — building Pakistan's next generation of tech leaders.",
-    siteName: "Pakish.ORG",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Pakish.ORG - Women's IT & AI Institute",
-    description:
-      "Pakish.ORG empowers women through IT and AI education, training, and community — building Pakistan's next generation of tech leaders.",
-  },
-};
+    "Join free and subsidized IT, AI, and freelancing programs at Pakish.ORG. On-site campuses in Karachi and Lodhran, plus online classes for women across Pakistan.",
+  path: "/",
+  absoluteTitle: true,
+});
 
 export default function Home() {
   return (

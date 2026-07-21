@@ -1,22 +1,14 @@
 import { CampusPageContent } from "@/components/campus/campus-page-content";
 import { korangiCampus } from "@/lib/campus-data";
-import type { Metadata } from "next";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = createPageMetadata({
   title: korangiCampus.metaTitle,
   description: korangiCampus.metaDescription,
-  openGraph: {
-    title: korangiCampus.metaTitle,
-    description: korangiCampus.metaDescription,
-    type: "website",
-    siteName: "Pakish.ORG",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: korangiCampus.metaTitle,
-    description: korangiCampus.metaDescription,
-  },
-};
+  path: "/campus/korangi",
+  image: "/gallary/pakish-event-images-4-karachi-pakistan.png",
+  absoluteTitle: true,
+});
 
 export default function KorangiCampusPage() {
   return <CampusPageContent campus={korangiCampus} />;
