@@ -36,7 +36,7 @@ const reviewList: ReviewProps[] = [
     name: "Fatima Zahra",
     userName: "Digital Marketing Student",
     comment:
-      "The WordPress and SMM training opened doors I never thought possible. My mentors at Pakish.ORG treated me like family and guided me every step of the way.",
+      "I enrolled in the WordPress and SMM program with clear fee details upfront. The structured curriculum and mentor support helped me build client-ready skills and confidence for remote work.",
     rating: 4.8,
   },
   {
@@ -50,14 +50,14 @@ const reviewList: ReviewProps[] = [
     name: "Hira Abbas",
     userName: "Lodhran Campus Student",
     comment:
-      "Having a dedicated workspace with internet in Lodhran made all the difference. The subsidized fees meant I could focus on learning instead of worrying about costs.",
+      "As a subsidized-seat student in Lodhran, having a dedicated workspace with internet let me focus on learning instead of worrying about costs. The mentorship was invaluable.",
     rating: 5.0,
   },
   {
     name: "Nadia Sheikh",
     userName: "Online via Zoom",
     comment:
-      "I joined classes from home through Zoom and still received the same quality mentorship. Pakish.ORG truly makes tech education accessible to every woman in Pakistan.",
+      "I joined classes from home through Zoom and still received the same quality mentorship. Pakish.ORG offers professional training with supportive guidance for women across Pakistan.",
     rating: 5.0,
   },
 ];

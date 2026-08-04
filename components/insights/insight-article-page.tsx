@@ -119,8 +119,9 @@ export function InsightArticlePage({ article }: InsightArticlePageProps) {
           <section className="mt-12 rounded-2xl border border-secondary bg-card p-8 text-center">
             <h2 className="text-2xl font-bold">Ready to build your tech career?</h2>
             <p className="mx-auto mt-3 max-w-lg text-muted-foreground">
-              Join Pakish.ORG&apos;s free and subsidized IT &amp; AI training at
-              our Karachi and Lodhran campuses or online via Zoom.
+              Explore professional IT &amp; AI programs at Gulshan-e-Iqbal,
+              Karachi, Lodhran, or online via Zoom. Contact us for enrollment
+              details or subsidized quota eligibility review.
             </p>
             <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Button asChild>

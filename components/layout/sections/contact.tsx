@@ -43,16 +43,18 @@ export const ContactSection = () => {
       firstName: "",
       lastName: "",
       email: "",
-      subject: "Course Enrollment",
+      subject: "Course Enrollment / Fee Information",
       message: "",
     },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     const { firstName, lastName, email, subject, message } = values;
-    console.log(values);
 
-    const mailToLink = `mailto:info@pakish.org?subject=${subject}&body=Hello I am ${firstName} ${lastName}, my Email is ${email}. %0D%0A${message}`;
+    const body = `Hello, I am ${firstName} ${lastName}.\n\nEmail: ${email}\n\n${message}`;
+    const mailToLink = `mailto:info@pakish.org?subject=${encodeURIComponent(
+      subject
+    )}&body=${encodeURIComponent(body)}`;
 
     window.location.href = mailToLink;
   }
@@ -68,10 +70,15 @@ export const ContactSection = () => {
 
             <h2 className="text-3xl md:text-4xl font-bold">Connect With Us</h2>
           </div>
-          <p className="mb-8 text-muted-foreground lg:w-5/6">
-            Ready to start your tech journey or support our mission? Reach out
-            to enroll in a course, visit our campuses, or learn how you can
-            contribute to empowering women in IT and AI across Pakistan.
+          <p className="mb-4 text-muted-foreground lg:w-5/6">
+            Contact us for regular enrollment and fee details, subsidized quota
+            eligibility review, campus visits, or sponsorship. We will guide you
+            through program options at Gulshan-e-Iqbal, Karachi, Lodhran, or
+            online.
+          </p>
+          <p className="mb-8 text-sm text-muted-foreground lg:w-5/6">
+            Subsidized quota requests are reviewed during counseling and depend
+            on seat availability. Submitting a form does not guarantee approval.
           </p>
 
           <div className="flex flex-col gap-4">
@@ -81,7 +88,10 @@ export const ContactSection = () => {
                 <div className="font-bold">Find us</div>
               </div>
 
-              <div>Karachi Campus &amp; Lodhran Campus, Pakistan</div>
+              <div>
+                Gulshan-e-Iqbal, Main University Road, Karachi &amp; Lodhran
+                Campus, Pakistan
+              </div>
             </div>
 
             <div>
@@ -197,8 +207,17 @@ export const ContactSection = () => {
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            <SelectItem value="Course Enrollment">
-                              Course Enrollment
+                            <SelectItem value="Course Enrollment / Fee Information">
+                              Course Enrollment / Fee Information
+                            </SelectItem>
+                            <SelectItem value="Subsidized Quota Eligibility">
+                              Subsidized Quota Eligibility
+                            </SelectItem>
+                            <SelectItem value="Campus Visit - Gulshan-e-Iqbal, Karachi">
+                              Campus Visit - Gulshan-e-Iqbal, Karachi
+                            </SelectItem>
+                            <SelectItem value="Support / Sponsor a Student">
+                              Support / Sponsor a Student
                             </SelectItem>
                             <SelectItem value="1-Month Fast-Track">
                               1-Month Fast-Track
@@ -209,12 +228,13 @@ export const ContactSection = () => {
                             <SelectItem value="6-Month Pro Developer">
                               6-Month Pro Developer
                             </SelectItem>
-                            <SelectItem value="Support Our Cause">
-                              Support Our Cause
-                            </SelectItem>
                           </SelectContent>
                         </Select>
                         <FormMessage />
+                        <p className="text-xs text-muted-foreground">
+                          Choose enrollment/fee details, subsidized quota review
+                          (subject to eligibility), campus visit, or sponsorship.
+                        </p>
                       </FormItem>
                     )}
                   />
@@ -230,7 +250,7 @@ export const ContactSection = () => {
                         <FormControl>
                           <Textarea
                             rows={5}
-                            placeholder="Your message..."
+                            placeholder="Tell us which program you are interested in, your preferred campus or online option, and whether you want regular fee details or subsidized quota review."
                             className="resize-none"
                             {...field}
                           />

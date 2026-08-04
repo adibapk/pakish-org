@@ -20,12 +20,13 @@ export interface CampusData {
 export const korangiCampus: CampusData = {
   slug: "korangi",
   shortName: "Karachi",
-  location: "Korangi Zaman Town, Karachi",
-  heroTitle: "Korangi Zaman Town Campus",
-  heroSubtitle: "Karachi, Sindh — empowering women and youth through IT & AI training",
+  location: "Gulshan-e-Iqbal, Main University Road, Karachi",
+  heroTitle: "Karachi Campus — Gulshan-e-Iqbal",
+  heroSubtitle:
+    "Gulshan-e-Iqbal, Main University Road — professional IT & AI training for women and youth in Karachi",
   aboutTitle: "About the Karachi Campus",
   aboutParagraphs: [
-    "Our Korangi Zaman Town campus serves women and youth across Karachi with free and subsidized IT, Generative AI, and digital freelancing programs. Students learn in a dedicated workspace with mentorship from the Pakish Group family.",
+    "Our Gulshan-e-Iqbal campus on Main University Road serves women and youth across Karachi with professional IT, Generative AI, and digital freelancing programs. Standard enrollment fees apply; limited free or subsidized seats are available for eligible learners under the Fi Sabilillah quota. Enrolled students learn in a supported workspace with mentorship from the Pakish Group family.",
     "This campus is a cornerstone of Pakish.ORG's Fi Sabilillah Initiative — transforming a 25-year software house legacy into community empowerment for Pakistan's largest city.",
   ],
   needs: [
@@ -36,9 +37,9 @@ export const korangiCampus: CampusData = {
     { item: "Solar system components" },
   ],
   donated: ["5kVA Generator — donated by Pakish Group"],
-  metaTitle: "Karachi Campus (Korangi) | Pakish.ORG",
+  metaTitle: "Karachi Campus — Gulshan-e-Iqbal | Pakish.ORG",
   metaDescription:
-    "Visit Pakish.ORG's Korangi Zaman Town campus in Karachi. Support our community with laptops, furniture, fans, and solar equipment for women's IT & AI training.",
+    "Visit Pakish.ORG's Gulshan-e-Iqbal campus on Main University Road, Karachi. Support our community with laptops, furniture, fans, and solar equipment for women's IT & AI training.",
 };
 
 export const lodhranCampus: CampusData = {

@@ -17,9 +17,9 @@ const benefitList: BenefitsProps[] = [
   },
   {
     icon: "Building2",
-    title: "Dedicated Workspaces",
+    title: "Supported Learning Environments",
     description:
-      "Fully equipped campuses in Karachi and Lodhran with internet, computers, and a supportive learning environment.",
+      "Campuses in Gulshan-e-Iqbal, Karachi and Lodhran offer supported learning environments with internet, computers, and mentorship for enrolled students.",
   },
   {
     icon: "Users",
@@ -47,8 +47,9 @@ export const BenefitsSection = () => {
           </h2>
           <p className="text-xl text-muted-foreground mb-8">
             We are transforming a 25-year software house legacy into a community
-            empowerment project. We offer dedicated workspaces, internet, and
-            mentorship to bridge the tech gender gap in Pakistan.
+            empowerment project. Professional programs, mentorship, and the Fi
+            Sabilillah need-based quota help bridge the tech gender gap in
+            Pakistan.
           </p>
         </div>
 

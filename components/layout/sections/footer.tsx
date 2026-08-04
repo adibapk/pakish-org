@@ -30,8 +30,8 @@ export const FooterSection = () => {
           <div className="sm:col-span-2">
             <BrandLogo href="/" className="text-2xl" wordmarkClassName="text-2xl" />
             <p className="mt-4 text-muted-foreground max-w-sm">
-              Empowering women in tech through free and subsidized IT &amp; AI
-              training across Pakistan.
+              Professional IT &amp; AI training for women across Pakistan —
+              Gulshan-e-Iqbal, Karachi, Lodhran, and online.
             </p>
             <div className="mt-6">
               <p className="mb-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">

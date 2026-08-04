@@ -29,8 +29,8 @@ export const CommunitySection = () => {
             </CardHeader>
             <CardContent className="lg:w-[80%] text-xl text-muted-foreground">
               Pakish.ORG is a non-profit initiative. Your donations and
-              sponsorships help us provide free workspaces, internet, and
-              subsidized training to women and youth across Pakistan.
+              sponsorships help fund need-based scholarships, subsidized seats,
+              equipment, and learning resources for eligible students.
             </CardContent>
 
             <CardFooter>

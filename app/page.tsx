@@ -16,16 +16,17 @@ import { TestimonialSection } from "@/components/layout/sections/testimonial";
 import { createPageMetadata } from "@/lib/seo";
 
 export const metadata = createPageMetadata({
-  title: "Pakish.ORG | Free IT & AI Training for Women in Pakistan",
+  title: "Pakish.ORG | Professional IT & AI Training for Women in Pakistan",
   description:
-    "Join free and subsidized IT, AI, and freelancing programs at Pakish.ORG. On-site campuses in Karachi and Lodhran, plus online classes for women across Pakistan.",
+    "Professional IT, AI, and freelancing training at Pakish.ORG. Standard fees apply for regular enrollment; limited free or subsidized seats are available for eligible learners under the Fi Sabilillah quota. Campuses in Gulshan-e-Iqbal, Karachi and Lodhran, plus online classes.",
   path: "/",
   absoluteTitle: true,
   keywords: [
-    "free IT training for women",
+    "IT training for women in Pakistan",
     "AI courses Pakistan",
-    "Pakish.ORG",
-    "women freelancing Pakistan",
+    "subsidized IT training Pakistan",
+    "women freelancing courses Karachi",
+    "Gulshan-e-Iqbal IT campus",
     "Generative AI training",
   ],
 });

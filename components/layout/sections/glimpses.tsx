@@ -28,7 +28,7 @@ const glimpseImages: GlimpseImage[] = [
   },
   {
     src: "/gallary/pakish-event-images-4-karachi-pakistan.png",
-    alt: "Pakish.ORG Karachi campus workspace for women's IT education",
+    alt: "Pakish.ORG Gulshan-e-Iqbal campus workspace for women's IT education",
   },
 ];
 

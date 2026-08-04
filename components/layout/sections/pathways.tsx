@@ -26,8 +26,8 @@ export const PathwaysSection = () => {
         </h2>
         <p className="text-xl text-muted-foreground">
           Pakish.ORG programs are built around real economic outcomes — helping
-          women move from subsidized training to self-sustaining work-from-home
-          careers and job placements in Pakistan&apos;s growing tech economy.
+          women move from professional training to self-sustaining work-from-home
+          careers in Pakistan&apos;s growing tech economy.
         </p>
       </div>
 
@@ -79,9 +79,10 @@ export const PathwaysSection = () => {
           Ready to start your financial independence journey?
         </h3>
         <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">
-          Whether you need subsidized enrollment, campus directions, or a
-          one-on-one counseling call to choose the right track — our team is
-          here to help Pakistani women enter remote IT and AI careers.
+          Whether you need fee details, subsidized quota eligibility review,
+          campus directions, or a one-on-one counseling call to choose the right
+          track — our team is here to help Pakistani women enter remote IT and
+          AI careers.
         </p>
         <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <Button asChild size="lg">

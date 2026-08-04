@@ -46,7 +46,7 @@ const campusLinks: CampusLinkProps[] = [
   {
     href: "/campus/korangi",
     label: "Karachi",
-    description: "Korangi Zaman Town campus — IT & AI training in Karachi.",
+    description: "Gulshan-e-Iqbal, Main University Road — IT & AI training in Karachi.",
   },
   {
     href: "/campus/lodhran",

@@ -139,9 +139,9 @@ export const curriculumTracks: CurriculumTrack[] = [
 export const learningModes: LearningMode[] = [
   {
     icon: "MapPin",
-    title: "Karachi Campus (Korangi)",
+    title: "Karachi Campus — Gulshan-e-Iqbal",
     description:
-      "In-house training at our Korangi Zaman Town campus with mentors, computers, high-speed internet, and a supportive all-women learning environment.",
+      "In-house training at our Gulshan-e-Iqbal campus on Main University Road with mentors, computers, high-speed internet, and a supportive all-women learning environment.",
     href: "/campus/korangi",
     cta: "Visit Karachi Campus",
   },

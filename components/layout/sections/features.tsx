@@ -11,15 +11,15 @@ interface FeaturesProps {
 const featureList: FeaturesProps[] = [
   {
     icon: "GraduationCap",
-    title: "Free & Subsidized Programs",
+    title: "Fee-Based Programs with Need-Based Support",
     description:
-      "Quality IT and AI training accessible to women and youth who need financial support to start their tech journey.",
+      "Structured IT and AI programs with mentorship and career-focused curriculum. Need-based support may be available for eligible learners.",
   },
   {
     icon: "MapPin",
     title: "Karachi & Lodhran Campuses",
     description:
-      "On-site learning at our fully equipped campuses with mentors, workspace, and high-speed internet.",
+      "On-site learning at our Gulshan-e-Iqbal, Karachi and Lodhran campuses with mentors, supported workspace, and high-speed internet.",
   },
   {
     icon: "Video",

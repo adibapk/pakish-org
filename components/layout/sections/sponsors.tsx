@@ -26,8 +26,8 @@ const partners: SponsorPartner[] = [
     logoSrc: "/sponsors/fi-sabilillah.svg",
   },
   {
-    name: "Korangi Campus, Karachi",
-    logoSrc: "/sponsors/korangi-campus.svg",
+    name: "Gulshan Campus, Karachi",
+    logoSrc: "/sponsors/gulshan-campus.svg",
   },
   {
     name: "Lodhran Campus, Dunyapur",

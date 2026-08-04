@@ -177,7 +177,7 @@ export const genAiRoadmapArticle: InsightArticle = {
     {
       type: "p",
       content:
-        "Self-study works, but cohort-based learning with mentors prevents common pitfalls — bad prompts, insecure API keys, plagiarized portfolios. [Pakish.ORG](/) offers Generative AI training through the Fi Sabilillah Initiative at our [Karachi campus](/campus/korangi), [Lodhran campus](/campus/lodhran), and online via Zoom. Students learn alongside peers facing similar cultural and economic contexts, with guidance from the Pakish Group mentor family.",
+        "Self-study works, but cohort-based learning with mentors prevents common pitfalls — bad prompts, insecure API keys, plagiarized portfolios. [Pakish.ORG](/) offers Generative AI training through the Fi Sabilillah Initiative at our [Gulshan-e-Iqbal campus](/campus/korangi), [Lodhran campus](/campus/lodhran), and online via Zoom. Students learn alongside peers facing similar cultural and economic contexts, with guidance from the Pakish Group mentor family.",
     },
     {
       type: "p",
@@ -226,7 +226,7 @@ export const genAiRoadmapArticle: InsightArticle = {
     {
       question: "Where can Pakistani women learn Generative AI in person?",
       answer:
-        "Pakish.ORG offers Generative AI modules at Karachi (Korangi) and Lodhran campuses, plus online Zoom sessions, as part of free and subsidized IT training programs.",
+        "Pakish.ORG offers Generative AI modules at Gulshan-e-Iqbal, Karachi and Lodhran campuses, plus online Zoom sessions, as part of fee-based IT training programs with limited subsidized seats for eligible learners.",
     },
     {
       question: "How is this different from just watching YouTube tutorials?",

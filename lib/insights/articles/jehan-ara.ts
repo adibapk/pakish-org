@@ -45,7 +45,7 @@ export const jehanAraArticle: InsightArticle = {
     {
       type: "p",
       content:
-        "Later, Katalyst Labs extended that mission with programs focused on startup acceleration and women's leadership. In a market where female founders receive a fraction of available funding, dedicated leadership pipelines are not optional — they are structural necessities. This mirrors why [Pakish.ORG](/) invests in free and subsidized training for women and youth: access must be designed intentionally, not assumed.",
+        "Later, Katalyst Labs extended that mission with programs focused on startup acceleration and women's leadership. In a market where female founders receive a fraction of available funding, dedicated leadership pipelines are not optional — they are structural necessities. This mirrors why [Pakish.ORG](/) invests in fee-based training with limited subsidized seats for eligible women and youth: access must be designed intentionally, not assumed.",
     },
     {
       type: "h2",
@@ -69,7 +69,7 @@ export const jehanAraArticle: InsightArticle = {
     {
       type: "p",
       content:
-        "For women who could not relocate to major cities or afford premium coworking, the lesson is clear: community accelerates learning. Today, [online and campus-based programs](/#courses) at Pakish.ORG bring that community to Karachi's Korangi campus, South Punjab's Lodhran campus, and Zoom classrooms — lowering the geographic barrier Jehan Ara's generation worked hard to address.",
+        "For women who could not relocate to major cities or afford premium coworking, the lesson is clear: community accelerates learning. Today, [online and campus-based programs](/#courses) at Pakish.ORG bring that community to Karachi's Gulshan-e-Iqbal campus, South Punjab's Lodhran campus, and Zoom classrooms — lowering the geographic barrier Jehan Ara's generation worked hard to address.",
     },
     {
       type: "h2",
@@ -123,7 +123,7 @@ export const jehanAraArticle: InsightArticle = {
     {
       type: "p",
       content:
-        "Not everyone will found an incubator. But everyone can choose a skill stack and commit to it. Pakistan's IT sector rewards web development, digital marketing, AI integration, and client-facing freelancing — competencies taught in our [1-Month Fast-Track](/#courses), [3-Month Advanced](/#courses), and [6-Month Pro Developer](/#courses) programs. Women in smaller cities can start online; those near our [Lodhran campus](/campus/lodhran) or [Karachi campus](/campus/korangi) can learn in person with mentors from the Pakish Group family.",
+        "Not everyone will found an incubator. But everyone can choose a skill stack and commit to it. Pakistan's IT sector rewards web development, digital marketing, AI integration, and client-facing freelancing — competencies taught in our [1-Month Fast-Track](/#courses), [3-Month Advanced](/#courses), and [6-Month Pro Developer](/#courses) programs. Women in smaller cities can start online; those near our [Lodhran campus](/campus/lodhran) or [Gulshan-e-Iqbal campus](/campus/korangi) can learn in person with mentors from the Pakish Group family.",
     },
     {
       type: "p",
@@ -159,7 +159,7 @@ export const jehanAraArticle: InsightArticle = {
     {
       question: "Where can Pakistani women learn tech skills today?",
       answer:
-        "Organizations like Pakish.ORG offer free and subsidized training in Generative AI, web development, and freelancing at Karachi and Lodhran campuses and online via Zoom.",
+        "Organizations like Pakish.ORG offer fee-based training in Generative AI, web development, and freelancing at Gulshan-e-Iqbal, Karachi and Lodhran campuses and online via Zoom, with limited subsidized seats for eligible learners under the Fi Sabilillah quota.",
     },
   ],
 };

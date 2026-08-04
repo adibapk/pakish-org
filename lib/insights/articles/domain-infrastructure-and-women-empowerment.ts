@@ -92,7 +92,7 @@ export const domainInfrastructureArticle: InsightArticle = {
     {
       type: "p",
       content:
-        "Infrastructure literacy is an equity issue. Women in Pakistan often face mobility constraints, caregiving responsibilities, and uneven access to formal tech networks. Remote careers remove some geographic barriers, but only if learners can present credible, globally accessible work. Free or subsidized training — like programs at [Pakish.ORG](/) — lowers the skills barrier; dependable cloud and domain tooling lowers the deployment barrier. Together they help graduates compete for international contracts from Karachi, Lodhran, or any village with stable internet.",
+        "Infrastructure literacy is an equity issue. Women in Pakistan often face mobility constraints, caregiving responsibilities, and uneven access to formal tech networks. Remote careers remove some geographic barriers, but only if learners can present credible, globally accessible work. Fee-based professional training with limited subsidized seats — like programs at [Pakish.ORG](/) — lowers the skills barrier; dependable cloud and domain tooling lowers the deployment barrier. Together they help graduates compete for international contracts from Karachi, Lodhran, or any village with stable internet.",
     },
     {
       type: "p",
@@ -121,7 +121,7 @@ export const domainInfrastructureArticle: InsightArticle = {
     {
       type: "p",
       content:
-        "[Pakish.ORG](/) integrates career-ready skills with community support at our [Karachi Korangi campus](/campus/korangi), [Lodhran campus](/campus/lodhran), and online via Zoom. As you progress from coursework to client work, treat domain registration and cloud deployment as core competencies — not optional extras. When you are ready to go live, [Pakish.NET](https://pakish.net) provides the infrastructure layer so your projects stay online while you focus on learning, pitching, and delivering value.",
+        "[Pakish.ORG](/) integrates career-ready skills with community support at our [Karachi Gulshan-e-Iqbal campus](/campus/korangi), [Lodhran campus](/campus/lodhran), and online via Zoom. As you progress from coursework to client work, treat domain registration and cloud deployment as core competencies — not optional extras. When you are ready to go live, [Pakish.NET](https://pakish.net) provides the infrastructure layer so your projects stay online while you focus on learning, pitching, and delivering value.",
     },
     {
       type: "p",

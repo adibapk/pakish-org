@@ -17,7 +17,7 @@ import { SITE_ICONS } from "@/lib/site-icons";
 const inter = Inter({ subsets: ["latin"] });
 
 const DEFAULT_TITLE =
-  "Pakish.ORG | Free IT & AI Training for Women in Pakistan";
+  "Pakish.ORG | Professional IT & AI Training for Women in Pakistan";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -29,11 +29,11 @@ export const metadata: Metadata = {
   applicationName: SITE_NAME,
   keywords: [
     "Pakish.ORG",
-    "women in tech Pakistan",
-    "free IT training",
-    "AI education for women",
-    "freelancing courses Pakistan",
-    "Karachi IT campus",
+    "IT training for women in Pakistan",
+    "AI courses Pakistan",
+    "subsidized IT training Pakistan",
+    "women freelancing courses Karachi",
+    "Gulshan-e-Iqbal IT campus",
     "Lodhran IT campus",
   ],
   authors: [{ name: SITE_NAME, url: SITE_URL }],

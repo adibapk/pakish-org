@@ -7,7 +7,7 @@ export const SITE_NAME = "Pakish.ORG";
 export { SITE_LOGO };
 
 export const DEFAULT_DESCRIPTION =
-  "Pakish.ORG empowers women through free and subsidized IT and AI education, training, and community — building Pakistan's next generation of tech leaders.";
+  "Pakish.ORG offers professional IT and AI training for women in Pakistan. Standard fees apply for regular enrollments; limited free or subsidized seats are available for eligible learners under the Fi Sabilillah quota.";
 
 export const DEFAULT_OG_IMAGE = "/hero-image-light.jpeg";
 

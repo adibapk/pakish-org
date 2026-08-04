@@ -23,12 +23,22 @@ export const PricingSection = () => {
         Training Programs
       </h2>
 
-      <h3 className="md:w-2/3 mx-auto text-xl text-center text-muted-foreground pb-14">
-        Free and subsidized courses designed to take you from beginner to
-        professional — whether you want quick freelance income or a full
-        development career. Available in-house at Karachi &amp; Lodhran campuses
-        or live online via Zoom and Google Meet.
+      <h3 className="md:w-2/3 mx-auto text-xl text-center text-muted-foreground pb-8">
+        Structured professional training programs in IT, AI, and freelancing —
+        from quick remote income skills to full development careers. Available
+        in-house at our Gulshan-e-Iqbal, Karachi &amp; Lodhran campuses or live
+        online via Zoom and Google Meet.
       </h3>
+
+      <div className="mx-auto mb-10 max-w-3xl rounded-xl border border-primary/20 bg-primary/5 px-4 py-5 text-center text-sm leading-relaxed md:px-6 md:text-base">
+        <p className="font-semibold text-foreground">Fee &amp; Subsidy Policy</p>
+        <p className="mt-2 text-muted-foreground">
+          Regular enrollments are paid. Limited free or subsidized seats are
+          reserved for eligible learners who cannot afford full fees. Eligibility
+          is reviewed during counseling and depends on available quota under the
+          Fi Sabilillah initiative.
+        </p>
+      </div>
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-4">
         {curriculumTracks.map((track) => {
@@ -79,10 +89,10 @@ export const PricingSection = () => {
                   variant={isPopular ? "default" : "secondary"}
                   className="w-full"
                 >
-                  <Link href="#contact">Enroll Now</Link>
+                  <Link href="#contact">Request Fee Details</Link>
                 </Button>
                 <Button asChild variant="outline" className="w-full">
-                  <Link href="#contact">Free Counseling</Link>
+                  <Link href="#contact">Check Subsidy Eligibility</Link>
                 </Button>
               </CardFooter>
             </Card>

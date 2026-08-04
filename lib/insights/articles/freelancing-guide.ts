@@ -186,7 +186,7 @@ export const freelancingGuideArticle: InsightArticle = {
     {
       type: "p",
       content:
-        "Self-teaching works for some, but structured programs reduce wasted months. [Pakish.ORG](/) offers free and subsidized training backed by Pakish Group (Est. 1999) through the Fi Sabilillah Initiative — at our [Karachi Korangi campus](/campus/korangi), [Lodhran campus](/campus/lodhran), and online via Zoom. You learn alongside peers, receive mentor feedback, and connect to a community that understands Pakistani women's specific challenges.",
+        "Self-teaching works for some, but structured programs reduce wasted months. [Pakish.ORG](/) offers fee-based programs with limited need-based free or subsidized seats backed by Pakish Group (Est. 1999) through the Fi Sabilillah Initiative — at our [Karachi Gulshan-e-Iqbal campus](/campus/korangi), [Lodhran campus](/campus/lodhran), and online via Zoom. You learn alongside peers, receive mentor feedback, and connect to a community that understands Pakistani women's specific challenges.",
     },
     {
       type: "p",
@@ -221,9 +221,9 @@ export const freelancingGuideArticle: InsightArticle = {
         "No. Clients prioritize portfolios, reviews, and delivery speed. Structured short courses and real project samples often matter more than formal degrees for entry-level freelance work.",
     },
     {
-      question: "Where can I get free or subsidized training in Pakistan?",
+      question: "Where can I get subsidized IT training in Pakistan?",
       answer:
-        "Pakish.ORG offers free and subsidized IT, AI, and freelancing programs at Karachi and Lodhran campuses and online via Zoom, backed by the Fi Sabilillah Initiative.",
+        "Pakish.ORG offers fee-based IT, AI, and freelancing programs at Gulshan-e-Iqbal, Karachi and Lodhran campuses and online via Zoom. Limited free or subsidized seats are available for eligible learners under the Fi Sabilillah quota.",
     },
     {
       question: "How long until my first freelance income?",
