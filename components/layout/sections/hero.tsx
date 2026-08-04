@@ -7,14 +7,14 @@ import Link from "next/link";
 export const HeroSection = () => {
   return (
     <section className="container w-full">
-      <div className="grid place-items-center lg:max-w-screen-xl gap-8 mx-auto py-20 md:py-32">
-        <div className="text-center space-y-8">
+      <div className="grid place-items-center lg:max-w-screen-xl gap-4 mx-auto py-6 md:py-8 lg:py-10">
+        <div className="text-center space-y-4 md:space-y-5 lg:space-y-6">
           <Badge variant="outline" className="text-sm py-2 gap-2">
             <Badge className="text-xs">Est. 1999</Badge>
             Backed by Pakish Group
           </Badge>
 
-          <div className="max-w-screen-lg mx-auto text-center text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+          <div className="max-w-screen-lg mx-auto text-center text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
             <h1>
               Empowering Women in Tech –{" "}
               <span className="text-transparent bg-gradient-to-r from-primary to-primary/70 bg-clip-text">
@@ -23,7 +23,7 @@ export const HeroSection = () => {
             </h1>
           </div>
 
-          <p className="max-w-screen-md mx-auto text-lg md:text-xl text-muted-foreground">
+          <p className="max-w-screen-md mx-auto text-base md:text-lg text-muted-foreground">
             Backed by Pakish Group (Est. 1999), Pakish.ORG offers professional
             training in Generative AI, Web Development, and Digital
             Freelancing. Our regular programs are fee-based. Eligible women and

@@ -7,6 +7,7 @@ import { FeaturesSection } from "@/components/layout/sections/features";
 import { FooterSection } from "@/components/layout/sections/footer";
 import { GlimpsesSection } from "@/components/layout/sections/glimpses";
 import { HeroSection } from "@/components/layout/sections/hero";
+import { TechTrustSection } from "@/components/layout/sections/tech-trust";
 import { LearningOptionsSection } from "@/components/layout/sections/learning-options";
 import { PathwaysSection } from "@/components/layout/sections/pathways";
 import { PricingSection } from "@/components/layout/sections/pricing";
@@ -34,7 +35,12 @@ export const metadata = createPageMetadata({
 export default function Home() {
   return (
     <>
-      <HeroSection />
+      <section className="flex min-h-[100dvh] flex-col pt-20 pb-2 md:pt-24 md:pb-4">
+        <div className="flex flex-1 flex-col justify-center min-h-0">
+          <HeroSection />
+        </div>
+        <TechTrustSection />
+      </section>
       <SponsorsSection />
       <BenefitsSection />
       <FeaturesSection />
