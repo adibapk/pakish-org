@@ -35,12 +35,8 @@ export const metadata = createPageMetadata({
 export default function Home() {
   return (
     <>
-      <section className="flex min-h-[100dvh] flex-col pt-20 pb-2 md:pt-24 md:pb-4">
-        <div className="flex flex-1 flex-col justify-center min-h-0">
-          <HeroSection />
-        </div>
-        <TechTrustSection />
-      </section>
+      <HeroSection />
+      <TechTrustSection />
       <SponsorsSection />
       <BenefitsSection />
       <FeaturesSection />

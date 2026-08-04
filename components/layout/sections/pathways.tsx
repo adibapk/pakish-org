@@ -16,11 +16,11 @@ import Link from "next/link";
 
 export const PathwaysSection = () => {
   return (
-    <section id="pathways" className="container py-24 sm:py-32">
+    <section id="pathways" className="container py-16 sm:py-24">
       <div className="mx-auto max-w-3xl text-center">
-        <h2 className="mb-2 text-lg tracking-wider text-primary">
+        <p className="mb-2 text-lg tracking-wider text-primary">
           Financial Independence
-        </h2>
+        </p>
         <h2 className="mb-4 text-3xl font-bold md:text-4xl">
           Your Path from Training to Remote Income
         </h2>
@@ -36,7 +36,10 @@ export const PathwaysSection = () => {
           const track = getTrackById(stage.trackId);
 
           return (
-            <Card key={stage.step} className="relative overflow-hidden">
+            <Card
+              key={stage.step}
+              className="relative overflow-hidden transition-shadow hover:shadow-md"
+            >
               <CardHeader>
                 <div className="mb-3 flex items-center justify-between">
                   <Badge variant="outline">{stage.timeline}</Badge>

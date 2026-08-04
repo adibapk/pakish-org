@@ -15,11 +15,11 @@ import Link from "next/link";
 
 export const CurriculumSection = () => {
   return (
-    <section id="curriculum" className="container py-24 sm:py-32">
+    <section id="curriculum" className="container py-16 sm:py-24">
       <div className="mx-auto max-w-3xl text-center">
-        <h2 className="mb-2 text-lg tracking-wider text-primary">
+        <p className="mb-2 text-lg tracking-wider text-primary">
           AI &amp; IT Skills Curriculum
-        </h2>
+        </p>
         <h2 className="mb-4 text-3xl font-bold md:text-4xl">
           Three Pathways to Remote Tech Careers
         </h2>
@@ -32,7 +32,10 @@ export const CurriculumSection = () => {
 
       <div className="mt-14 grid gap-8 lg:grid-cols-3">
         {curriculumTracks.map((track) => (
-          <Card key={track.id} className="flex flex-col border-secondary">
+          <Card
+            key={track.id}
+            className="flex flex-col border-secondary transition-shadow hover:shadow-md"
+          >
             <CardHeader>
               <div className="mb-3 flex items-center justify-between gap-2">
                 <Badge variant="outline">{track.duration}</Badge>

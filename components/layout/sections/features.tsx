@@ -49,44 +49,46 @@ const featureList: FeaturesProps[] = [
 
 export const FeaturesSection = () => {
   return (
-    <section id="features" className="container py-24 sm:py-32">
-      <h2 className="text-lg text-primary text-center mb-2 tracking-wider">
-        Why Pakish.ORG
-      </h2>
+    <section id="features" className="w-full bg-muted/30 py-16 sm:py-24">
+      <div className="container">
+        <p className="text-lg text-primary text-center mb-2 tracking-wider">
+          Why Pakish.ORG
+        </p>
 
-      <h2 className="text-3xl md:text-4xl text-center font-bold mb-4">
-        Built for Women Entering Tech
-      </h2>
+        <h2 className="text-3xl md:text-4xl text-center font-bold mb-4">
+          Built for Women Entering Tech
+        </h2>
 
-      <h3 className="md:w-2/3 mx-auto text-xl text-center text-muted-foreground mb-8">
-        A family-led initiative combining decades of software expertise with a
-        mission to close Pakistan&apos;s tech gender gap through practical,
-        career-ready training.
-      </h3>
+        <p className="md:w-2/3 mx-auto text-xl text-center text-muted-foreground mb-8">
+          A family-led initiative combining decades of software expertise with
+          a mission to close Pakistan&apos;s tech gender gap through
+          practical, career-ready training.
+        </p>
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {featureList.map(({ icon, title, description }) => (
-          <div key={title}>
-            <Card className="h-full bg-background border-0 shadow-none">
-              <CardHeader className="flex justify-center items-center">
-                <div className="bg-primary/20 p-2 rounded-full ring-8 ring-primary/10 mb-4">
-                  <Icon
-                    name={icon as keyof typeof icons}
-                    size={24}
-                    color="hsl(var(--primary))"
-                    className="text-primary"
-                  />
-                </div>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {featureList.map(({ icon, title, description }) => (
+            <div key={title}>
+              <Card className="h-full bg-background border-0 shadow-none transition-shadow hover:shadow-md">
+                <CardHeader className="flex justify-center items-center">
+                  <div className="bg-primary/20 p-2 rounded-full ring-8 ring-primary/10 mb-4">
+                    <Icon
+                      name={icon as keyof typeof icons}
+                      size={24}
+                      color="hsl(var(--primary))"
+                      className="text-primary"
+                    />
+                  </div>
 
-                <CardTitle>{title}</CardTitle>
-              </CardHeader>
+                  <CardTitle>{title}</CardTitle>
+                </CardHeader>
 
-              <CardContent className="text-muted-foreground text-center">
-                {description}
-              </CardContent>
-            </Card>
-          </div>
-        ))}
+                <CardContent className="text-muted-foreground text-center">
+                  {description}
+                </CardContent>
+              </Card>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

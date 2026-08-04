@@ -9,26 +9,27 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { curriculumTracks } from "@/lib/curriculum-data";
+import { cn } from "@/lib/utils";
 import { Check } from "lucide-react";
 import Link from "next/link";
 
 export const PricingSection = () => {
   return (
-    <section id="courses" className="container py-24 sm:py-32">
-      <h2 className="text-lg text-primary text-center mb-2 tracking-wider">
+    <section id="courses" className="container py-16 sm:py-24">
+      <p className="text-lg text-primary text-center mb-2 tracking-wider">
         Courses
-      </h2>
+      </p>
 
       <h2 className="text-3xl md:text-4xl text-center font-bold mb-4">
         Training Programs
       </h2>
 
-      <h3 className="md:w-2/3 mx-auto text-xl text-center text-muted-foreground pb-8">
+      <p className="md:w-2/3 mx-auto text-xl text-center text-muted-foreground pb-8">
         Structured professional training programs in IT, AI, and freelancing —
         from quick remote income skills to full development careers. Available
         in-house at our Gulshan-e-Iqbal, Karachi &amp; Lodhran campuses or live
         online via Zoom and Google Meet.
-      </h3>
+      </p>
 
       <div className="mx-auto mb-10 max-w-3xl rounded-xl border border-primary/20 bg-primary/5 px-4 py-5 text-center text-sm leading-relaxed md:px-6 md:text-base">
         <p className="font-semibold text-foreground">Fee &amp; Subsidy Policy</p>
@@ -48,11 +49,11 @@ export const PricingSection = () => {
           return (
             <Card
               key={track.id}
-              className={
-                isPopular
-                  ? "drop-shadow-xl shadow-black/10 dark:shadow-white/10 border-[1.5px] border-primary lg:scale-[1.1]"
-                  : ""
-              }
+              className={cn(
+                "transition-shadow hover:shadow-md",
+                isPopular &&
+                  "drop-shadow-xl shadow-black/10 dark:shadow-white/10 border-[1.5px] border-primary lg:scale-[1.1]"
+              )}
             >
               <CardHeader>
                 <div className="flex items-center justify-between gap-2 pb-2">

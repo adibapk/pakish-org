@@ -34,9 +34,9 @@ const glimpseImages: GlimpseImage[] = [
 
 export const GlimpsesSection = () => {
   return (
-    <section id="glimpses" className="container py-24 sm:py-32">
+    <section id="glimpses" className="container py-16 sm:py-24">
       <div className="text-center mb-10">
-        <h2 className="text-lg text-primary mb-2 tracking-wider">Gallery</h2>
+        <p className="text-lg text-primary mb-2 tracking-wider">Gallery</p>
         <h2 className="text-3xl md:text-4xl font-bold">Pakish Glimpses</h2>
         <p className="md:w-2/3 mx-auto text-xl text-muted-foreground mt-4">
           A look inside our dedicated workspaces and empowering community.
@@ -47,7 +47,7 @@ export const GlimpsesSection = () => {
         {glimpseImages.map(({ src, alt }) => (
           <div
             key={src}
-            className="relative aspect-[4/3] overflow-hidden rounded-xl border border-secondary bg-muted/40 shadow-sm"
+            className="relative aspect-[4/3] overflow-hidden rounded-xl border border-secondary bg-muted/40 shadow-sm transition-shadow hover:shadow-md"
           >
             <Image
               src={src}

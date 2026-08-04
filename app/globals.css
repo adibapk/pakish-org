@@ -190,3 +190,79 @@ html {
   display: flex;
   overflow: hidden;
 }
+
+/* Hero learning-visual animations (see components/layout/sections/hero-visual.tsx) */
+@keyframes hero-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.animate-hero-float {
+  animation: hero-float 6s ease-in-out infinite;
+}
+
+@keyframes hero-float-alt {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(6px);
+  }
+}
+
+.animate-hero-float-alt {
+  animation: hero-float-alt 7s ease-in-out infinite;
+}
+
+@keyframes hero-codeline {
+  0%,
+  100% {
+    width: 55%;
+  }
+  50% {
+    width: 78%;
+  }
+}
+
+.animate-hero-codeline {
+  animation: hero-codeline 5s ease-in-out infinite;
+}
+
+@keyframes hero-dash {
+  to {
+    stroke-dashoffset: -22;
+  }
+}
+
+.animate-hero-dash {
+  animation: hero-dash 4s linear infinite;
+}
+
+/* Respect the user's motion preference across all decorative animation */
+@media (prefers-reduced-motion: reduce) {
+  .animate-hero-float,
+  .animate-hero-float-alt,
+  .animate-hero-codeline,
+  .animate-hero-dash,
+  .animate-marquee-left,
+  .animate-marquee-up,
+  .animate-ping,
+  .animate-pulse {
+    animation: none !important;
+  }
+}
+
+/* Hide scrollbars on the mobile trust rail while keeping it scrollable/accessible */
+.scrollbar-none {
+  scrollbar-width: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}

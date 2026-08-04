@@ -1,58 +1,83 @@
-"use client";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Heart } from "lucide-react";
+import { HeroVisual } from "@/components/layout/sections/hero-visual";
+import { ArrowRight, Heart, MapPin, Video } from "lucide-react";
 import Link from "next/link";
+
+const heroIndicators = [
+  { icon: MapPin, label: "Karachi Campus" },
+  { icon: MapPin, label: "Lodhran Campus" },
+  { icon: Video, label: "Live Online" },
+];
 
 export const HeroSection = () => {
   return (
-    <section className="container w-full">
-      <div className="grid place-items-center lg:max-w-screen-xl gap-4 mx-auto py-6 md:py-8 lg:py-10">
-        <div className="text-center space-y-4 md:space-y-5 lg:space-y-6">
-          <Badge variant="outline" className="text-sm py-2 gap-2">
+    <section className="container w-full pt-8 pb-8 sm:pt-10 md:pt-12 md:pb-10">
+      <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
+        <div className="text-center lg:text-left">
+          <Badge variant="outline" className="gap-2 py-2 text-sm">
             <Badge className="text-xs">Est. 1999</Badge>
             Backed by Pakish Group
           </Badge>
 
-          <div className="max-w-screen-lg mx-auto text-center text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
-            <h1>
-              Empowering Women in Tech –{" "}
-              <span className="text-transparent bg-gradient-to-r from-primary to-primary/70 bg-clip-text">
-                Professional IT &amp; AI Training with Need-Based Support
-              </span>
-            </h1>
-          </div>
+          <h1 className="mt-5 text-3xl font-bold leading-tight sm:text-4xl md:text-5xl lg:text-[3.25rem]">
+            Empowering Women in Tech —{" "}
+            <span className="bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+              Professional IT &amp; AI Training
+            </span>
+          </h1>
 
-          <p className="max-w-screen-md mx-auto text-base md:text-lg text-muted-foreground">
-            Backed by Pakish Group (Est. 1999), Pakish.ORG offers professional
-            training in Generative AI, Web Development, and Digital
-            Freelancing. Our regular programs are fee-based. Eligible women and
-            students who cannot afford full fees may apply for limited free or
-            subsidized seats under the Fi Sabilillah quota. Build your
-            Work-From-Home (WFH) career with expert mentors at our Gulshan-e-Iqbal,
-            Karachi and Lodhran campuses, or online via Zoom.
+          <p className="mx-auto mt-5 max-w-xl text-base text-muted-foreground md:text-lg lg:mx-0">
+            Hands-on training in Generative AI, Web Development, and Digital
+            Freelancing — with expert mentors at our Karachi and Lodhran
+            campuses, or live online.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button asChild className="w-full sm:w-auto font-bold group/arrow">
+          <p className="mx-auto mt-3 max-w-xl text-sm text-muted-foreground/80 lg:mx-0">
+            Regular programs are fee-based. A limited number of free or
+            subsidized seats are reserved for eligible learners under the Fi
+            Sabilillah quota.
+          </p>
+
+          <div className="mt-7 flex flex-col items-center gap-3 sm:flex-row lg:justify-start">
+            <Button
+              asChild
+              size="lg"
+              className="w-full font-bold group/arrow sm:w-auto"
+            >
               <Link href="#courses">
                 Explore Programs
-                <ArrowRight className="size-5 ml-2 group-hover/arrow:translate-x-1 transition-transform" />
+                <ArrowRight className="ml-2 size-5 transition-transform group-hover/arrow:translate-x-1" />
               </Link>
             </Button>
 
             <Button
               asChild
+              size="lg"
               variant="secondary"
-              className="w-full sm:w-auto font-bold"
+              className="w-full font-bold sm:w-auto"
             >
               <Link href="#contact">
-                <Heart className="size-5 mr-2" />
-                Apply / Ask About Eligibility
+                <Heart className="mr-2 size-5" />
+                Apply / Check Eligibility
               </Link>
             </Button>
           </div>
+
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-2 lg:justify-start">
+            {heroIndicators.map(({ icon: Icon, label }) => (
+              <span
+                key={label}
+                className="inline-flex items-center gap-1.5 rounded-full border border-border bg-muted/50 px-3 py-1.5 text-xs font-medium text-muted-foreground"
+              >
+                <Icon className="size-3.5 text-primary" />
+                {label}
+              </span>
+            ))}
+          </div>
         </div>
+
+        <HeroVisual />
       </div>
     </section>
   );

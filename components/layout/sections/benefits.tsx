@@ -37,10 +37,10 @@ const benefitList: BenefitsProps[] = [
 
 export const BenefitsSection = () => {
   return (
-    <section id="benefits" className="container py-24 sm:py-32">
+    <section id="benefits" className="container py-16 sm:py-24">
       <div className="grid lg:grid-cols-2 place-items-center lg:gap-24">
         <div>
-          <h2 className="text-lg text-primary mb-2 tracking-wider">About</h2>
+          <p className="text-lg text-primary mb-2 tracking-wider">About</p>
 
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             Our Mission (Fi Sabilillah Initiative)
@@ -57,7 +57,7 @@ export const BenefitsSection = () => {
           {benefitList.map(({ icon, title, description }, index) => (
             <Card
               key={title}
-              className="bg-muted/50 dark:bg-card hover:bg-background transition-all delay-75 group/number"
+              className="bg-muted/50 dark:bg-card hover:bg-background hover:shadow-md transition-all delay-75 group/number"
             >
               <CardHeader>
                 <div className="flex justify-between">

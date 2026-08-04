@@ -24,7 +24,7 @@ const socialLinks = [
 
 export const FooterSection = () => {
   return (
-    <footer id="footer" className="container py-24 sm:py-32">
+    <footer id="footer" className="container py-16 sm:py-20">
       <div className="p-10 bg-card border border-secondary rounded-2xl">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-12 gap-y-8">
           <div className="sm:col-span-2">

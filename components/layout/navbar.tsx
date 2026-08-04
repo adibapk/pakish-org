@@ -92,7 +92,7 @@ export const Navbar = () => {
   };
 
   return (
-    <header className="relative z-50 w-[90%] md:w-[70%] lg:w-[75%] lg:max-w-screen-xl top-5 mx-auto sticky border border-secondary rounded-2xl bg-card shadow-inner">
+    <header className="relative z-50 w-[90%] md:w-[70%] xl:w-[75%] xl:max-w-screen-xl top-5 mx-auto sticky border border-secondary rounded-2xl bg-card shadow-inner">
       <div className="flex items-center justify-between gap-2 p-2">
         <BrandLogo
           href="/"
@@ -100,7 +100,7 @@ export const Navbar = () => {
           wordmarkClassName="hidden sm:inline"
         />
 
-        <div className="flex items-center lg:hidden">
+        <div className="flex items-center xl:hidden">
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" aria-label="Open menu">
@@ -163,7 +163,7 @@ export const Navbar = () => {
           </Sheet>
         </div>
 
-        <NavigationMenu className="hidden lg:flex mx-auto max-w-fit flex-none static">
+        <NavigationMenu className="hidden xl:flex mx-auto max-w-fit flex-none static">
           <NavigationMenuList className="flex-wrap justify-center gap-1">
             <NavigationMenuItem>
               <NavigationMenuTrigger className="bg-card text-base">
@@ -239,7 +239,7 @@ export const Navbar = () => {
           </NavigationMenuList>
         </NavigationMenu>
 
-        <div className="hidden lg:flex shrink-0">
+        <div className="hidden xl:flex shrink-0">
           <ToggleTheme />
         </div>
       </div>
