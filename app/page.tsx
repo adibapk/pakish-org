@@ -11,7 +11,6 @@ import { TechTrustSection } from "@/components/layout/sections/tech-trust";
 import { LearningOptionsSection } from "@/components/layout/sections/learning-options";
 import { PathwaysSection } from "@/components/layout/sections/pathways";
 import { PricingSection } from "@/components/layout/sections/pricing";
-import { SponsorsSection } from "@/components/layout/sections/sponsors";
 import { TeamSection } from "@/components/layout/sections/team";
 import { TestimonialSection } from "@/components/layout/sections/testimonial";
 import { createPageMetadata } from "@/lib/seo";
@@ -37,7 +36,6 @@ export default function Home() {
     <>
       <HeroSection />
       <TechTrustSection />
-      <SponsorsSection />
       <BenefitsSection />
       <FeaturesSection />
       <CurriculumSection />
