@@ -75,10 +75,10 @@ export const FooterSection = () => {
           <div className="flex flex-col gap-2">
             <h3 className="font-bold text-lg">Contact</h3>
             <a
-              href="mailto:info@pakish.org"
+              href="mailto:admin@pakish.org"
               className="opacity-60 hover:opacity-100 transition-opacity"
             >
-              info@pakish.org
+              admin@pakish.org
             </a>
             <a
               href="https://wa.me/923008222456"
