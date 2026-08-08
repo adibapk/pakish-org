@@ -56,6 +56,7 @@ const campusLinks: CampusLinkProps[] = [
 ];
 
 const routeList: RouteProps[] = [
+  { href: "/admission", label: "Admission" },
   { href: "/insights", label: "Insights" },
   { href: "#courses", label: "Courses" },
   { href: "#benefits", label: "Mission" },
@@ -240,7 +241,12 @@ export const Navbar = () => {
         </NavigationMenu>
 
         <div className="hidden xl:flex shrink-0">
-          <ToggleTheme />
+          <div className="flex items-center gap-2">
+            <Button asChild size="sm">
+              <Link href="/admission">Apply</Link>
+            </Button>
+            <ToggleTheme />
+          </div>
         </div>
       </div>
     </header>

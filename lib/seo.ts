@@ -13,6 +13,7 @@ export const DEFAULT_OG_IMAGE = "/hero-image-light.jpeg";
 
 export const STATIC_ROUTES = [
   { path: "/", changeFrequency: "weekly" as const, priority: 1 },
+  { path: "/admission", changeFrequency: "monthly" as const, priority: 0.95 },
   { path: "/insights", changeFrequency: "weekly" as const, priority: 0.9 },
   { path: "/campus/korangi", changeFrequency: "monthly" as const, priority: 0.8 },
   { path: "/campus/lodhran", changeFrequency: "monthly" as const, priority: 0.8 },

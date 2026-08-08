@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 const quickLinks = [
+  { href: "/admission", label: "Admission" },
   { href: "/insights", label: "Insights" },
   { href: "/#benefits", label: "Mission" },
   { href: "/#courses", label: "Courses" },

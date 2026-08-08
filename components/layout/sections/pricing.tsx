@@ -90,10 +90,10 @@ export const PricingSection = () => {
                   variant={isPopular ? "default" : "secondary"}
                   className="w-full"
                 >
-                  <Link href="#contact">Request Fee Details</Link>
+                  <Link href="/admission?type=fee">Request Fee Details</Link>
                 </Button>
                 <Button asChild variant="outline" className="w-full">
-                  <Link href="#contact">Check Subsidy Eligibility</Link>
+                  <Link href="/admission?type=subsidy">Check Subsidy Eligibility</Link>
                 </Button>
               </CardFooter>
             </Card>
