@@ -52,7 +52,7 @@ export const ContactSection = () => {
     const { firstName, lastName, email, subject, message } = values;
 
     const body = `Hello, I am ${firstName} ${lastName}.\n\nEmail: ${email}\n\n${message}`;
-    const mailToLink = `mailto:info@pakish.org?subject=${encodeURIComponent(
+    const mailToLink = `mailto:admin@pakish.org?subject=${encodeURIComponent(
       subject
     )}&body=${encodeURIComponent(body)}`;
 
@@ -116,7 +116,7 @@ export const ContactSection = () => {
                 <div className="font-bold">Mail US</div>
               </div>
 
-              <div>info@pakish.org</div>
+              <div>admin@pakish.org</div>
             </div>
 
             <div>

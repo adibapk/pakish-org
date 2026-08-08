@@ -52,6 +52,11 @@ const formSchema = z
     currentSkills: z.string().min(10, "Please tell us what the learner already knows."),
     interests: z.string().min(10, "Please describe current interests or goals."),
     socialProfile: z.string().min(3, "Please add a Facebook or public social profile link."),
+    computerType: z.string().min(2, "Please enter the computer or laptop type."),
+    processor: z.string().min(2, "Please enter the processor details."),
+    ram: z.string().min(1, "Please enter the RAM size."),
+    generation: z.string().min(1, "Please enter the computer generation."),
+    internetSpeed: z.string().min(2, "Please enter home internet speed or connection quality."),
     program: z.string().min(1, "Please choose a program."),
     learningMode: z.string().min(1, "Please choose a learning mode."),
     enrollmentType: z.enum(["fee", "subsidy"]),
@@ -127,6 +132,11 @@ export function AdmissionForm({ initialType }: AdmissionFormProps) {
       currentSkills: "",
       interests: "",
       socialProfile: "",
+      computerType: "",
+      processor: "",
+      ram: "",
+      generation: "",
+      internetSpeed: "",
       program: "",
       learningMode: "",
       enrollmentType: defaultType,
@@ -154,6 +164,11 @@ export function AdmissionForm({ initialType }: AdmissionFormProps) {
       `Current interests/goals: ${values.interests}`,
       `Current skills/experience: ${values.currentSkills}`,
       `Facebook/social profile: ${values.socialProfile}`,
+      `Home computer/laptop: ${values.computerType}`,
+      `Processor: ${values.processor}`,
+      `RAM: ${values.ram}`,
+      `Generation: ${values.generation}`,
+      `Home internet speed/quality: ${values.internetSpeed}`,
       `Program: ${values.program}`,
       `Learning mode: ${values.learningMode}`,
       `Admission type: ${enrollmentTypes[values.enrollmentType]}`,
@@ -184,7 +199,7 @@ export function AdmissionForm({ initialType }: AdmissionFormProps) {
       `Admission Request - ${enrollmentTypes[values.enrollmentType]}`
     );
     const body = encodeURIComponent(buildMessage(values));
-    window.location.href = `mailto:info@pakish.org?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:admin@pakish.org?subject=${subject}&body=${body}`;
   }
 
   return (
@@ -500,6 +515,98 @@ export function AdmissionForm({ initialType }: AdmissionFormProps) {
                     </FormItem>
                   )}
                 />
+
+                <div className="rounded-xl border border-secondary bg-background/70 p-4">
+                  <h3 className="font-semibold">Home computer and internet</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    This helps us understand whether the learner can practice at
+                    home and use tools like ChatGPT, Cursor, Zoom, and browser
+                    based course platforms.
+                  </p>
+
+                  <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                    <FormField
+                      control={form.control}
+                      name="computerType"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Computer / laptop at home</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="Desktop, laptop, shared family computer..."
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="processor"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Processor</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="Core i3, i5, i7, Ryzen, Apple M1..."
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+
+                  <div className="mt-4 grid gap-4 sm:grid-cols-3">
+                    <FormField
+                      control={form.control}
+                      name="ram"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>RAM</FormLabel>
+                          <FormControl>
+                            <Input placeholder="4GB, 8GB, 16GB..." {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="generation"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Generation</FormLabel>
+                          <FormControl>
+                            <Input placeholder="4th gen, 8th gen, M1..." {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="internetSpeed"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Home internet speed</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="10 Mbps, 20 Mbps, mobile data..."
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </div>
 
                 {isSubsidy ? (
                   <div className="grid gap-4 rounded-xl border border-primary/20 bg-primary/5 p-4">
