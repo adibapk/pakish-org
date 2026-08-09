@@ -37,11 +37,11 @@ const featureList: FeaturesProps[] = [
     icon: "Globe",
     title: "Global Freelancing",
     description:
-      "From Canva micro-tasks to Next.js development — programs tailored for international remote income.",
+      "From Canva service samples to Next.js applications — build skills relevant to international remote projects.",
   },
   {
     icon: "Shield",
-    title: "25-Year Legacy",
+    title: "Backed by Experience Since 1999",
     description:
       "Backed by Pakish Group, a software house established in 1999 with decades of real-world industry experience.",
   },

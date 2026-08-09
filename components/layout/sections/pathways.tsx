@@ -19,15 +19,15 @@ export const PathwaysSection = () => {
     <section id="pathways" className="container py-16 sm:py-24">
       <div className="mx-auto max-w-3xl text-center">
         <p className="mb-2 text-lg tracking-wider text-primary">
-          Financial Independence
+          Portfolio Progression
         </p>
         <h2 className="mb-4 text-3xl font-bold md:text-4xl">
-          Your Path from Training to Remote Income
+          Learn Skills, Build Proof, Then Approach Clients
         </h2>
         <p className="text-xl text-muted-foreground">
-          Pakish.ORG programs are built around real economic outcomes — helping
-          women move from professional training to self-sustaining work-from-home
-          careers in Pakistan&apos;s growing tech economy.
+          Training cannot guarantee income. It can give you a structured way to
+          practice, publish credible work, and approach opportunities with
+          stronger evidence of what you can deliver.
         </p>
       </div>
 
@@ -52,7 +52,7 @@ export const PathwaysSection = () => {
                   {stage.title}
                 </CardTitle>
                 <CardDescription className="text-base font-medium text-foreground">
-                  Typical range: {stage.income}
+                  Proof milestone: {stage.proof}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -79,7 +79,7 @@ export const PathwaysSection = () => {
 
       <div className="mt-12 rounded-2xl border border-secondary bg-card p-8 text-center">
         <h3 className="text-2xl font-bold">
-          Ready to start your financial independence journey?
+          Ready to choose a practical starting point?
         </h3>
         <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">
           Whether you need fee details, subsidized quota eligibility review,
@@ -89,13 +89,13 @@ export const PathwaysSection = () => {
         </p>
         <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <Button asChild size="lg">
-            <Link href="#contact">
-              Enroll Now
+            <Link href="/admission">
+              Apply for Admission
               <ArrowRight className="ml-2 size-4" />
             </Link>
           </Button>
           <Button asChild size="lg" variant="secondary">
-            <Link href="#contact">Get Free Career Counseling</Link>
+            <Link href="https://wa.me/923008222456">Ask on WhatsApp</Link>
           </Button>
         </div>
       </div>

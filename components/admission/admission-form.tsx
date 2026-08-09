@@ -25,10 +25,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { curriculumTracks, learningModes } from "@/lib/curriculum-data";
+import {
+  curriculumTracks,
+  getTrackById,
+  learningModes,
+  type CurriculumTrackId,
+} from "@/lib/curriculum-data";
+import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CheckCircle2, Mail, MessageCircle, ShieldCheck } from "lucide-react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 
 const enrollmentTypes = {
@@ -114,11 +120,24 @@ type AdmissionFormValues = z.infer<typeof formSchema>;
 
 interface AdmissionFormProps {
   initialType?: string;
+  initialProgram?: string;
+  initialCampus?: string;
 }
 
-export function AdmissionForm({ initialType }: AdmissionFormProps) {
+export function AdmissionForm({
+  initialType,
+  initialProgram,
+  initialCampus,
+}: AdmissionFormProps) {
   const defaultType: EnrollmentType =
     initialType === "subsidy" ? "subsidy" : "fee";
+  const defaultProgram = getTrackById(initialProgram as CurriculumTrackId)?.enrollmentValue ?? "";
+  const defaultLearningMode =
+    initialCampus === "gulshan-e-iqbal"
+      ? learningModes[0].title
+      : initialCampus === "lodhran"
+        ? learningModes[1].title
+        : "";
 
   const form = useForm<AdmissionFormValues>({
     resolver: zodResolver(formSchema),
@@ -137,8 +156,8 @@ export function AdmissionForm({ initialType }: AdmissionFormProps) {
       ram: "",
       generation: "",
       internetSpeed: "",
-      program: "",
-      learningMode: "",
+      program: defaultProgram,
+      learningMode: defaultLearningMode,
       enrollmentType: defaultType,
       needSummary: "",
       familySupport: "",
@@ -148,7 +167,10 @@ export function AdmissionForm({ initialType }: AdmissionFormProps) {
     },
   });
 
-  const selectedType = form.watch("enrollmentType");
+  const selectedType = useWatch({
+    control: form.control,
+    name: "enrollmentType",
+  });
   const isSubsidy = selectedType === "subsidy";
 
   function buildMessage(values: AdmissionFormValues) {
@@ -191,7 +213,7 @@ export function AdmissionForm({ initialType }: AdmissionFormProps) {
 
   function sendWhatsApp(values: AdmissionFormValues) {
     const text = encodeURIComponent(buildMessage(values));
-    window.location.href = `https://wa.me/923008222456?text=${text}`;
+    window.location.assign(`https://wa.me/923008222456?text=${text}`);
   }
 
   function sendEmail(values: AdmissionFormValues) {
@@ -199,7 +221,9 @@ export function AdmissionForm({ initialType }: AdmissionFormProps) {
       `Admission Request - ${enrollmentTypes[values.enrollmentType]}`
     );
     const body = encodeURIComponent(buildMessage(values));
-    window.location.href = `mailto:admin@pakish.org?subject=${subject}&body=${body}`;
+    window.location.assign(
+      `mailto:admin@pakish.org?subject=${subject}&body=${body}`,
+    );
   }
 
   return (
@@ -211,12 +235,12 @@ export function AdmissionForm({ initialType }: AdmissionFormProps) {
               Admission
             </p>
             <h1 className="text-3xl font-bold md:text-5xl">
-              Admission profile for IT, AI, and freelancing training
+              Apply for IT, AI, and Freelancing Courses
             </h1>
             <p className="mt-4 text-lg text-muted-foreground">
-              Use one simple link for regular paid admission or Fi Sabilillah
-              subsidy review. Paid learners share their interests and current
-              skill level; subsidy applicants also provide donor-review details.
+              Choose regular paid admission or request a Fi Sabilillah subsidy
+              review. Tell us your goals and current skill level so the team can
+              recommend the right program and learning mode.
             </p>
           </div>
 
@@ -762,6 +786,16 @@ export function AdmissionForm({ initialType }: AdmissionFormProps) {
                     Send by Email
                   </Button>
                 </div>
+                <p className="text-xs leading-relaxed text-muted-foreground">
+                  When you continue, the details you entered are opened in
+                  WhatsApp or your email app for you to send. Subsidy details are
+                  shared with a trusted donor only when you select the subsidy
+                  option and give the required consent. Read our{" "}
+                  <Link href="/privacy" className="font-medium text-primary hover:underline">
+                    privacy notice
+                  </Link>
+                  .
+                </p>
               </form>
             </Form>
           </CardContent>

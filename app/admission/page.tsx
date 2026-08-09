@@ -1,12 +1,14 @@
 import { AdmissionForm } from "@/components/admission/admission-form";
 import { FooterSection } from "@/components/layout/sections/footer";
 import { createPageMetadata } from "@/lib/seo";
+import { ogImagePath } from "@/lib/og";
 
 export const metadata = createPageMetadata({
-  title: "Admission Form",
+  title: "IT & AI Course Admission for Women in Pakistan",
   description:
-    "Apply for Pakish.ORG IT, AI, and freelancing training. Use one short admission form for regular fee-based enrollment or Fi Sabilillah subsidy review.",
+    "Apply for Pakish.ORG IT, AI and freelancing courses for women in Pakistan. Choose regular fee-based admission or request Fi Sabilillah support review.",
   path: "/admission",
+  image: ogImagePath("admission"),
   keywords: [
     "Pakish admission form",
     "IT course admission Pakistan",
@@ -17,15 +19,23 @@ export const metadata = createPageMetadata({
 });
 
 interface AdmissionPageProps {
-  searchParams?: {
+  searchParams?: Promise<{
     type?: string;
-  };
+    program?: string;
+    campus?: string;
+  }>;
 }
 
-export default function AdmissionPage({ searchParams }: AdmissionPageProps) {
+export default async function AdmissionPage({ searchParams }: AdmissionPageProps) {
+  const resolvedSearchParams = await searchParams;
+
   return (
     <>
-      <AdmissionForm initialType={searchParams?.type} />
+      <AdmissionForm
+        initialType={resolvedSearchParams?.type}
+        initialProgram={resolvedSearchParams?.program}
+        initialCampus={resolvedSearchParams?.campus}
+      />
       <FooterSection />
     </>
   );

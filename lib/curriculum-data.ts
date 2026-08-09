@@ -9,6 +9,8 @@ export interface CurriculumTrack {
   id: CurriculumTrackId;
   title: string;
   duration: string;
+  isoDuration: string;
+  level: string;
   tagline: string;
   outcome: string;
   wfhFocus: string;
@@ -29,7 +31,7 @@ export interface IndependenceStage {
   step: string;
   title: string;
   timeline: string;
-  income: string;
+  proof: string;
   description: string;
   trackId: CurriculumTrackId;
 }
@@ -39,14 +41,16 @@ export const curriculumTracks: CurriculumTrack[] = [
     id: "fast-track",
     title: "1-Month Fast-Track",
     duration: "4 weeks",
-    tagline: "Launch your first remote income stream",
+    isoDuration: "P4W",
+    level: "Beginner",
+    tagline: "Build the foundations for your first remote project",
     outcome:
-      "Earn through micro-tasks, Canva design gigs, and AI-assisted content work while building freelancing confidence.",
+      "Create a starter portfolio with Canva, AI-assisted content, client communication, and safe freelancing workflows.",
     wfhFocus:
       "Set up a home workspace, create platform profiles, and land your first paid micro-projects from Pakistan.",
     enrollmentValue: "1-Month Fast-Track",
     placementFocus:
-      "Entry-level remote gigs on Fiverr, Upwork, and direct outreach to local businesses.",
+      "Starter portfolio samples suited to marketplace profiles and focused outreach to local businesses.",
     modules: [
       {
         title: "Freelancing Foundations",
@@ -72,14 +76,16 @@ export const curriculumTracks: CurriculumTrack[] = [
     id: "professional",
     title: "3-Month Professional",
     duration: "12 weeks",
-    tagline: "Build recurring remote client income",
+    isoDuration: "P12W",
+    level: "Beginner to intermediate",
+    tagline: "Build repeatable digital-service skills",
     outcome:
-      "Deliver WordPress sites, social media management, SEO audits, and AI-powered marketing workflows for monthly retainers.",
+      "Build WordPress sites, social media plans, basic SEO audits, and AI-assisted marketing workflows for a client-ready portfolio.",
     wfhFocus:
       "Work with international SMB clients on recurring contracts — ideal for women balancing family and flexible hours.",
-    enrollmentValue: "3-Month Advanced",
+    enrollmentValue: "3-Month Professional",
     placementFocus:
-      "Remote digital marketer, SMM specialist, WordPress freelancer, and agency support roles.",
+      "Portfolio practice for digital marketing, SMM, WordPress, and agency-support opportunities.",
     modules: [
       {
         title: "Web & Marketing Stack",
@@ -105,14 +111,16 @@ export const curriculumTracks: CurriculumTrack[] = [
     id: "mastery",
     title: "6-Month Mastery",
     duration: "24 weeks",
-    tagline: "Master high-ticket global tech freelancing",
+    isoDuration: "P24W",
+    level: "Intermediate",
+    tagline: "Build production-ready web and AI projects",
     outcome:
-      "Ship production Next.js applications with Generative AI features — competing for international developer contracts.",
+      "Ship portfolio-ready Next.js applications with APIs, version control, deployment, and responsible Generative AI features.",
     wfhFocus:
       "Target global clients needing modern web apps, API integrations, and AI features — the highest remote earning tier.",
-    enrollmentValue: "6-Month Pro Developer",
+    enrollmentValue: "6-Month Mastery",
     placementFocus:
-      "Junior web developer, AI integration specialist, and product-focused remote engineering roles.",
+      "Deployed portfolio projects for junior web, AI integration, and product-focused opportunities.",
     modules: [
       {
         title: "Modern Web Development",
@@ -142,7 +150,7 @@ export const learningModes: LearningMode[] = [
     title: "Karachi Campus — Gulshan-e-Iqbal",
     description:
       "In-house training at our Gulshan-e-Iqbal campus on Main University Road with mentors, computers, high-speed internet, and a supportive all-women learning environment.",
-    href: "/campus/korangi",
+    href: "/campus/gulshan-e-iqbal",
     cta: "Visit Karachi Campus",
   },
   {
@@ -165,29 +173,29 @@ export const learningModes: LearningMode[] = [
 export const independenceStages: IndependenceStage[] = [
   {
     step: "01",
-    title: "First Remote Income",
+    title: "Starter Service Portfolio",
     timeline: "Month 1",
-    income: "$50–$200 / project",
+    proof: "Starter service portfolio",
     description:
-      "Complete the Fast-Track path to land micro-gigs, build reviews, and prove you can deliver work from home.",
+      "Practice a focused service, create samples, and learn how to present your work clearly to a prospective client.",
     trackId: "fast-track",
   },
   {
     step: "02",
-    title: "Recurring Client Revenue",
+    title: "Client-Ready Project Workflow",
     timeline: "Month 3",
-    income: "$200–$600 / month",
+    proof: "Client-ready project workflow",
     description:
-      "The Professional track prepares you for monthly retainers in SMM, WordPress, and SEO — stable WFH income.",
+      "Complete a larger WordPress or marketing project, document the process, and practice scoping and client communication.",
     trackId: "professional",
   },
   {
     step: "03",
-    title: "High-Ticket Global Contracts",
+    title: "Deployed Technical Portfolio",
     timeline: "Month 6",
-    income: "$500–$2,000+ / project",
+    proof: "Deployed technical portfolio",
     description:
-      "Mastery graduates compete for international development and AI integration projects with premium rates.",
+      "Deploy a modern web application, demonstrate version control and APIs, and explain where AI adds responsible user value.",
     trackId: "mastery",
   },
 ];

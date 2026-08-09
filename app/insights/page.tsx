@@ -6,12 +6,20 @@ import {
 } from "@/lib/insights/site";
 import { getAllInsights } from "@/lib/insights/utils";
 import { createPageMetadata } from "@/lib/seo";
+import { ogImagePath } from "@/lib/og";
 
 export const metadata = createPageMetadata({
   title: INSIGHTS_INDEX_TITLE,
   description: INSIGHTS_INDEX_DESCRIPTION,
   path: "/insights",
+  image: ogImagePath("insights"),
   absoluteTitle: true,
+  keywords: [
+    "women in tech Pakistan",
+    "Pakistani women in technology",
+    "AI careers for women Pakistan",
+    "freelancing guides Pakistan",
+  ],
 });
 
 export default function InsightsPage() {

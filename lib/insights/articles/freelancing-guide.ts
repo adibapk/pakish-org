@@ -53,25 +53,25 @@ export const freelancingGuideArticle: InsightArticle = {
     {
       type: "p",
       content:
-        "Ideal for quick income through micro-tasks and entry-level gigs: freelancing fundamentals, Canva for social graphics, and ChatGPT for productivity (captions, emails, research drafts). Pakish.ORG's [1-Month Fast-Track program](/#courses) is designed for this entry point.",
+        "Ideal for building starter service samples: freelancing fundamentals, Canva for social graphics, and ChatGPT for productivity (captions, emails, research drafts). Pakish.ORG's [1-Month Fast-Track program](/#courses) is designed for this entry point.",
     },
     {
       type: "h3",
-      content: "Advanced path (about 3 months)",
+      content: "Professional path (about 3 months)",
     },
     {
       type: "p",
       content:
-        "Build toward recurring client work: WordPress site setup, social media management (SMM), basic SEO, and prompt engineering for marketing teams. These skills command higher rates and longer contracts. See our [3-Month Advanced track](/#courses).",
+        "Build toward more complete client work: WordPress site setup, social media management (SMM), basic SEO, and prompt engineering for marketing teams. See our [3-Month Professional track](/#courses).",
     },
     {
       type: "h3",
-      content: "Pro Developer path (about 6 months)",
+      content: "Mastery path (about 6 months)",
     },
     {
       type: "p",
       content:
-        "For higher-ticket global projects: Next.js, API integration, and AI features in web apps. This path suits learners who enjoy logic and want rates comparable to international junior developers. Explore the [6-Month Pro Developer program](/#courses).",
+        "For more technical portfolio projects: Next.js, API integration, deployment, and responsible AI features in web apps. This path suits learners who enjoy logic and want to demonstrate junior product-development skills. Explore the [6-Month Mastery program](/#courses).",
     },
     {
       type: "h2",
@@ -128,21 +128,21 @@ export const freelancingGuideArticle: InsightArticle = {
     {
       type: "p",
       content:
-        "Your first 3–5 clients are for reputation, not maximum profit. Price slightly below market to win reviews, then raise rates every 3–6 months as your portfolio grows. Track hours honestly — if a \"simple\" logo takes eight hours, your effective hourly rate is too low and you need better scoping or templates.",
+        "For an early project, calculate the work involved, clarify the deliverables, and price the scope rather than copying an unsupported online rate. Track hours honestly so you can improve estimates, templates, and boundaries after every project.",
     },
     {
       type: "p",
       content:
-        "Common starter ranges (USD, 2026 benchmarks — adjust by niche and client country):",
+        "Before quoting a project, account for:",
     },
     {
       type: "ul",
       items: [
-        "Canva social posts: $5–15 per post or $150–400/month retainers",
-        "WordPress landing page: $150–500 depending on complexity",
-        "SMM management: $200–600/month for small businesses",
-        "Basic SEO audits: $100–300 per site",
-        "Web development (Next.js): $500–2,000+ for small business sites",
+        "The exact deliverables, revision limit, and final file formats",
+        "Research, meetings, content preparation, testing, and handover time",
+        "Platform fees, payment-processing costs, and currency conversion",
+        "The client's market and the business value of the finished work",
+        "A written change process for requests outside the agreed scope",
       ],
     },
     {
@@ -186,7 +186,7 @@ export const freelancingGuideArticle: InsightArticle = {
     {
       type: "p",
       content:
-        "Self-teaching works for some, but structured programs reduce wasted months. [Pakish.ORG](/) offers fee-based programs with limited need-based free or subsidized seats backed by Pakish Group (Est. 1999) through the Fi Sabilillah Initiative — at our [Karachi Gulshan-e-Iqbal campus](/campus/korangi), [Lodhran campus](/campus/lodhran), and online via Zoom. You learn alongside peers, receive mentor feedback, and connect to a community that understands Pakistani women's specific challenges.",
+        "Self-teaching works for some, but structured programs reduce wasted months. [Pakish.ORG](/) offers fee-based programs with limited need-based free or subsidized seats backed by Pakish Group (Est. 1999) through the Fi Sabilillah Initiative — at our [Karachi Gulshan-e-Iqbal campus](/campus/gulshan-e-iqbal), [Lodhran campus](/campus/lodhran), and online via Zoom. You learn alongside peers, receive mentor feedback, and connect to a community that understands Pakistani women's specific challenges.",
     },
     {
       type: "p",

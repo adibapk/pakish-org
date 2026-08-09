@@ -59,7 +59,7 @@ export const sehatKahaniArticle: InsightArticle = {
     {
       type: "p",
       content:
-        "Dr. Sara Saeed Khurram noted that the funding would support advanced features including decision-support systems, precision medicine tools, and predictive AI models — showing that Sehat Kahani is evolving from connectivity into intelligent healthcare delivery. For aspiring technologists, this trajectory mirrors what our [6-Month Pro Developer track](/#courses) prepares students for: integrating AI into production applications that serve real users.",
+        "Dr. Sara Saeed Khurram noted that the funding would support advanced features including decision-support systems, precision medicine tools, and predictive AI models — showing that Sehat Kahani is evolving from connectivity into intelligent healthcare delivery. For aspiring technologists, this trajectory illustrates why our [6-Month Mastery track](/#courses) emphasizes integrating AI responsibly into applications that serve real users.",
     },
     {
       type: "h2",
@@ -83,7 +83,7 @@ export const sehatKahaniArticle: InsightArticle = {
     {
       type: "p",
       content:
-        "Critically, the platform also creates economic opportunity for women doctors who need flexible, remote-friendly careers — a parallel to the work-from-home pathways we champion through training at our [Gulshan-e-Iqbal campus](/campus/korangi) and [Lodhran campus](/campus/lodhran). Technology here is not abstract; it is income, access, and dignity.",
+        "Critically, the platform also creates economic opportunity for women doctors who need flexible, remote-friendly careers — a parallel to the work-from-home pathways we champion through training at our [Gulshan-e-Iqbal campus](/campus/gulshan-e-iqbal) and [Lodhran campus](/campus/lodhran). Technology here is not abstract; it is income, access, and dignity.",
     },
     {
       type: "h2",

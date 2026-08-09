@@ -3,6 +3,6 @@ export {
   SITE_URL,
 } from "@/lib/seo";
 
-export const INSIGHTS_INDEX_TITLE = "Insights | Pakish.ORG";
+export const INSIGHTS_INDEX_TITLE = "Women in Tech Pakistan: AI & Freelancing Insights | Pakish.ORG";
 export const INSIGHTS_INDEX_DESCRIPTION =
-  "Research reports, achievement stories, and practical guides on women in tech, freelancing, and generative AI in Pakistan — from Pakish.ORG.";
+  "Sourced stories and practical guides on women in tech in Pakistan, including Generative AI, freelancing, remote careers, and digital skills.";

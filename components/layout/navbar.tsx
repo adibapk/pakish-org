@@ -44,7 +44,7 @@ interface CampusLinkProps {
 
 const campusLinks: CampusLinkProps[] = [
   {
-    href: "/campus/korangi",
+    href: "/campus/gulshan-e-iqbal",
     label: "Karachi",
     description: "Gulshan-e-Iqbal, Main University Road — IT & AI training in Karachi.",
   },
@@ -56,12 +56,9 @@ const campusLinks: CampusLinkProps[] = [
 ];
 
 const routeList: RouteProps[] = [
-  { href: "/admission", label: "Admission" },
   { href: "/insights", label: "Insights" },
   { href: "#courses", label: "Courses" },
   { href: "#benefits", label: "Mission" },
-  { href: "#team", label: "Team" },
-  { href: "#contact", label: "Contact" },
   { href: "#faq", label: "FAQ" },
 ];
 
@@ -79,7 +76,7 @@ const featureList: FeatureProps[] = [
   {
     title: "6-Month Mastery",
     description:
-      "Next.js, AI integration, and high-ticket global freelancing skills.",
+      "Next.js, API integration, deployment, and responsible AI product skills.",
   },
 ];
 
@@ -125,6 +122,13 @@ export const Navbar = () => {
                 </SheetHeader>
 
                 <div className="flex flex-col gap-2">
+                  <Button
+                    onClick={() => setIsOpen(false)}
+                    asChild
+                    className="mx-4 mb-2"
+                  >
+                    <Link href="/admission">Apply for Admission</Link>
+                  </Button>
                   <p className="px-4 text-sm font-semibold text-muted-foreground">
                     Campuses
                   </p>

@@ -15,7 +15,7 @@ import Link from "next/link";
 
 export const CurriculumSection = () => {
   return (
-    <section id="curriculum" className="container py-16 sm:py-24">
+    <section id="courses" className="container py-16 sm:py-24">
       <div className="mx-auto max-w-3xl text-center">
         <p className="mb-2 text-lg tracking-wider text-primary">
           AI &amp; IT Skills Curriculum
@@ -24,10 +24,16 @@ export const CurriculumSection = () => {
           Three Pathways to Remote Tech Careers
         </h2>
         <p className="text-xl text-muted-foreground">
-          Structured programs designed for Pakistani women entering IT, AI, and
-          digital freelancing — from your first micro-income to global
-          high-ticket contracts.
+          Choose one clear path based on your current level. Every program is
+          project-based and available in Karachi, Lodhran, or live online.
         </p>
+      </div>
+
+      <div className="mx-auto mt-8 max-w-3xl rounded-xl border border-primary/20 bg-primary/5 px-5 py-4 text-center text-sm leading-relaxed text-muted-foreground md:text-base">
+        <strong className="text-foreground">Clear fee policy:</strong> regular
+        admission is paid. Limited free or subsidized seats are reviewed for
+        eligible learners under the Fi Sabilillah quota and depend on available
+        support.
       </div>
 
       <div className="mt-14 grid gap-8 lg:grid-cols-3">
@@ -78,7 +84,7 @@ export const CurriculumSection = () => {
               <div className="rounded-xl border border-primary/20 bg-primary/5 p-4">
                 <p className="mb-1 flex items-center gap-2 text-sm font-medium text-primary">
                   <Briefcase className="size-4" />
-                  Placement &amp; WFH Focus
+                  Portfolio &amp; WFH Focus
                 </p>
                 <p className="text-sm text-muted-foreground">
                   {track.placementFocus}
@@ -88,13 +94,15 @@ export const CurriculumSection = () => {
 
             <CardFooter className="flex flex-col gap-2">
               <Button asChild className="w-full">
-                <Link href={`#contact`}>
-                  Enroll in {track.title}
+                <Link href={`/admission?type=fee&program=${track.id}`}>
+                  Apply for {track.title}
                   <ArrowRight className="ml-2 size-4" />
                 </Link>
               </Button>
               <Button asChild variant="outline" className="w-full">
-                <Link href="#contact">Request Free Counseling</Link>
+                <Link href={`/admission?type=subsidy&program=${track.id}`}>
+                  Request Subsidy Review
+                </Link>
               </Button>
             </CardFooter>
           </Card>

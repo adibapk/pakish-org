@@ -7,16 +7,17 @@ export const SITE_NAME = "Pakish.ORG";
 export { SITE_LOGO };
 
 export const DEFAULT_DESCRIPTION =
-  "Pakish.ORG offers professional IT and AI training for women in Pakistan. Standard fees apply for regular enrollments; limited free or subsidized seats are available for eligible learners under the Fi Sabilillah quota.";
+  "Practical IT, AI, and freelancing courses for women in Pakistan, available in Karachi, Lodhran, and live online. Regular admission is fee-based, with limited need-based support.";
 
-export const DEFAULT_OG_IMAGE = "/hero-image-light.jpeg";
+export const DEFAULT_OG_IMAGE = "/og/home.png";
 
 export const STATIC_ROUTES = [
-  { path: "/", changeFrequency: "weekly" as const, priority: 1 },
-  { path: "/admission", changeFrequency: "monthly" as const, priority: 0.95 },
-  { path: "/insights", changeFrequency: "weekly" as const, priority: 0.9 },
-  { path: "/campus/korangi", changeFrequency: "monthly" as const, priority: 0.8 },
-  { path: "/campus/lodhran", changeFrequency: "monthly" as const, priority: 0.8 },
+  { path: "/", updatedAt: "2026-08-08", changeFrequency: "weekly" as const, priority: 1 },
+  { path: "/admission", updatedAt: "2026-08-08", changeFrequency: "monthly" as const, priority: 0.95 },
+  { path: "/insights", updatedAt: "2026-08-08", changeFrequency: "weekly" as const, priority: 0.9 },
+  { path: "/campus/gulshan-e-iqbal", updatedAt: "2026-08-08", changeFrequency: "monthly" as const, priority: 0.85 },
+  { path: "/campus/lodhran", updatedAt: "2026-08-08", changeFrequency: "monthly" as const, priority: 0.8 },
+  { path: "/privacy", updatedAt: "2026-08-08", changeFrequency: "yearly" as const, priority: 0.3 },
 ];
 
 type PageMetadataOptions = {

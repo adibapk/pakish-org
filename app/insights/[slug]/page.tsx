@@ -1,19 +1,21 @@
 import { InsightArticlePage } from "@/components/insights/insight-article-page";
 import { getInsightBySlug, getInsightSlugs } from "@/lib/insights/utils";
 import { createPageMetadata } from "@/lib/seo";
+import { ogImagePath } from "@/lib/og";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 interface InsightPageProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 export function generateStaticParams() {
   return getInsightSlugs().map((slug) => ({ slug }));
 }
 
-export function generateMetadata({ params }: InsightPageProps): Metadata {
-  const article = getInsightBySlug(params.slug);
+export async function generateMetadata({ params }: InsightPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const article = getInsightBySlug(slug);
 
   if (!article) {
     return {
@@ -26,6 +28,7 @@ export function generateMetadata({ params }: InsightPageProps): Metadata {
     title: article.seoTitle,
     description: article.description,
     path: `/insights/${article.slug}`,
+    image: ogImagePath(article.slug),
     type: "article",
     absoluteTitle: true,
     keywords: article.tags,
@@ -36,8 +39,9 @@ export function generateMetadata({ params }: InsightPageProps): Metadata {
   });
 }
 
-export default function InsightSlugPage({ params }: InsightPageProps) {
-  const article = getInsightBySlug(params.slug);
+export default async function InsightSlugPage({ params }: InsightPageProps) {
+  const { slug } = await params;
+  const article = getInsightBySlug(slug);
 
   if (!article) {
     notFound();

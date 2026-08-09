@@ -123,7 +123,7 @@ export const jehanAraArticle: InsightArticle = {
     {
       type: "p",
       content:
-        "Not everyone will found an incubator. But everyone can choose a skill stack and commit to it. Pakistan's IT sector rewards web development, digital marketing, AI integration, and client-facing freelancing — competencies taught in our [1-Month Fast-Track](/#courses), [3-Month Advanced](/#courses), and [6-Month Pro Developer](/#courses) programs. Women in smaller cities can start online; those near our [Lodhran campus](/campus/lodhran) or [Gulshan-e-Iqbal campus](/campus/korangi) can learn in person with mentors from the Pakish Group family.",
+        "Not everyone will found an incubator. But everyone can choose a skill stack and commit to it. Pakistan's IT sector rewards web development, digital marketing, AI integration, and client-facing freelancing — competencies taught in our [1-Month Fast-Track](/#courses), [3-Month Professional](/#courses), and [6-Month Mastery](/#courses) programs. Women in smaller cities can start online; those near our [Lodhran campus](/campus/lodhran) or [Gulshan-e-Iqbal campus](/campus/gulshan-e-iqbal) can learn in person with mentors from the Pakish Group family.",
     },
     {
       type: "p",

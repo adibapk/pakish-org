@@ -21,16 +21,16 @@ export const HeroSection = () => {
           </Badge>
 
           <h1 className="mt-5 text-3xl font-bold leading-tight sm:text-4xl md:text-5xl lg:text-[3.25rem]">
-            Empowering Women in Tech —{" "}
+            IT &amp; AI Courses for Women in{" "}
             <span className="bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-              Professional IT &amp; AI Training
+              Pakistan
             </span>
           </h1>
 
           <p className="mx-auto mt-5 max-w-xl text-base text-muted-foreground md:text-lg lg:mx-0">
-            Hands-on training in Generative AI, Web Development, and Digital
-            Freelancing — with expert mentors at our Karachi and Lodhran
-            campuses, or live online.
+            Build practical skills in Generative AI, web development, and
+            digital freelancing through mentor-led projects in Karachi,
+            Lodhran, or live online.
           </p>
 
           <p className="mx-auto mt-3 max-w-xl text-sm text-muted-foreground/80 lg:mx-0">
@@ -46,7 +46,7 @@ export const HeroSection = () => {
               className="w-full font-bold group/arrow sm:w-auto"
             >
               <Link href="#courses">
-                Explore Programs
+                Compare 3 Programs
                 <ArrowRight className="ml-2 size-5 transition-transform group-hover/arrow:translate-x-1" />
               </Link>
             </Button>
@@ -57,9 +57,9 @@ export const HeroSection = () => {
               variant="secondary"
               className="w-full font-bold sm:w-auto"
             >
-              <Link href="#contact">
+              <Link href="/admission">
                 <Heart className="mr-2 size-5" />
-                Apply / Check Eligibility
+                Apply for Admission
               </Link>
             </Button>
           </div>

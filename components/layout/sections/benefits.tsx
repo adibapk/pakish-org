@@ -46,7 +46,7 @@ export const BenefitsSection = () => {
             Our Mission (Fi Sabilillah Initiative)
           </h2>
           <p className="text-xl text-muted-foreground mb-8">
-            We are transforming a 25-year software house legacy into a community
+            We are transforming decades of software experience into a community
             empowerment project. Professional programs, mentorship, and the Fi
             Sabilillah need-based quota help bridge the tech gender gap in
             Pakistan.

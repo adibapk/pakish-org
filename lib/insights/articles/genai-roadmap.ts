@@ -92,7 +92,7 @@ export const genAiRoadmapArticle: InsightArticle = {
     {
       type: "p",
       content:
-        "Build a personal \"prompt library\" in Notion or Google Docs — organized by use case (SEO meta descriptions, product descriptions, client proposals). This becomes a freelancing asset you reuse and refine. Our [3-Month Advanced program](/#courses) covers prompt engineering alongside WordPress, SMM, and SEO.",
+        "Build a personal \"prompt library\" in Notion or Google Docs — organized by use case (SEO meta descriptions, product descriptions, client proposals). This becomes a freelancing asset you reuse and refine. Our [3-Month Professional program](/#courses) covers prompt engineering alongside WordPress, SMM, and SEO.",
     },
     {
       type: "h2",
@@ -141,7 +141,7 @@ export const genAiRoadmapArticle: InsightArticle = {
       items: [
         "AI-assisted digital marketing freelancer",
         "No-code/low-code automation consultant for small businesses",
-        "Junior web developer integrating LLM APIs (6-Month Pro Developer track)",
+        "Junior web developer integrating LLM APIs (6-Month Mastery track)",
         "Content strategist for Urdu/English bilingual brands",
         "Future founder in health-tech, ed-tech, or social impact (see [Sehat Kahani](/insights/sehat-kahani-women-led-healthtech-series-a))",
       ],
@@ -177,7 +177,7 @@ export const genAiRoadmapArticle: InsightArticle = {
     {
       type: "p",
       content:
-        "Self-study works, but cohort-based learning with mentors prevents common pitfalls — bad prompts, insecure API keys, plagiarized portfolios. [Pakish.ORG](/) offers Generative AI training through the Fi Sabilillah Initiative at our [Gulshan-e-Iqbal campus](/campus/korangi), [Lodhran campus](/campus/lodhran), and online via Zoom. Students learn alongside peers facing similar cultural and economic contexts, with guidance from the Pakish Group mentor family.",
+        "Self-study works, but cohort-based learning with mentors prevents common pitfalls — bad prompts, insecure API keys, plagiarized portfolios. [Pakish.ORG](/) offers Generative AI training through the Fi Sabilillah Initiative at our [Gulshan-e-Iqbal campus](/campus/gulshan-e-iqbal), [Lodhran campus](/campus/lodhran), and online via Zoom. Students learn alongside peers facing similar cultural and economic contexts, with guidance from the Pakish Group mentor family.",
     },
     {
       type: "p",

@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { FooterSection } from "@/components/layout/sections/footer";
+import { CampusJsonLd } from "@/components/seo/campus-json-ld";
 import type { CampusData } from "@/lib/campus-data";
 import { Check, Gift, MapPin } from "lucide-react";
 import Link from "next/link";
@@ -19,6 +20,7 @@ interface CampusPageContentProps {
 export function CampusPageContent({ campus }: CampusPageContentProps) {
   return (
     <div className="container mx-auto px-4 py-8 sm:py-12">
+      <CampusJsonLd campus={campus} />
       <section className="py-12 md:py-20">
         <div className="mx-auto flex max-w-3xl flex-col items-center space-y-6 text-center">
           <Badge variant="outline" className="gap-2 py-2 text-sm">
@@ -36,7 +38,9 @@ export function CampusPageContent({ campus }: CampusPageContentProps) {
 
           <div className="flex flex-col items-center justify-center gap-4 pt-2 sm:flex-row">
             <Button asChild>
-              <Link href="/#contact">Support This Campus</Link>
+              <Link href={`/admission?type=fee&campus=${campus.slug}`}>
+                Apply for Admission
+              </Link>
             </Button>
             <Button asChild variant="secondary">
               <Link href="/#courses">View Training Programs</Link>
@@ -54,6 +58,33 @@ export function CampusPageContent({ campus }: CampusPageContentProps) {
               {paragraph}
             </p>
           ))}
+        </div>
+      </section>
+
+      <section className="border-t border-border py-12 md:py-20">
+        <div className="mx-auto max-w-4xl">
+          <p className="mb-2 text-center text-lg tracking-wider text-primary">
+            What You Can Learn
+          </p>
+          <h2 className="text-center text-3xl font-bold md:text-4xl">
+            Practical Skills for Modern Remote Work
+          </h2>
+          <div className="mt-10 grid gap-5 md:grid-cols-3">
+            {[
+              ["AI-assisted digital work", "Use Generative AI responsibly for research, content, marketing, and practical workflows."],
+              ["Web and marketing skills", "Build with WordPress or Next.js and learn the client communication behind successful delivery."],
+              ["Portfolio and freelancing", "Create visible work, document your process, and practice safer proposals, pricing, and payments."],
+            ].map(([title, description]) => (
+              <Card key={title} className="bg-muted/30">
+                <CardHeader>
+                  <CardTitle className="text-xl">{title}</CardTitle>
+                </CardHeader>
+                <CardContent className="text-muted-foreground">
+                  {description}
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
       </section>
 

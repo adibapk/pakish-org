@@ -1,7 +1,8 @@
 import type { InsightArticle } from "@/lib/insights/types";
 import { SITE_URL } from "@/lib/insights/site";
 import { insightUrl } from "@/lib/insights/utils";
-import { DEFAULT_OG_IMAGE, SITE_LOGO, absoluteUrl } from "@/lib/seo";
+import { SITE_LOGO, absoluteUrl } from "@/lib/seo";
+import { ogImagePath } from "@/lib/og";
 
 interface ArticleJsonLdProps {
   article: InsightArticle;
@@ -9,7 +10,7 @@ interface ArticleJsonLdProps {
 
 export function ArticleJsonLd({ article }: ArticleJsonLdProps) {
   const url = insightUrl(article.slug);
-  const imageUrl = absoluteUrl(DEFAULT_OG_IMAGE);
+  const imageUrl = absoluteUrl(ogImagePath(article.slug));
   const logoUrl = absoluteUrl(SITE_LOGO);
 
   const articleSchema = {

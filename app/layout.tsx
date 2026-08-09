@@ -17,7 +17,7 @@ import { SITE_ICONS } from "@/lib/site-icons";
 const inter = Inter({ subsets: ["latin"] });
 
 const DEFAULT_TITLE =
-  "Pakish.ORG | Professional IT & AI Training for Women in Pakistan";
+  "IT & AI Courses for Women in Pakistan | Pakish.ORG";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -29,12 +29,11 @@ export const metadata: Metadata = {
   applicationName: SITE_NAME,
   keywords: [
     "Pakish.ORG",
-    "IT training for women in Pakistan",
-    "AI courses Pakistan",
-    "subsidized IT training Pakistan",
-    "women freelancing courses Karachi",
-    "Gulshan-e-Iqbal IT campus",
-    "Lodhran IT campus",
+    "IT courses for women in Pakistan",
+    "AI courses for women in Pakistan",
+    "online IT courses for women",
+    "freelancing courses for women",
+    "AI courses in Karachi for women",
   ],
   authors: [{ name: SITE_NAME, url: SITE_URL }],
   creator: SITE_NAME,
@@ -95,12 +94,54 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@graph": [
                 {
-                  "@type": "Organization",
+                  "@type": "EducationalOrganization",
                   "@id": `${SITE_URL}/#organization`,
                   name: SITE_NAME,
                   url: SITE_URL,
                   description: DEFAULT_DESCRIPTION,
                   logo: absoluteUrl(SITE_LOGO),
+                  parentOrganization: {
+                    "@type": "Organization",
+                    name: "Pakish Group",
+                    foundingDate: "1999",
+                  },
+                  areaServed: {
+                    "@type": "Country",
+                    name: "Pakistan",
+                  },
+                  contactPoint: {
+                    "@type": "ContactPoint",
+                    telephone: "+92-300-8222456",
+                    contactType: "admissions",
+                    email: "admin@pakish.org",
+                    availableLanguage: ["English", "Urdu"],
+                    areaServed: "PK",
+                  },
+                  sameAs: ["https://www.facebook.com/pakishinstitute/"],
+                  location: [
+                    {
+                      "@type": "Place",
+                      name: "Pakish.ORG Gulshan-e-Iqbal Campus",
+                      address: {
+                        "@type": "PostalAddress",
+                        streetAddress: "Main University Road, Gulshan-e-Iqbal",
+                        addressLocality: "Karachi",
+                        addressRegion: "Sindh",
+                        addressCountry: "PK",
+                      },
+                    },
+                    {
+                      "@type": "Place",
+                      name: "Pakish.ORG Lodhran Campus",
+                      address: {
+                        "@type": "PostalAddress",
+                        streetAddress: "Chak No. 319, Dunyapur",
+                        addressLocality: "Lodhran",
+                        addressRegion: "Punjab",
+                        addressCountry: "PK",
+                      },
+                    },
+                  ],
                 },
                 {
                   "@type": "WebSite",
@@ -109,7 +150,7 @@ export default function RootLayout({
                   name: SITE_NAME,
                   description: DEFAULT_DESCRIPTION,
                   publisher: { "@id": `${SITE_URL}/#organization` },
-                  inLanguage: "en-US",
+                  inLanguage: "en-PK",
                 },
               ],
             }),

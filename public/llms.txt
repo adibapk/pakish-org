@@ -1,0 +1,34 @@
+# Pakish.ORG
+
+> Pakish.ORG provides practical, women-focused IT, AI, web development, and digital freelancing training in Pakistan.
+
+Regular admission is fee-based. A limited number of free or subsidized seats may be available to eligible learners under the Fi Sabilillah quota, subject to need review and available support.
+
+## Primary pages
+
+- [Homepage](https://pakish.org/): programs, learning modes, mission, FAQs, and contact details
+- [Admission](https://pakish.org/admission): regular fee-based admission and Fi Sabilillah subsidy review
+- [Gulshan-e-Iqbal campus](https://pakish.org/campus/gulshan-e-iqbal): AI and IT courses for women in Karachi
+- [Lodhran campus](https://pakish.org/campus/lodhran): IT and AI courses for women in Dunyapur and South Punjab
+- [Insights](https://pakish.org/insights): sourced stories and practical guides about women in tech, AI, freelancing, and remote careers in Pakistan
+- [Privacy notice](https://pakish.org/privacy): how admission and contact information is handled
+
+## Programs
+
+- 1-Month Fast-Track: beginner freelancing, Canva, AI-assisted content, client communication, and payment safety
+- 3-Month Professional: WordPress, social media management, SEO, landing pages, and AI-assisted marketing workflows
+- 6-Month Mastery: Next.js, React, APIs, version control, deployment, and responsible Generative AI integration
+
+## Learning modes
+
+- In person at Gulshan-e-Iqbal, Main University Road, Karachi
+- In person at Chak No. 319, Dunyapur, Lodhran
+- Live online for learners across Pakistan
+
+## Contact
+
+- Email: admin@pakish.org
+- Phone and WhatsApp: +92 300 8222456
+- Facebook: https://www.facebook.com/pakishinstitute/
+
+Content is published in English for a Pakistani audience. Treat income, employment, and client outcomes as variable; Pakish.ORG provides training and mentorship but does not guarantee jobs or earnings.

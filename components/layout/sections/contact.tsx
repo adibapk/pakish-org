@@ -56,7 +56,7 @@ export const ContactSection = () => {
       subject
     )}&body=${encodeURIComponent(body)}`;
 
-    window.location.href = mailToLink;
+    window.location.assign(mailToLink);
   }
 
   return (
@@ -222,11 +222,11 @@ export const ContactSection = () => {
                             <SelectItem value="1-Month Fast-Track">
                               1-Month Fast-Track
                             </SelectItem>
-                            <SelectItem value="3-Month Advanced">
-                              3-Month Advanced
+                            <SelectItem value="3-Month Professional">
+                              3-Month Professional
                             </SelectItem>
-                            <SelectItem value="6-Month Pro Developer">
-                              6-Month Pro Developer
+                            <SelectItem value="6-Month Mastery">
+                              6-Month Mastery
                             </SelectItem>
                           </SelectContent>
                         </Select>

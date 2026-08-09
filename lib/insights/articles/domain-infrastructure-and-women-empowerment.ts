@@ -121,7 +121,7 @@ export const domainInfrastructureArticle: InsightArticle = {
     {
       type: "p",
       content:
-        "[Pakish.ORG](/) integrates career-ready skills with community support at our [Karachi Gulshan-e-Iqbal campus](/campus/korangi), [Lodhran campus](/campus/lodhran), and online via Zoom. As you progress from coursework to client work, treat domain registration and cloud deployment as core competencies — not optional extras. When you are ready to go live, [Pakish.NET](https://pakish.net) provides the infrastructure layer so your projects stay online while you focus on learning, pitching, and delivering value.",
+        "[Pakish.ORG](/) integrates career-ready skills with community support at our [Karachi Gulshan-e-Iqbal campus](/campus/gulshan-e-iqbal), [Lodhran campus](/campus/lodhran), and online via Zoom. As you progress from coursework to client work, treat domain registration and cloud deployment as core competencies — not optional extras. When you are ready to go live, [Pakish.NET](https://pakish.net) provides the infrastructure layer so your projects stay online while you focus on learning, pitching, and delivering value.",
     },
     {
       type: "p",

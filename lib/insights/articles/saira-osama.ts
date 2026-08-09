@@ -69,7 +69,7 @@ export const sairaOsamaArticle: InsightArticle = {
     {
       type: "p",
       content:
-        "Dr. Osama's work demonstrates that Pakistani women can lead in deep tech — not only in digital marketing or entry-level freelancing, but in PhD-level machine learning applied to life-or-death medicine. That path starts with foundational skills in programming, data, and AI — exactly what our [6-Month Pro Developer program](/#courses) and Generative AI modules aim to cultivate.",
+        "Dr. Osama's work demonstrates that Pakistani women can lead in deep tech — not only in digital marketing or entry-level freelancing, but in PhD-level machine learning applied to life-or-death medicine. That path starts with foundational skills in programming, data, and AI — foundations our [6-Month Mastery program](/#courses) and Generative AI modules aim to cultivate.",
     },
     {
       type: "h2",

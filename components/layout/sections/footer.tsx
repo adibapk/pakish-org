@@ -7,6 +7,7 @@ import Link from "next/link";
 const quickLinks = [
   { href: "/admission", label: "Admission" },
   { href: "/insights", label: "Insights" },
+  { href: "/privacy", label: "Privacy" },
   { href: "/#benefits", label: "Mission" },
   { href: "/#courses", label: "Courses" },
   { href: "/#team", label: "Team" },
@@ -19,8 +20,6 @@ const socialLinks = [
     href: "https://www.facebook.com/pakishinstitute/",
     label: "Facebook",
   },
-  { href: "#", label: "LinkedIn" },
-  { href: "#", label: "YouTube" },
 ];
 
 export const FooterSection = () => {
