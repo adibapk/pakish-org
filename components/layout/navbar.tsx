@@ -25,15 +25,11 @@ import { Button } from "../ui/button";
 import Link from "next/link";
 import { ToggleTheme } from "./toogle-theme";
 import { cn } from "@/lib/utils";
+import { getAllCourses } from "@/lib/courses";
 
 interface RouteProps {
   href: string;
   label: string;
-}
-
-interface FeatureProps {
-  title: string;
-  description: string;
 }
 
 interface CampusLinkProps {
@@ -57,28 +53,17 @@ const campusLinks: CampusLinkProps[] = [
 
 const routeList: RouteProps[] = [
   { href: "/insights", label: "Insights" },
-  { href: "#courses", label: "Courses" },
+  { href: "/courses", label: "Courses" },
+  { href: "/payment-methods", label: "Fees" },
   { href: "#benefits", label: "Mission" },
   { href: "#faq", label: "FAQ" },
 ];
 
-const featureList: FeatureProps[] = [
-  {
-    title: "1-Month Fast-Track",
-    description:
-      "Freelancing, Canva, and ChatGPT — start earning through micro-tasks quickly.",
-  },
-  {
-    title: "3-Month Professional",
-    description:
-      "WordPress, SMM, SEO, and prompt engineering for digital marketing careers.",
-  },
-  {
-    title: "6-Month Mastery",
-    description:
-      "Next.js, API integration, deployment, and responsible AI product skills.",
-  },
-];
+const courseNavItems = getAllCourses().map((course) => ({
+  href: `/courses/${course.slug}`,
+  title: course.shortTitle,
+  description: course.summary,
+}));
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -175,12 +160,27 @@ export const Navbar = () => {
                 Courses
               </NavigationMenuTrigger>
               <NavigationMenuContent>
-                <ul className="flex w-[400px] flex-col gap-1 p-4">
-                  {featureList.map(({ title, description }) => (
-                    <li key={title}>
+                <ul className="flex w-[420px] flex-col gap-1 p-4">
+                  <li>
+                    <NavigationMenuLink asChild>
+                      <Link
+                        href="/courses"
+                        className="block rounded-md p-3 text-sm hover:bg-muted"
+                      >
+                        <p className="mb-1 font-semibold leading-none text-foreground">
+                          All Courses
+                        </p>
+                        <p className="line-clamp-2 text-muted-foreground">
+                          Browse AI, web, cloud and digital skills programs.
+                        </p>
+                      </Link>
+                    </NavigationMenuLink>
+                  </li>
+                  {courseNavItems.map(({ href, title, description }) => (
+                    <li key={href}>
                       <NavigationMenuLink asChild>
                         <Link
-                          href={resolveHref("#courses")}
+                          href={href}
                           className="block rounded-md p-3 text-sm hover:bg-muted"
                         >
                           <p className="mb-1 font-semibold leading-none text-foreground">
@@ -225,7 +225,7 @@ export const Navbar = () => {
             </NavigationMenuItem>
 
             {routeList
-              .filter(({ href }) => href !== "#courses")
+              .filter(({ href }) => href !== "/courses")
               .map(({ href, label }) => (
                 <NavigationMenuItem key={href}>
                   <NavigationMenuLink asChild>

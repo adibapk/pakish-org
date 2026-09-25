@@ -6,10 +6,11 @@ import Link from "next/link";
 
 const quickLinks = [
   { href: "/admission", label: "Admission" },
+  { href: "/payment-methods", label: "Payment Methods" },
   { href: "/insights", label: "Insights" },
   { href: "/privacy", label: "Privacy" },
   { href: "/#benefits", label: "Mission" },
-  { href: "/#courses", label: "Courses" },
+  { href: "/courses", label: "Courses" },
   { href: "/#team", label: "Team" },
   { href: "/#contact", label: "Contact" },
   { href: "/#faq", label: "FAQ" },

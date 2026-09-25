@@ -24,6 +24,12 @@ export const OG_CARDS: Record<string, OgCard> = {
     description: "Clear choices for WhatsApp, email, and subsidy review",
     accent: "#a7f3d0",
   },
+  "payment-methods": {
+    eyebrow: "Course fee payment",
+    title: "Pay Your Pakish.ORG Course Fees",
+    description: "Bank · JazzCash · PayPal · Payoneer",
+    accent: "#34d399",
+  },
   insights: {
     eyebrow: "Pakish.ORG Insights",
     title: "Women in Tech, AI & Freelancing in Pakistan",
@@ -77,6 +83,42 @@ export const OG_CARDS: Record<string, OgCard> = {
     title: "Domains, Hosting & Credible Remote Work",
     description: "Turn coursework into live portfolio proof",
     accent: "#93c5fd",
+  },
+  "courses-ai-productivity": {
+    eyebrow: "Pakish Institute course",
+    title: "AI Productivity & Automation",
+    description: "ChatGPT · Claude · Gemini · Workflow automation",
+    accent: "#34d399",
+  },
+  "courses-ai-business": {
+    eyebrow: "Corporate AI training",
+    title: "AI for Business & Workplace Automation",
+    description: "Customized packages for teams and companies",
+    accent: "#5eead4",
+  },
+  "courses-full-stack-ai-development": {
+    eyebrow: "Full stack development",
+    title: "Modern Full Stack Web Development with AI",
+    description: "React · Next.js · APIs · AI coding assistants",
+    accent: "#2dd4bf",
+  },
+  "courses-wordpress-woocommerce": {
+    eyebrow: "WordPress professional track",
+    title: "WordPress & WooCommerce Development",
+    description: "Business sites · Stores · Client delivery",
+    accent: "#86efac",
+  },
+  "courses-cloud-devops": {
+    eyebrow: "Cloud & operations",
+    title: "Cloud, Servers & DevOps Fundamentals",
+    description: "Linux · VPS · DNS · SSL · Deployment",
+    accent: "#84cc16",
+  },
+  "courses-ai-freelancing": {
+    eyebrow: "Digital career track",
+    title: "AI-Powered Freelancing Career",
+    description: "Proposals · Portfolio · AI-assisted delivery",
+    accent: "#a7f3d0",
   },
 };
 

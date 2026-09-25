@@ -1,4 +1,5 @@
 import { SITE_URL, STATIC_ROUTES } from "@/lib/seo";
+import { getAllCourses } from "@/lib/courses";
 import { getAllInsights } from "@/lib/insights/utils";
 import type { MetadataRoute } from "next";
 
@@ -12,6 +13,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })
   );
 
+  const courseEntries: MetadataRoute.Sitemap = getAllCourses().map(
+    (course) => ({
+      url: `${SITE_URL}/courses/${course.slug}`,
+      lastModified: new Date(course.updatedAt),
+      changeFrequency: "monthly",
+      priority: 0.85,
+    })
+  );
+
   const insightEntries: MetadataRoute.Sitemap = getAllInsights().map(
     (article) => ({
       url: `${SITE_URL}/insights/${article.slug}`,
@@ -21,5 +31,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })
   );
 
-  return [...staticEntries, ...insightEntries];
+  return [...staticEntries, ...courseEntries, ...insightEntries];
 }

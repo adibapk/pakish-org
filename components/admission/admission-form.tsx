@@ -256,6 +256,14 @@ export function AdmissionForm({
                   donors only after consent, so they can decide whether to
                   sponsor course fees and required premium learning tools.
                 </p>
+                <p className="mt-3 text-sm">
+                  <Link
+                    href="/payment-methods"
+                    className="font-semibold text-primary hover:underline"
+                  >
+                    View course fee payment methods →
+                  </Link>
+                </p>
               </div>
             </div>
           </div>

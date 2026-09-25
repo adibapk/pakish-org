@@ -6,6 +6,7 @@ const cards = {
   home: ["Women-focused technology training", "IT & AI Courses for Women in Pakistan", "Karachi · Lodhran · Live online", "#34d399"],
   admission: ["Pakish.ORG admission", "Start Your IT, AI or Freelancing Journey", "Regular admission · Need-based support review", "#5eead4"],
   privacy: ["Trust & transparency", "How Pakish.ORG Handles Application Information", "Clear choices for WhatsApp, email, and subsidy review", "#a7f3d0"],
+  "payment-methods": ["Course fee payment", "Pay Your Pakish.ORG Course Fees", "Bank · JazzCash · PayPal · Payoneer", "#34d399"],
   insights: ["Pakish.ORG Insights", "Women in Tech, AI & Freelancing in Pakistan", "Practical guides · Sourced stories · Career roadmaps", "#86efac"],
   "campus-gulshan-e-iqbal": ["Gulshan-e-Iqbal · Main University Road", "AI & IT Courses for Women in Karachi", "Mentor-led learning at Pakish.ORG", "#2dd4bf"],
   "campus-lodhran": ["Dunyapur · Lodhran", "IT & AI Courses for Women in South Punjab", "Practical skills · Local mentorship · Remote careers", "#84cc16"],

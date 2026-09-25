@@ -43,7 +43,7 @@ export function CampusPageContent({ campus }: CampusPageContentProps) {
               </Link>
             </Button>
             <Button asChild variant="secondary">
-              <Link href="/#courses">View Training Programs</Link>
+              <Link href="/courses">View Training Programs</Link>
             </Button>
           </div>
         </div>
