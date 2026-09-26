@@ -13,7 +13,6 @@ const quickLinks = [
   { href: ACADEMY_LOGIN_URL, label: "Academy Login" },
   { href: "/insights", label: "Insights" },
   { href: "/privacy", label: "Privacy" },
-  { href: "/#team", label: "Team" },
   { href: "/#contact", label: "Contact" },
   { href: "/#faq", label: "FAQ" },
 ];

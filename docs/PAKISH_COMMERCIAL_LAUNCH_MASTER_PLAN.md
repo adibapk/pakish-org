@@ -1,8 +1,19 @@
 # Pakish Institute commercial launch master plan
 
-Status: approved planning baseline; implementation has not started from this document  
-Date: 2026-09-26  
-Launch target: 1-3 days, subject to the gates below
+Status: **commercial website and private Academy pilot deployed** — first real cohort blocked on owner inputs (`docs/academy/FIRST_COHORT_LAUNCH_GATE.md`)
+Date: 2026-09-26
+Production release: Prompt 17 closeout (`015901a` baseline + Prompt 17 footer/link/admission-copy fixes)
+Launch target: public marketing site live; cohort launch when owner gate passes
+
+### Current production snapshot (Prompt 17)
+
+- **Website:** `https://pakish.org` on `pakish-sg` (`pakish-org-app`, image `pakish-org:latest`).
+- **Academy:** `https://academy.pakish.org` — invite-only signup, Google OAuth **In production**, private pilot `AI Productivity & Automation` (`course_05275db9-cddf-4a68-825a-01e4e2714066`, `public=false`).
+- **Navigation (approved):** Desktop primary — Courses ▾, Training ▾ (Karachi / Live Online / Team Training), Women's Empowerment, Insights, Academy, Apply. Payment Methods and FAQ remain in footer/mobile support.
+- **Homepage sections:** Pakish Glimpses and Team / Our Core Family Mentors are **intentionally hidden** from `app/page.tsx`; components retained in `components/layout/sections/glimpses.tsx` and `team.tsx` for future reuse. Footer must not link to retired `#team` / `#glimpses` anchors while hidden.
+- **Lodhran:** future-plan page only — `noindex`, excluded from sitemap.
+- **Admission:** JSON persistence under `/app/.data/admissions` (named volume); admin dashboard at `/admin/leads`; manual Academy provisioning after payment verification.
+- **OAuth / branding overlay:** re-apply `scripts/ops/prompt14-academy-branding.py` after LearnHouse image upgrades.
 
 ## 1. Product decision
 

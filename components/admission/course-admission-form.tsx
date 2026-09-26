@@ -257,8 +257,8 @@ export function CourseAdmissionForm({
           <CardHeader>
             <CardTitle>Admission Request</CardTitle>
             <CardDescription>
-              Your request is saved securely, our team is notified, then you can
-              continue on WhatsApp and payment steps.
+              Your request is saved securely for staff review. You can continue
+              on WhatsApp and payment steps after submitting.
             </CardDescription>
           </CardHeader>
           <CardContent>
