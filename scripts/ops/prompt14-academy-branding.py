@@ -3,6 +3,9 @@
 Apply Pakish branding to the LearnHouse Academy deployment on pakish-sg.
 Replaces LearnHouse logos, fixes org logo PNG references, invite-only UX copy,
 and disables the footer watermark. Safe to re-run after container recreate.
+
+Run only from the checked-out repository on pakish-sg after `git pull`.
+Never copy this script over the tracked deployment checkout with scp.
 """
 from __future__ import annotations
 
@@ -275,6 +278,43 @@ def patch_en_locale() -> None:
     print("patched en.json auth/footer locale strings")
 
 
+def patch_org_menu() -> None:
+    path = "/app/web/components/Objects/Menus/OrgMenu.tsx"
+    content = docker_exec(["cat", path]).stdout
+    updated = content.replace(
+        '                      alt="LearnHouse"\n'
+        '                      style={{ width: \'auto\', height: \'100%\' }}',
+        "                      alt={org?.name || 'Pakish Institute'}\n"
+        "                      style={{ width: 'auto', height: '100%' }}",
+    ).replace(
+        '      alt="LearnHouse logo"',
+        "      alt=\"Pakish Institute logo\"",
+    )
+    if updated == content:
+        print("OrgMenu.tsx already patched")
+        return
+    tmp = Path("/tmp/OrgMenu.tsx")
+    tmp.write_text(updated, encoding="utf-8")
+    docker_cp(tmp, path)
+    print("patched OrgMenu.tsx authenticated navigation logo alt")
+
+
+def patch_dash_mobile_menu() -> None:
+    path = "/app/web/components/Dashboard/Menus/DashMobileMenu.tsx"
+    content = docker_exec(["cat", path]).stdout
+    updated = content.replace(
+        '              alt="LearnHouse"',
+        "              alt=\"Pakish Institute\"",
+    )
+    if updated == content:
+        print("DashMobileMenu.tsx already patched")
+        return
+    tmp = Path("/tmp/DashMobileMenu.tsx")
+    tmp.write_text(updated, encoding="utf-8")
+    docker_cp(tmp, path)
+    print("patched DashMobileMenu.tsx mobile navigation logo alt")
+
+
 def patch_org_footer() -> None:
     path = "/app/web/app/orgs/[orgslug]/(withmenu)/layout.tsx"
     content = docker_exec(["cat", path]).stdout
@@ -347,6 +387,8 @@ def main() -> int:
     patch_en_locale()
     patch_auth_branding_panel()
     patch_login_invite_only()
+    patch_org_menu()
+    patch_dash_mobile_menu()
     patch_org_footer()
     update_org_config()
     run(["docker", "restart", CONTAINER], check=False)

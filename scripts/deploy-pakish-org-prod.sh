@@ -10,6 +10,8 @@ BRANCH="${PAKISH_ORG_BRANCH:-master}"
 echo "=== Deploy pakish.org (${BRANCH}) ==="
 cd "${APP_DIR}"
 
+bash "$(dirname "$0")/deploy-preflight.sh" "${APP_DIR}"
+
 git fetch origin "${BRANCH}"
 git checkout "${BRANCH}"
 git pull --ff-only origin "${BRANCH}"

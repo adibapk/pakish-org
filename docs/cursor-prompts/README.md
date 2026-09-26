@@ -8,6 +8,7 @@ Run these prompts in order. Each prompt is investigative first, implements only 
 4. `PROMPT_13_ACADEMY_COURSES_TEACHERS_AND_DELIVERY.md`
 5. `PROMPT_14_LAUNCH_QA_COMMIT_PUSH_DEPLOY.md`
 6. `PROMPT_15_GOOGLE_OAUTH_ACADEMY_BRANDING_AND_CI.md`
+7. `PROMPT_16_NAVIGATION_AND_PROMPT15_CLOSEOUT.md`
 
 The matching `.txt` file is a short launcher that can be pasted into Cursor. It tells Cursor the exact absolute path of the authoritative Markdown prompt. Do not paste multiple phases into Cursor at once.
 
