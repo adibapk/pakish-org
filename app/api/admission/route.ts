@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { after, NextResponse } from "next/server";
 import { createAdmissionSchema } from "@/lib/admission/schema";
 import { notifyAdminOfAdmission } from "@/lib/admission/notify";
 import { checkRateLimit } from "@/lib/admission/rate-limit";
@@ -76,8 +76,14 @@ export async function POST(request: Request) {
       }
     );
 
-    // Fire-and-continue: never fail the student response solely on email
-    void notifyAdminOfAdmission(lead);
+    // Schedule notification after the response; never fail submission on email.
+    after(async () => {
+      try {
+        await notifyAdminOfAdmission(lead);
+      } catch (error) {
+        console.error("[api/admission:notify]", error);
+      }
+    });
 
     return NextResponse.json(toPublicLead(lead), { status: 201 });
   } catch (error) {

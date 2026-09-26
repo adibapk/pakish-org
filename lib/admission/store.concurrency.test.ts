@@ -33,14 +33,18 @@ describe("admission store concurrency", () => {
     const [adminResult, notifyResult] = await Promise.all([
       applyAdminLeadAction(lead.id, "mark-contacted", { actor: "admin" }),
       updateAdmissionLead(lead.id, {
-        adminNotifiedAt: new Date().toISOString(),
+        adminNotification: {
+          status: "logged-only",
+          attemptedAt: new Date().toISOString(),
+          attemptCount: 1,
+        },
         adminNotifyChannel: "log-fallback",
       }),
     ]);
 
     assert.equal(adminResult.leadStatus, "Contacted");
     assert.ok(notifyResult);
-    assert.ok(notifyResult.adminNotifiedAt);
+    assert.equal(notifyResult.adminNotification?.status, "logged-only");
     assert.ok(
       (adminResult.auditEvents?.length ?? 0) >= 1 ||
         (notifyResult.auditEvents?.length ?? 0) >= 0

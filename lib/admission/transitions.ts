@@ -1,5 +1,6 @@
 import { randomUUID } from "crypto";
 import type { AdmissionLead } from "./lead";
+import { getAdminNotification } from "./notification-state";
 import type {
   AdminLeadAction,
   AuditEvent,
@@ -63,6 +64,7 @@ export function migrateLeadDefaults<T extends AdmissionLead>(lead: T): T {
       (applicationKind === "womens-fee-support"
         ? { status: "pending" }
         : undefined),
+    adminNotification: lead.adminNotification ?? getAdminNotification(lead),
   };
 }
 

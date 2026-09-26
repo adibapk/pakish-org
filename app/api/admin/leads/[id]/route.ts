@@ -8,6 +8,11 @@ import {
   toAdminListLead,
   TransitionError,
 } from "@/lib/admission/store";
+import {
+  canRetryAdminNotification,
+  retryAdminNotification,
+} from "@/lib/admission/notify";
+import { getAdmissionLead } from "@/lib/admission/store";
 import { buildWelcomeAccessMessage } from "@/lib/admission/welcome";
 
 export const runtime = "nodejs";
@@ -24,6 +29,7 @@ const actionSchema = z.object({
     "approve-fee-support",
     "reject-fee-support",
     "preview-welcome",
+    "retry-notification",
   ]),
   note: z.string().trim().max(1000).optional(),
   rejectionReason: z.string().trim().max(1000).optional(),
@@ -60,6 +66,28 @@ export async function PATCH(request: Request, context: RouteContext) {
   }
 
   try {
+    if (parsed.data.action === "retry-notification") {
+      const existing = await getAdmissionLead(id);
+      if (!existing) {
+        return NextResponse.json({ error: "Lead not found." }, { status: 404 });
+      }
+      if (!canRetryAdminNotification(existing)) {
+        return NextResponse.json(
+          { error: "Notification already accepted; retry not allowed." },
+          { status: 409 }
+        );
+      }
+      const notifyResult = await retryAdminNotification(id);
+      const saved = await getAdmissionLead(id);
+      if (!saved) {
+        return NextResponse.json({ error: "Lead not found." }, { status: 404 });
+      }
+      return NextResponse.json({
+        lead: toAdminListLead(saved),
+        notification: notifyResult,
+      });
+    }
+
     const saved = await applyAdminLeadAction(
       id,
       parsed.data.action as AdminLeadAction,

@@ -1,7 +1,28 @@
-import type { AdmissionLead } from "./lead";
+import { randomUUID } from "crypto";
+import type { AdmissionLead, AdminNotificationRecord } from "./lead";
 import { TRAINING_PREFERENCE_OPTIONS } from "./constants";
-import { updateAdmissionLead } from "./store";
+import {
+  canRetryAdminNotification,
+  getAdminNotification,
+  legacyPatchFromNotification,
+  type AdminNotifyStatus,
+} from "./notification-state";
+import { mutateAdmissionLead, saveAdmissionLead, updateAdmissionLead } from "./store";
 import { SITE_URL } from "@/lib/seo";
+
+export {
+  canRetryAdminNotification,
+  getAdminNotification,
+} from "./notification-state";
+
+const NOTIFY_TIMEOUT_MS = 12_000;
+
+export interface NotifyResult {
+  ok: boolean;
+  status: AdminNotifyStatus;
+  providerMessageId?: string;
+  error?: string;
+}
 
 function preferenceLabel(value: AdmissionLead["trainingPreference"]) {
   return (
@@ -16,6 +37,72 @@ function escapeHtml(value: string): string {
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;");
+}
+
+export function resolveNotificationConfig() {
+  const apiKey = process.env.RESEND_API_KEY?.trim();
+  const to =
+    process.env.ADMISSION_NOTIFY_TO?.trim() ||
+    process.env.BILLING_EMAIL?.trim() ||
+    "billing@pakish.org";
+  const from =
+    process.env.RESEND_FROM_EMAIL?.trim() ||
+    "Pakish Institute <onboarding@resend.dev>";
+  return { apiKey, to, from, configured: Boolean(apiKey) };
+}
+
+async function persistNotificationState(
+  leadId: string,
+  record: AdminNotificationRecord,
+  auditAction?: string
+): Promise<void> {
+  await mutateAdmissionLead(leadId, async (lead) => {
+    const attemptCount =
+      (getAdminNotification(lead)?.attemptCount ?? 0) +
+      (record.attemptCount ? 0 : 1);
+    const merged: AdminNotificationRecord = {
+      ...record,
+      attemptCount: record.attemptCount ?? attemptCount,
+    };
+    const patch = legacyPatchFromNotification(merged);
+    const next: AdmissionLead = {
+      ...lead,
+      ...patch,
+      updatedAt: new Date().toISOString(),
+    };
+    if (auditAction) {
+      next.auditEvents = [
+        ...(lead.auditEvents ?? []),
+        {
+          id: `aud_${randomUUID().replace(/-/g, "").slice(0, 12)}`,
+          at: new Date().toISOString(),
+          actor: auditAction.startsWith("retry") ? "admin" : "system",
+          action: auditAction,
+          next: { adminNotifyStatus: merged.status },
+          note: merged.lastError,
+        },
+      ];
+    }
+    return saveAdmissionLead(next);
+  });
+}
+
+function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
+  return new Promise((resolve, reject) => {
+    const timer = setTimeout(
+      () => reject(new Error(`Notification timed out after ${ms}ms`)),
+      ms
+    );
+    promise
+      .then((value) => {
+        clearTimeout(timer);
+        resolve(value);
+      })
+      .catch((error) => {
+        clearTimeout(timer);
+        reject(error);
+      });
+  });
 }
 
 export function buildAdminEmailHtml(lead: AdmissionLead): string {
@@ -105,77 +192,172 @@ export function buildAdminEmailText(lead: AdmissionLead): string {
   ].join("\n");
 }
 
-/**
- * Notify admin via Resend when configured.
- * Falls back to server log so local/dev still works without keys.
- */
-export async function notifyAdminOfAdmission(
-  lead: AdmissionLead
-): Promise<{ ok: boolean; channel: "email" | "log-fallback"; error?: string }> {
-  const apiKey = process.env.RESEND_API_KEY;
-  const to =
-    process.env.ADMISSION_NOTIFY_TO ||
-    process.env.BILLING_EMAIL ||
-    "billing@pakish.org";
-  const from =
-    process.env.RESEND_FROM_EMAIL ||
-    "Pakish Institute <onboarding@resend.dev>";
+export function buildSyntheticQaEmail(lead: AdmissionLead) {
+  const subject = `[Admission QA] Synthetic admin notification test (${lead.id})`;
+  const text = [
+    "Pakish Institute — synthetic admission-admin QA message.",
+    "This is an internal delivery test only. No learner was contacted.",
+    "",
+    `Request ID: ${lead.id}`,
+    `Created at: ${lead.createdAt}`,
+  ].join("\n");
+  const html = `<p>Pakish Institute — <strong>synthetic admission-admin QA message</strong>.</p>
+<p>This is an internal delivery test only. No learner was contacted.</p>
+<p>Request ID: ${escapeHtml(lead.id)}</p>`;
+  return { subject, text, html };
+}
 
+async function sendViaResend(
+  lead: AdmissionLead,
+  options?: { qaOnly?: boolean }
+): Promise<NotifyResult> {
+  const { apiKey, to, from } = resolveNotificationConfig();
   if (!apiKey) {
-    console.info("[admission-notify:fallback]", {
-      to,
-      requestId: lead.id,
-      course: lead.courseTitle,
-      name: lead.fullName,
-    });
-    await updateAdmissionLead(lead.id, {
-      adminNotifiedAt: new Date().toISOString(),
-      adminNotifyChannel: "log-fallback",
-    });
-    return { ok: true, channel: "log-fallback" };
+    return { ok: false, status: "not-configured" };
   }
+
+  const attemptedAt = new Date().toISOString();
+  await persistNotificationState(lead.id, {
+    status: "attempted",
+    attemptedAt,
+  });
+
+  const qa = options?.qaOnly ? buildSyntheticQaEmail(lead) : null;
+  const subject = qa
+    ? qa.subject
+    : `[Admission] ${lead.fullName} — ${lead.courseTitle} (${lead.id})`;
 
   try {
     const { Resend } = await import("resend");
     const resend = new Resend(apiKey);
-    const { data, error } = await resend.emails.send(
+    const sendPromise = resend.emails.send(
       {
         from,
         to: [to],
-        replyTo: lead.email || undefined,
-        subject: `[Admission] ${lead.fullName} — ${lead.courseTitle} (${lead.id})`,
-        html: buildAdminEmailHtml(lead),
-        text: buildAdminEmailText(lead),
+        replyTo: qa ? undefined : lead.email || undefined,
+        subject,
+        html: qa ? qa.html : buildAdminEmailHtml(lead),
+        text: qa ? qa.text : buildAdminEmailText(lead),
       },
       { idempotencyKey: `admission-notify/${lead.id}` }
     );
 
+    const { data, error } = await withTimeout(sendPromise, NOTIFY_TIMEOUT_MS);
+
     if (error) {
+      const record: AdminNotificationRecord = {
+        status: "failed",
+        attemptedAt,
+        lastError: error.message,
+      };
+      await persistNotificationState(lead.id, record, "admin-notify-failed");
       console.error("[admission-notify:resend-error]", error.message);
-      await updateAdmissionLead(lead.id, {
-        adminNotifiedAt: new Date().toISOString(),
-        adminNotifyChannel: "log-fallback",
-      });
-      return { ok: false, channel: "log-fallback", error: error.message };
+      return { ok: false, status: "failed", error: error.message };
     }
 
+    const acceptedAt = new Date().toISOString();
+    const record: AdminNotificationRecord = {
+      status: "provider-accepted",
+      attemptedAt,
+      acceptedAt,
+      providerMessageId: data?.id,
+    };
+    await persistNotificationState(lead.id, record, "admin-notify-accepted");
     console.info("[admission-notify:sent]", {
-      id: data?.id,
-      to,
+      providerMessageId: data?.id,
       requestId: lead.id,
     });
-    await updateAdmissionLead(lead.id, {
-      adminNotifiedAt: new Date().toISOString(),
-      adminNotifyChannel: "email",
-    });
-    return { ok: true, channel: "email" };
+    return {
+      ok: true,
+      status: "provider-accepted",
+      providerMessageId: data?.id,
+    };
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown error";
+    const record: AdminNotificationRecord = {
+      status: "failed",
+      attemptedAt,
+      lastError: message,
+    };
+    await persistNotificationState(lead.id, record, "admin-notify-failed");
     console.error("[admission-notify:exception]", message);
-    await updateAdmissionLead(lead.id, {
-      adminNotifiedAt: new Date().toISOString(),
-      adminNotifyChannel: "log-fallback",
-    });
-    return { ok: false, channel: "log-fallback", error: message };
+    return { ok: false, status: "failed", error: message };
   }
+}
+
+/**
+ * Notify admin via Resend when configured; otherwise log-only (dev/local).
+ * Never sets acceptedAt unless the provider accepted the send.
+ */
+export async function notifyAdminOfAdmission(
+  lead: AdmissionLead,
+  options?: { qaOnly?: boolean; force?: boolean }
+): Promise<NotifyResult> {
+  const { getAdmissionLead } = await import("./store");
+  const current = (await getAdmissionLead(lead.id)) ?? lead;
+  const existing = getAdminNotification(current);
+  if (
+    !options?.force &&
+    existing?.status === "provider-accepted" &&
+    existing.providerMessageId
+  ) {
+    return {
+      ok: true,
+      status: "provider-accepted",
+      providerMessageId: existing.providerMessageId,
+    };
+  }
+
+  const { to, configured } = resolveNotificationConfig();
+
+  if (!configured) {
+    console.info("[admission-notify:log-only]", {
+      to,
+      requestId: current.id,
+      course: current.courseTitle,
+    });
+    const record: AdminNotificationRecord = {
+      status: "logged-only",
+      attemptedAt: new Date().toISOString(),
+    };
+    await persistNotificationState(current.id, record, "admin-notify-log-only");
+    return { ok: true, status: "logged-only" };
+  }
+
+  return sendViaResend(current, options);
+}
+
+export async function retryAdminNotification(
+  leadId: string
+): Promise<NotifyResult> {
+  const { getAdmissionLead } = await import("./store");
+  const lead = await getAdmissionLead(leadId);
+  if (!lead) {
+    throw new Error("LEAD_NOT_FOUND");
+  }
+  if (!canRetryAdminNotification(lead)) {
+    throw new Error("NOTIFICATION_RETRY_NOT_ALLOWED");
+  }
+  await persistNotificationState(
+    leadId,
+    {
+      status: "attempted",
+      attemptedAt: new Date().toISOString(),
+      attemptCount: (getAdminNotification(lead)?.attemptCount ?? 0) + 1,
+    },
+    "retry-admin-notification"
+  );
+  const refreshed = await getAdmissionLead(leadId);
+  if (!refreshed) {
+    throw new Error("LEAD_NOT_FOUND");
+  }
+  return notifyAdminOfAdmission(refreshed, { force: true });
+}
+
+/** @internal test helper */
+export async function patchNotificationForTest(
+  id: string,
+  patch: Partial<AdmissionLead>
+) {
+  return updateAdmissionLead(id, patch);
 }

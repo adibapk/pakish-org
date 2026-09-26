@@ -22,6 +22,24 @@ export type LeadStatus =
 
 export type LeadPaymentStatus = "Pending" | "Submitted" | "Verified";
 
+/** Explicit admin email notification lifecycle — do not infer delivery from API acceptance. */
+export type AdminNotifyStatus =
+  | "not-configured"
+  | "logged-only"
+  | "attempted"
+  | "provider-accepted"
+  | "failed";
+
+export interface AdminNotificationRecord {
+  status: AdminNotifyStatus;
+  attemptedAt?: string;
+  /** Set only when Resend (or provider) accepted the send request. */
+  acceptedAt?: string;
+  providerMessageId?: string;
+  lastError?: string;
+  attemptCount?: number;
+}
+
 export interface PaymentProof {
   referenceNumber?: string;
   /** Relative path under .data store, or future object-storage URL */
@@ -60,8 +78,14 @@ export interface AdmissionLead extends AdmissionLeadLifecycle {
   paymentProof?: PaymentProof;
   source: "web-admission-form";
   integrations: LeadIntegrations;
-  /** Admin notification tracking */
+  /** Admin notification tracking (explicit; see AdminNotificationRecord). */
+  adminNotification?: AdminNotificationRecord;
+  /**
+   * @deprecated Use adminNotification.acceptedAt with status provider-accepted.
+   * Kept for backward-compatible reads during migration.
+   */
   adminNotifiedAt?: string;
+  /** @deprecated Use adminNotification.status. */
   adminNotifyChannel?: "email" | "log-fallback";
   /** Soft spam metadata (never returned to client) */
   meta?: {

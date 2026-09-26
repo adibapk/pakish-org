@@ -12,6 +12,10 @@ import { TRAINING_PREFERENCE_OPTIONS } from "@/lib/admission/constants";
 import type { AdmissionLead } from "@/lib/admission/lead";
 import type { AdminLeadAction } from "@/lib/admission/lifecycle";
 import {
+  canRetryAdminNotification,
+  getAdminNotification,
+} from "@/lib/admission/notification-state";
+import {
   getTransitionBlockers,
   listAvailableActions,
   migrateLeadDefaults,
@@ -74,7 +78,11 @@ export function AdminLeadsDashboard({ initialLeads }: AdminLeadsDashboardProps) 
     router.refresh();
   }
 
-  async function runAction(id: string, action: AdminLeadAction, extra?: Record<string, string>) {
+  async function runAction(
+    id: string,
+    action: AdminLeadAction | "retry-notification",
+    extra?: Record<string, string>
+  ) {
     setSavingId(id);
     setError(null);
     try {
@@ -202,6 +210,39 @@ export function AdminLeadsDashboard({ initialLeads }: AdminLeadsDashboardProps) 
                         {migrated.welcomeStage}
                       </dd>
                     </div>
+                    <div className="sm:col-span-2">
+                      <dt className="text-muted-foreground">Admin notification</dt>
+                      <dd className="space-y-1">
+                        {(() => {
+                          const notification = getAdminNotification(migrated);
+                          if (!notification) {
+                            return <span>Not attempted</span>;
+                          }
+                          return (
+                            <>
+                              <span>
+                                {notification.status}
+                                {notification.acceptedAt
+                                  ? ` · accepted ${formatDate(notification.acceptedAt)}`
+                                  : notification.attemptedAt
+                                    ? ` · attempted ${formatDate(notification.attemptedAt)}`
+                                    : ""}
+                              </span>
+                              {notification.providerMessageId && (
+                                <span className="block font-mono text-xs text-muted-foreground">
+                                  Provider ID: {notification.providerMessageId}
+                                </span>
+                              )}
+                              {notification.lastError && (
+                                <span className="block text-destructive">
+                                  {notification.lastError}
+                                </span>
+                              )}
+                            </>
+                          );
+                        })()}
+                      </dd>
+                    </div>
                     {lead.applicationKind !== "womens-fee-support" && lead.message && (
                       <div className="sm:col-span-2">
                         <dt className="text-muted-foreground">Message</dt>
@@ -259,6 +300,16 @@ export function AdminLeadsDashboard({ initialLeads }: AdminLeadsDashboardProps) 
                   )}
 
                   <div className="flex flex-wrap gap-2">
+                    {canRetryAdminNotification(migrated) && (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        disabled={savingId === lead.id}
+                        onClick={() => void runAction(lead.id, "retry-notification")}
+                      >
+                        Retry admin notification
+                      </Button>
+                    )}
                     {actions.map((action) => (
                       <Button
                         key={action}
