@@ -74,6 +74,7 @@ def patch_built_text_branding() -> None:
         ("LearnHouse, Inc.", "Pakish Institute"),
         ("Welcome back to LearnHouse.", "Welcome back to Pakish Institute."),
         ('alt="LearnHouse"', 'alt="Pakish Institute"'),
+        ('alt="Learnhouse"', 'alt="Pakish Institute"'),
         (
             "Don't have an account? Sign up",
             "Academy access is issued after admission and enrollment confirmation.",
@@ -283,6 +284,11 @@ def patch_org_menu() -> None:
     content = docker_exec(["cat", path]).stdout
     updated = content.replace(
         '                      alt="LearnHouse"\n'
+        '                      style={{ width: \'auto\', height: \'100%\' }}',
+        "                      alt={org?.name || 'Pakish Institute'}\n"
+        "                      style={{ width: 'auto', height: '100%' }}",
+    ).replace(
+        '                      alt="Learnhouse"\n'
         '                      style={{ width: \'auto\', height: \'100%\' }}',
         "                      alt={org?.name || 'Pakish Institute'}\n"
         "                      style={{ width: 'auto', height: '100%' }}",
