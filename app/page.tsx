@@ -10,7 +10,6 @@ import { HeroSection } from "@/components/layout/sections/hero";
 import { HomeJsonLd } from "@/components/seo/home-json-ld";
 import { TechTrustSection } from "@/components/layout/sections/tech-trust";
 import { LearningOptionsSection } from "@/components/layout/sections/learning-options";
-import { TeamSection } from "@/components/layout/sections/team";
 import { TestimonialSection } from "@/components/layout/sections/testimonial";
 import { WomensEmpowermentPreviewSection } from "@/components/layout/sections/womens-empowerment-preview";
 import { createPageMetadata } from "@/lib/seo";
@@ -43,7 +42,6 @@ export default function Home() {
       <LearningOptionsSection />
       <EnrollmentSection />
       <TestimonialSection />
-      <TeamSection />
       <WomensEmpowermentPreviewSection />
       <Suspense fallback={null}>
         <ContactSection />
