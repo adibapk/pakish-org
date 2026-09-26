@@ -1,8 +1,9 @@
-import { BenefitsSection } from "@/components/layout/sections/benefits";
-import { CommunitySection } from "@/components/layout/sections/community";
+import { Suspense } from "react";
 import { ContactSection } from "@/components/layout/sections/contact";
-import { CurriculumSection } from "@/components/layout/sections/curriculum";
+import { CourseGoalsSection } from "@/components/layout/sections/course-goals";
+import { EnrollmentSection } from "@/components/layout/sections/enrollment";
 import { FAQSection } from "@/components/layout/sections/faq";
+import { FeaturedCoursesSection } from "@/components/layout/sections/featured-courses";
 import { FeaturesSection } from "@/components/layout/sections/features";
 import { FooterSection } from "@/components/layout/sections/footer";
 import { GlimpsesSection } from "@/components/layout/sections/glimpses";
@@ -10,24 +11,24 @@ import { HeroSection } from "@/components/layout/sections/hero";
 import { HomeJsonLd } from "@/components/seo/home-json-ld";
 import { TechTrustSection } from "@/components/layout/sections/tech-trust";
 import { LearningOptionsSection } from "@/components/layout/sections/learning-options";
-import { PathwaysSection } from "@/components/layout/sections/pathways";
 import { TeamSection } from "@/components/layout/sections/team";
 import { TestimonialSection } from "@/components/layout/sections/testimonial";
+import { WomensEmpowermentPreviewSection } from "@/components/layout/sections/womens-empowerment-preview";
 import { createPageMetadata } from "@/lib/seo";
 
 export const metadata = createPageMetadata({
-  title: "IT & AI Courses for Women in Pakistan | Pakish.ORG",
+  title: "Professional IT & AI Courses in Pakistan | Pakish Institute",
   description:
-    "Join practical IT, AI and freelancing courses for women in Pakistan—at Gulshan-e-Iqbal Karachi, Lodhran or live online. Fee-based; need-based support.",
+    "Build practical skills in AI, web development, WordPress, cloud and freelancing through live online, campus and team training at Pakish Institute.",
   path: "/",
   image: "/og/home.png",
   absoluteTitle: true,
   keywords: [
-    "IT courses for women in Pakistan",
-    "AI courses for women in Pakistan",
-    "online IT courses for women",
-    "freelancing courses for women",
-    "women in tech training Pakistan",
+    "professional IT and AI courses in Pakistan",
+    "practical AI courses in Pakistan",
+    "online IT courses in Pakistan",
+    "professional technology training Pakistan",
+    "web development and freelancing courses Pakistan",
   ],
 });
 
@@ -37,16 +38,18 @@ export default function Home() {
       <HomeJsonLd />
       <HeroSection />
       <TechTrustSection />
-      <BenefitsSection />
       <FeaturesSection />
-      <CurriculumSection />
+      <CourseGoalsSection />
+      <FeaturedCoursesSection />
       <LearningOptionsSection />
-      <PathwaysSection />
+      <EnrollmentSection />
       <TestimonialSection />
       <GlimpsesSection />
       <TeamSection />
-      <CommunitySection />
-      <ContactSection />
+      <WomensEmpowermentPreviewSection />
+      <Suspense fallback={null}>
+        <ContactSection />
+      </Suspense>
       <FAQSection />
       <FooterSection />
     </>

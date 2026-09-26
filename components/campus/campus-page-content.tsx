@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/card";
 import { FooterSection } from "@/components/layout/sections/footer";
 import { CampusJsonLd } from "@/components/seo/campus-json-ld";
+import { FuturePlanCampusContent } from "@/components/campus/future-plan-campus-content";
 import type { CampusData } from "@/lib/campus-data";
 import { Check, Gift, MapPin } from "lucide-react";
 import Link from "next/link";
@@ -18,6 +19,10 @@ interface CampusPageContentProps {
 }
 
 export function CampusPageContent({ campus }: CampusPageContentProps) {
+  if (campus.status === "planned") {
+    return <FuturePlanCampusContent campus={campus} />;
+  }
+
   return (
     <div className="container mx-auto px-4 py-8 sm:py-12">
       <CampusJsonLd campus={campus} />
@@ -38,7 +43,7 @@ export function CampusPageContent({ campus }: CampusPageContentProps) {
 
           <div className="flex flex-col items-center justify-center gap-4 pt-2 sm:flex-row">
             <Button asChild>
-              <Link href={`/admission?type=fee&campus=${campus.slug}`}>
+              <Link href={`/admission?campus=${campus.slug}`}>
                 Apply for Admission
               </Link>
             </Button>
@@ -97,9 +102,8 @@ export function CampusPageContent({ campus }: CampusPageContentProps) {
             Campus Equipment Needs
           </h2>
           <p className="mx-auto mb-10 max-w-2xl text-center text-muted-foreground">
-            Help us equip the {campus.shortName} campus so more women and youth
-            can access quality IT and AI training in a safe, fully functional
-            learning environment.
+            Equipment contributions help us maintain a fully functional learning
+            environment for scheduled cohorts at the {campus.shortName} campus.
           </p>
 
           <div className="flex flex-col gap-6 md:flex-row">
@@ -111,7 +115,7 @@ export function CampusPageContent({ campus }: CampusPageContentProps) {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
-                {campus.needs.map(({ item, quantity }) => (
+                {(campus.needs ?? []).map(({ item, quantity }) => (
                   <div key={item} className="flex items-start gap-2">
                     <Check className="mt-0.5 size-5 shrink-0 text-primary" />
                     <span>{quantity ? `${quantity} ${item}` : item}</span>
@@ -131,7 +135,7 @@ export function CampusPageContent({ campus }: CampusPageContentProps) {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
-                {campus.donated.map((item) => (
+                {(campus.donated ?? []).map((item) => (
                   <div key={item} className="flex items-start gap-2">
                     <Check className="mt-0.5 size-5 shrink-0 text-primary" />
                     <span>{item}</span>
@@ -142,8 +146,8 @@ export function CampusPageContent({ campus }: CampusPageContentProps) {
           </div>
 
           <div className="mt-10 text-center">
-            <Button asChild size="lg">
-              <Link href="/#contact">Donate or Sponsor Equipment</Link>
+            <Button asChild size="lg" variant="secondary">
+              <Link href="/#contact">Discuss Equipment Support</Link>
             </Button>
           </div>
         </div>

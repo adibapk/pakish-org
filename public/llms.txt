@@ -1,29 +1,37 @@
-# Pakish.ORG
+# Pakish Institute (pakish.org)
 
-> Pakish.ORG provides practical, women-focused IT, AI, web development, and digital freelancing training in Pakistan.
-
-Regular admission is fee-based. A limited number of free or subsidized seats may be available to eligible learners under the Fi Sabilillah quota, subject to need review and available support.
+> Pakish Institute is a commercial, career-focused technology training institute backed by Pakish Group (Est. 1999). It offers practical IT, AI, web development, cloud, WordPress, and freelancing courses for students, professionals, freelancers, teams, and businesses in Pakistan.
 
 ## Primary pages
 
-- [Homepage](https://pakish.org/): programs, learning modes, mission, FAQs, and contact details
-- [Admission](https://pakish.org/admission): regular fee-based admission and Fi Sabilillah subsidy review
-- [Gulshan-e-Iqbal campus](https://pakish.org/campus/gulshan-e-iqbal): AI and IT courses for women in Karachi
-- [Lodhran campus](https://pakish.org/campus/lodhran): IT and AI courses for women in Dunyapur and South Punjab
-- [Insights](https://pakish.org/insights): sourced stories and practical guides about women in tech, AI, freelancing, and remote careers in Pakistan
+- [Homepage](https://pakish.org/): commercial institute overview, course goals, catalogue, training options, and FAQs
+- [Courses](https://pakish.org/courses): six professional programs with fees or custom quotes
+- [Admission](https://pakish.org/admission): paid course admission and counseling; Academy access is issued after enrollment confirmation
+- [Payment methods](https://pakish.org/payment-methods): course fee payment options
+- [Women's Empowerment](https://pakish.org/womens-empowerment): gatherings, mentorship, and limited need-based fee support for eligible women
+- [Gulshan-e-Iqbal campus](https://pakish.org/campus/gulshan-e-iqbal): IT and AI courses in Karachi
+- [Insights](https://pakish.org/insights): practical guides about AI, careers, web, cloud, and freelancing in Pakistan
 - [Privacy notice](https://pakish.org/privacy): how admission and contact information is handled
+- [Academy](https://academy.pakish.org): authenticated learning platform (login required; invite-only registration)
 
-## Programs
+## Canonical courses
 
-- 1-Month Fast-Track: beginner freelancing, Canva, AI-assisted content, client communication, and payment safety
-- 3-Month Professional: WordPress, social media management, SEO, landing pages, and AI-assisted marketing workflows
-- 6-Month Mastery: Next.js, React, APIs, version control, deployment, and responsible Generative AI integration
+- AI Productivity & Automation
+- AI for Business & Workplace Automation
+- Modern Full Stack Web Development with AI
+- Professional WordPress & WooCommerce Development
+- Cloud, Servers & DevOps Fundamentals
+- AI-Powered Freelancing Career
 
 ## Learning modes
 
-- In person at Gulshan-e-Iqbal, Main University Road, Karachi
-- In person at Chak No. 319, Dunyapur, Lodhran
-- Live online for learners across Pakistan
+- Live online (Google Meet) — individual, group, office/team, and customized workshops
+- In person at Gulshan-e-Iqbal, Main University Road, Karachi (when cohorts are scheduled)
+- Office / team training and customized workshops at client locations
+
+## Future campus planning
+
+Pakish Institute is assessing a future digital-skills campus at Chak No. 319, Dunyapur, Lodhran. There are currently no classes, admissions, or opening date at Lodhran.
 
 ## Contact
 
@@ -31,4 +39,4 @@ Regular admission is fee-based. A limited number of free or subsidized seats may
 - Phone and WhatsApp: +92 300 8222456
 - Facebook: https://www.facebook.com/pakishinstitute/
 
-Content is published in English for a Pakistani audience. Treat income, employment, and client outcomes as variable; Pakish.ORG provides training and mentorship but does not guarantee jobs or earnings.
+Content is published in English for a Pakistani audience. Treat income, employment, and client outcomes as variable; Pakish Institute provides training and mentorship but does not guarantee jobs or earnings.

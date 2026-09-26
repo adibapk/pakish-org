@@ -186,7 +186,7 @@ export const freelancingGuideArticle: InsightArticle = {
     {
       type: "p",
       content:
-        "Self-teaching works for some, but structured programs reduce wasted months. [Pakish.ORG](/) offers fee-based programs with limited need-based free or subsidized seats backed by Pakish Group (Est. 1999) through the Fi Sabilillah Initiative — at our [Karachi Gulshan-e-Iqbal campus](/campus/gulshan-e-iqbal), [Lodhran campus](/campus/lodhran), and online via Zoom. You learn alongside peers, receive mentor feedback, and connect to a community that understands Pakistani women's specific challenges.",
+        "Self-teaching works for some, but structured programs reduce wasted months. [Pakish Institute](/) offers professional freelancing and AI programs backed by Pakish Group (Est. 1999) — at our [Karachi Gulshan-e-Iqbal campus](/campus/gulshan-e-iqbal) and live online. You learn alongside peers, receive mentor feedback, and can explore the [Women's Empowerment initiative](/womens-empowerment) for community support and limited fee assistance.",
     },
     {
       type: "p",
@@ -200,7 +200,7 @@ export const freelancingGuideArticle: InsightArticle = {
     {
       type: "p",
       content:
-        "Browse [training programs](/#courses), read achievement stories for motivation ([Dr. Saira Osama's AI health-tech journey](/insights/saira-osama-ai-stroke-care-cerebrocure)), or [contact our team](/#contact) to discuss enrollment, schedule, and subsidized options. Your first client is closer than you think — but only after your first committed week of learning.",
+        "Browse [training programs](/courses), read achievement stories for motivation ([Dr. Saira Osama's AI health-tech journey](/insights/saira-osama-ai-stroke-care-cerebrocure)), or [apply for admission](/admission) to discuss enrollment and schedule. Your first client is closer than you think — but only after your first committed week of learning.",
     },
   ],
   faq: [
@@ -221,9 +221,9 @@ export const freelancingGuideArticle: InsightArticle = {
         "No. Clients prioritize portfolios, reviews, and delivery speed. Structured short courses and real project samples often matter more than formal degrees for entry-level freelance work.",
     },
     {
-      question: "Where can I get subsidized IT training in Pakistan?",
+      question: "Where can women get practical IT training in Pakistan?",
       answer:
-        "Pakish.ORG offers fee-based IT, AI, and freelancing programs at Gulshan-e-Iqbal, Karachi and Lodhran campuses and online via Zoom. Limited free or subsidized seats are available for eligible learners under the Fi Sabilillah quota.",
+        "Pakish Institute offers professional IT, AI, and freelancing programs at Gulshan-e-Iqbal, Karachi, live online, and through team training. Eligible women may request limited need-based fee support through the [Women's Empowerment initiative](/womens-empowerment).",
     },
     {
       question: "How long until my first freelance income?",

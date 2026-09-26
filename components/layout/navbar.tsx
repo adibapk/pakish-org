@@ -25,6 +25,7 @@ import { Button } from "../ui/button";
 import Link from "next/link";
 import { ToggleTheme } from "./toogle-theme";
 import { cn } from "@/lib/utils";
+import { ACADEMY_LOGIN_URL } from "@/lib/academy";
 import { getAllCourses } from "@/lib/courses";
 
 interface RouteProps {
@@ -44,18 +45,15 @@ const campusLinks: CampusLinkProps[] = [
     label: "Karachi",
     description: "Gulshan-e-Iqbal, Main University Road — IT & AI training in Karachi.",
   },
-  {
-    href: "/campus/lodhran",
-    label: "Lodhran",
-    description: "Chak No. 319, Dunyapur — empowering South Punjab.",
-  },
 ];
 
 const routeList: RouteProps[] = [
-  { href: "/insights", label: "Insights" },
   { href: "/courses", label: "Courses" },
+  { href: "#learning-options", label: "Training Options" },
+  { href: "/womens-empowerment", label: "Women's Empowerment" },
+  { href: "/insights", label: "Insights" },
   { href: "/payment-methods", label: "Payment Methods" },
-  { href: "#benefits", label: "Mission" },
+  { href: ACADEMY_LOGIN_URL, label: "Academy Login" },
   { href: "#faq", label: "FAQ" },
 ];
 
@@ -138,7 +136,14 @@ export const Navbar = () => {
                       variant="ghost"
                       className="justify-start text-base"
                     >
-                      <Link href={resolveHref(href)}>{label}</Link>
+                      <Link
+                        href={href.startsWith("http") ? href : resolveHref(href)}
+                        {...(href.startsWith("http")
+                          ? { target: "_blank", rel: "noopener noreferrer" }
+                          : {})}
+                      >
+                        {label}
+                      </Link>
                     </Button>
                   ))}
                 </div>
@@ -229,11 +234,14 @@ export const Navbar = () => {
                 <NavigationMenuItem key={href}>
                   <NavigationMenuLink asChild>
                     <Link
-                      href={resolveHref(href)}
+                      href={href.startsWith("http") ? href : resolveHref(href)}
                       className={cn(
                         navigationMenuTriggerStyle(),
                         "bg-card text-base"
                       )}
+                      {...(href.startsWith("http")
+                        ? { target: "_blank", rel: "noopener noreferrer" }
+                        : {})}
                     >
                       {label}
                     </Link>

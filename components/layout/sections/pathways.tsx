@@ -82,10 +82,9 @@ export const PathwaysSection = () => {
           Ready to choose a practical starting point?
         </h3>
         <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">
-          Whether you need fee details, subsidized quota eligibility review,
-          campus directions, or a one-on-one counseling call to choose the right
-          track — our team is here to help Pakistani women enter remote IT and
-          AI careers.
+          Whether you need fee details, campus directions, or a one-on-one
+          counseling call to choose the right course — our team is here to help
+          you start practical IT and AI training.
         </p>
         <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <Button asChild size="lg">

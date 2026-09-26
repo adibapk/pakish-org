@@ -7,22 +7,28 @@ export interface OgCard {
 
 export const OG_CARDS: Record<string, OgCard> = {
   home: {
-    eyebrow: "Women-focused technology training",
-    title: "IT & AI Courses for Women in Pakistan",
-    description: "Karachi · Lodhran · Live online",
+    eyebrow: "Professional technology training",
+    title: "Professional IT & AI Courses in Pakistan",
+    description: "Karachi · Live online · Team training",
     accent: "#34d399",
   },
   admission: {
-    eyebrow: "Pakish.ORG admission",
-    title: "Start Your IT, AI or Freelancing Journey",
-    description: "Regular admission · Need-based support review",
+    eyebrow: "Pakish Institute admission",
+    title: "Apply for Professional IT & AI Courses",
+    description: "Course counseling · Transparent fees · Academy access",
     accent: "#5eead4",
   },
   privacy: {
     eyebrow: "Trust & transparency",
-    title: "How Pakish.ORG Handles Application Information",
-    description: "Clear choices for WhatsApp, email, and subsidy review",
+    title: "How Pakish Institute Handles Application Information",
+    description: "Clear choices for admission and fee-support review",
     accent: "#a7f3d0",
+  },
+  "womens-empowerment": {
+    eyebrow: "Pakish Institute initiative",
+    title: "Women's Empowerment Through Digital Skills",
+    description: "Gatherings · Mentorship · Limited fee support",
+    accent: "#86efac",
   },
   "payment-methods": {
     eyebrow: "Course fee payment",
@@ -38,14 +44,14 @@ export const OG_CARDS: Record<string, OgCard> = {
   },
   "campus-gulshan-e-iqbal": {
     eyebrow: "Gulshan-e-Iqbal · Main University Road",
-    title: "AI & IT Courses for Women in Karachi",
-    description: "Mentor-led learning at Pakish.ORG",
+    title: "IT & AI Courses in Gulshan-e-Iqbal, Karachi",
+    description: "Professional training at Pakish Institute",
     accent: "#2dd4bf",
   },
   "campus-lodhran": {
-    eyebrow: "Dunyapur · Lodhran",
-    title: "IT & AI Courses for Women in South Punjab",
-    description: "Practical skills · Local mentorship · Remote careers",
+    eyebrow: "Future plan · Lodhran",
+    title: "Planned Lodhran Digital Skills Campus",
+    description: "Land secured · Planning in progress · Not yet operational",
     accent: "#84cc16",
   },
   "sehat-kahani-women-led-healthtech-series-a": {

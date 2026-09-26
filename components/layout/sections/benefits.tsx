@@ -10,16 +10,16 @@ interface BenefitsProps {
 
 const benefitList: BenefitsProps[] = [
   {
-    icon: "Heart",
-    title: "Fi Sabilillah Initiative",
+    icon: "Building2",
+    title: "Backed by Pakish Group Since 1999",
     description:
-      "A non-profit, family-led mission to uplift women and youth through accessible technology education.",
+      "Decades of software industry experience inform every curriculum, project, and mentor conversation.",
   },
   {
     icon: "Building2",
     title: "Supported Learning Environments",
     description:
-      "Campuses in Gulshan-e-Iqbal, Karachi and Lodhran offer supported learning environments with internet, computers, and mentorship for enrolled students.",
+      "Our Gulshan-e-Iqbal, Karachi campus offers equipped workspaces with internet, computers, and mentorship when cohorts are scheduled.",
   },
   {
     icon: "Users",
@@ -29,35 +29,34 @@ const benefitList: BenefitsProps[] = [
   },
   {
     icon: "Laptop",
-    title: "Work-From-Home Ready",
+    title: "Career-Ready Delivery",
     description:
-      "Every program is designed to help you earn remotely through freelancing, digital marketing, or development.",
+      "Programs are designed for practical skills — freelancing, development, AI productivity, and team upskilling.",
   },
 ];
 
 export const BenefitsSection = () => {
   return (
     <section id="benefits" className="container py-16 sm:py-24">
-      <div className="grid lg:grid-cols-2 place-items-center lg:gap-24">
+      <div className="grid place-items-center gap-12 lg:grid-cols-2 lg:gap-24">
         <div>
-          <p className="text-lg text-primary mb-2 tracking-wider">About</p>
+          <p className="mb-2 text-lg tracking-wider text-primary">About</p>
 
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Our Mission (Fi Sabilillah Initiative)
+          <h2 className="mb-4 text-3xl font-bold md:text-4xl">
+            Practical Training for Modern Tech Careers
           </h2>
-          <p className="text-xl text-muted-foreground mb-8">
-            We are transforming decades of software experience into a community
-            empowerment project. Professional programs, mentorship, and the Fi
-            Sabilillah need-based quota help bridge the tech gender gap in
-            Pakistan.
+          <p className="text-xl text-muted-foreground">
+            Pakish Institute turns decades of software experience into
+            instructor-led programs for students, professionals, freelancers,
+            teams, and businesses across Pakistan.
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-4 w-full">
+        <div className="grid w-full gap-4 lg:grid-cols-2">
           {benefitList.map(({ icon, title, description }, index) => (
             <Card
               key={title}
-              className="bg-muted/50 dark:bg-card hover:bg-background hover:shadow-md transition-all delay-75 group/number"
+              className="bg-muted/50 dark:bg-card transition-all hover:bg-background hover:shadow-md"
             >
               <CardHeader>
                 <div className="flex justify-between">
@@ -67,7 +66,7 @@ export const BenefitsSection = () => {
                     color="hsl(var(--primary))"
                     className="mb-6 text-primary"
                   />
-                  <span className="text-5xl text-muted-foreground/15 font-medium transition-all delay-75 group-hover/number:text-muted-foreground/30">
+                  <span className="text-5xl font-medium text-muted-foreground/15">
                     0{index + 1}
                   </span>
                 </div>

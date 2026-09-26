@@ -120,15 +120,15 @@ export function InsightArticlePage({ article }: InsightArticlePageProps) {
             <h2 className="text-2xl font-bold">Ready to build your tech career?</h2>
             <p className="mx-auto mt-3 max-w-lg text-muted-foreground">
               Explore professional IT &amp; AI programs at Gulshan-e-Iqbal,
-              Karachi, Lodhran, or online via Zoom. Contact us for enrollment
-              details or subsidized quota eligibility review.
+              Karachi, live online, or team training formats. Contact admissions for
+              enrollment details and course fees.
             </p>
             <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Button asChild>
-                <Link href="/#courses">Explore Courses</Link>
+                <Link href="/courses">Explore Courses</Link>
               </Button>
               <Button asChild variant="secondary">
-                <Link href="/#contact">Contact Us</Link>
+                <Link href="/admission">Apply for Admission</Link>
               </Button>
             </div>
           </section>

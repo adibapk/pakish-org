@@ -1,4 +1,5 @@
 import { CoursesIndexContent } from "@/components/courses/courses-index-content";
+import { getCourseGoalById, isValidCourseGoalId } from "@/lib/course-goals";
 import { getAllCourses } from "@/lib/courses";
 import { COURSE_CATALOG_META } from "@/lib/courses/data";
 import { createPageMetadata } from "@/lib/seo";
@@ -11,7 +12,27 @@ export const metadata = createPageMetadata({
   keywords: COURSE_CATALOG_META.seo.keywords,
 });
 
-export default function CoursesPage() {
-  const courses = getAllCourses();
-  return <CoursesIndexContent courses={courses} />;
+interface CoursesPageProps {
+  searchParams?: Promise<{ goal?: string }>;
+}
+
+export default async function CoursesPage({ searchParams }: CoursesPageProps) {
+  const params = await searchParams;
+  const goalParam = params?.goal;
+  const activeGoal = getCourseGoalById(goalParam);
+  const invalidGoal = Boolean(goalParam && !isValidCourseGoalId(goalParam));
+
+  const allCourses = getAllCourses();
+  const courses = activeGoal
+    ? allCourses.filter((course) => activeGoal.courseSlugs.includes(course.slug))
+    : allCourses;
+
+  return (
+    <CoursesIndexContent
+      courses={courses}
+      activeGoal={activeGoal}
+      invalidGoal={invalidGoal}
+      totalCourseCount={allCourses.length}
+    />
+  );
 }

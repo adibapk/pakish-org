@@ -1,13 +1,13 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { HeroVisual } from "@/components/layout/sections/hero-visual";
-import { ArrowRight, Heart, MapPin, Video } from "lucide-react";
+import { ArrowRight, MapPin, Users, Video } from "lucide-react";
 import Link from "next/link";
 
 const heroIndicators = [
   { icon: MapPin, label: "Karachi Campus" },
-  { icon: MapPin, label: "Lodhran Campus" },
   { icon: Video, label: "Live Online" },
+  { icon: Users, label: "Team Training" },
 ];
 
 export const HeroSection = () => {
@@ -16,27 +16,19 @@ export const HeroSection = () => {
       <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
         <div className="text-center lg:text-left">
           <Badge variant="outline" className="gap-2 py-2 text-sm">
-            <Badge className="text-xs">Est. 1999</Badge>
-            Backed by Pakish Group
+            Backed by Pakish Group · Est. 1999
           </Badge>
 
           <h1 className="mt-5 text-3xl font-bold leading-tight sm:text-4xl md:text-5xl lg:text-[3.25rem]">
-            IT &amp; AI Courses for Women in{" "}
-            <span className="bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-              Pakistan
-            </span>
+            Professional IT &amp; AI Courses in{" "}
+            <span className="text-primary">Pakistan</span>
           </h1>
 
           <p className="mx-auto mt-5 max-w-xl text-base text-muted-foreground md:text-lg lg:mx-0">
-            Build practical skills in Generative AI, web development, and
-            digital freelancing through mentor-led projects in Karachi,
-            Lodhran, or live online.
-          </p>
-
-          <p className="mx-auto mt-3 max-w-xl text-sm text-muted-foreground/80 lg:mx-0">
-            Regular programs are fee-based. A limited number of free or
-            subsidized seats are reserved for eligible learners under the Fi
-            Sabilillah quota.
+            Build practical skills in Generative AI, automation, full-stack
+            development, WordPress, cloud and AI-powered freelancing through
+            live, instructor-led training for students, professionals, teams and
+            businesses.
           </p>
 
           <div className="mt-7 flex flex-col items-center gap-3 sm:flex-row lg:justify-start">
@@ -45,9 +37,9 @@ export const HeroSection = () => {
               size="lg"
               className="w-full font-bold group/arrow sm:w-auto"
             >
-              <Link href="#courses">
-                Compare 3 Programs
-                <ArrowRight className="ml-2 size-5 transition-transform group-hover/arrow:translate-x-1" />
+              <Link href="/courses">
+                Explore Courses
+                <ArrowRight className="ml-2 size-5 transition-transform group-hover/arrow:translate-x-1 motion-reduce:transition-none" />
               </Link>
             </Button>
 
@@ -57,10 +49,7 @@ export const HeroSection = () => {
               variant="secondary"
               className="w-full font-bold sm:w-auto"
             >
-              <Link href="/admission">
-                <Heart className="mr-2 size-5" />
-                Apply for Admission
-              </Link>
+              <Link href="/admission">Apply for Admission</Link>
             </Button>
           </div>
 

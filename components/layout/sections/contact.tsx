@@ -27,6 +27,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  CONTACT_SUBJECTS,
+  resolveContactSubjectFromQuery,
+} from "@/lib/contact-subjects";
+import { useEffect, useMemo } from "react";
+import { useSearchParams } from "next/navigation";
 
 const formSchema = z.object({
   firstName: z.string().min(2).max(255),
@@ -36,17 +42,41 @@ const formSchema = z.object({
   message: z.string(),
 });
 
+const subjectOptions = Object.values(CONTACT_SUBJECTS);
+
 export const ContactSection = () => {
+  const searchParams = useSearchParams();
+  const presetSubject = useMemo(
+    () => resolveContactSubjectFromQuery(searchParams.get("subject") ?? undefined),
+    [searchParams]
+  );
+  const isGatheringIntent =
+    presetSubject === CONTACT_SUBJECTS.womensEmpowermentGathering;
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       firstName: "",
       lastName: "",
       email: "",
-      subject: "Course Enrollment / Fee Information",
-      message: "",
+      subject: presetSubject ?? CONTACT_SUBJECTS.enrollment,
+      message: isGatheringIntent
+        ? "I would like to register interest in an upcoming Women's Empowerment gathering."
+        : "",
     },
   });
+
+  useEffect(() => {
+    if (presetSubject) {
+      form.setValue("subject", presetSubject);
+      if (presetSubject === CONTACT_SUBJECTS.womensEmpowermentGathering) {
+        form.setValue(
+          "message",
+          "I would like to register interest in an upcoming Women's Empowerment gathering."
+        );
+      }
+    }
+  }, [form, presetSubject]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     const { firstName, lastName, email, subject, message } = values;
@@ -71,15 +101,29 @@ export const ContactSection = () => {
             <h2 className="text-3xl md:text-4xl font-bold">Connect With Us</h2>
           </div>
           <p className="mb-4 text-muted-foreground lg:w-5/6">
-            Contact us for regular enrollment and fee details, subsidized quota
-            eligibility review, campus visits, or sponsorship. We will guide you
-            through program options at Gulshan-e-Iqbal, Karachi, Lodhran, or
-            online.
+            Contact us for course enrollment, fee quotes, campus visits, or team
+            training inquiries. We will guide you through program options at
+            Gulshan-e-Iqbal, Karachi, live online, or your workplace.
           </p>
           <p className="mb-8 text-sm text-muted-foreground lg:w-5/6">
-            Subsidized quota requests are reviewed during counseling and depend
-            on seat availability. Submitting a form does not guarantee approval.
+            For Women&apos;s Empowerment gatherings or need-based fee support,
+            visit the{" "}
+            <a href="/womens-empowerment" className="text-primary hover:underline">
+              initiative page
+            </a>
+            .
           </p>
+
+          {isGatheringIntent ? (
+            <p
+              className="mb-6 rounded-lg border border-primary/20 bg-primary/5 px-4 py-3 text-sm text-muted-foreground lg:w-5/6"
+              role="status"
+            >
+              You are registering interest in a Women&apos;s Empowerment
+              gathering. This is separate from course admission or fee-support
+              review.
+            </p>
+          ) : null}
 
           <div className="flex flex-col gap-4">
             <div>
@@ -89,8 +133,7 @@ export const ContactSection = () => {
               </div>
 
               <div>
-                Gulshan-e-Iqbal, Main University Road, Karachi &amp; Lodhran
-                Campus, Pakistan
+                Gulshan-e-Iqbal, Main University Road, Karachi, Pakistan
               </div>
             </div>
 
@@ -199,7 +242,7 @@ export const ContactSection = () => {
                         <FormLabel>Subject</FormLabel>
                         <Select
                           onValueChange={field.onChange}
-                          defaultValue={field.value}
+                          value={field.value}
                         >
                           <FormControl>
                             <SelectTrigger>
@@ -207,33 +250,17 @@ export const ContactSection = () => {
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            <SelectItem value="Course Enrollment / Fee Information">
-                              Course Enrollment / Fee Information
-                            </SelectItem>
-                            <SelectItem value="Subsidized Quota Eligibility">
-                              Subsidized Quota Eligibility
-                            </SelectItem>
-                            <SelectItem value="Campus Visit - Gulshan-e-Iqbal, Karachi">
-                              Campus Visit - Gulshan-e-Iqbal, Karachi
-                            </SelectItem>
-                            <SelectItem value="Support / Sponsor a Student">
-                              Support / Sponsor a Student
-                            </SelectItem>
-                            <SelectItem value="1-Month Fast-Track">
-                              1-Month Fast-Track
-                            </SelectItem>
-                            <SelectItem value="3-Month Professional">
-                              3-Month Professional
-                            </SelectItem>
-                            <SelectItem value="6-Month Mastery">
-                              6-Month Mastery
-                            </SelectItem>
+                            {subjectOptions.map((option) => (
+                              <SelectItem key={option} value={option}>
+                                {option}
+                              </SelectItem>
+                            ))}
                           </SelectContent>
                         </Select>
                         <FormMessage />
                         <p className="text-xs text-muted-foreground">
-                          Choose enrollment/fee details, subsidized quota review
-                          (subject to eligibility), campus visit, or sponsorship.
+                          Choose enrollment, fee details, campus visit, team
+                          training, or Women&apos;s Empowerment inquiries.
                         </p>
                       </FormItem>
                     )}
@@ -250,7 +277,11 @@ export const ContactSection = () => {
                         <FormControl>
                           <Textarea
                             rows={5}
-                            placeholder="Tell us which program you are interested in, your preferred campus or online option, and whether you want regular fee details or subsidized quota review."
+                            placeholder={
+                              isGatheringIntent
+                                ? "Share your city, preferred timing, and what you hope to learn at the gathering."
+                                : "Tell us which course you are interested in, your preferred campus or online option, and any questions about fees or schedule."
+                            }
                             className="resize-none"
                             {...field}
                           />

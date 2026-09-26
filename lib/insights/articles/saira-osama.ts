@@ -105,7 +105,7 @@ export const sairaOsamaArticle: InsightArticle = {
     {
       type: "p",
       content:
-        "Cerebrocure is headquartered in Lahore, not San Francisco. Pakistan has universities, hospitals, and a growing pool of engineers. Women in South Punjab or Karachi can access training through [Pakish.ORG campuses](/campus/lodhran) without relocating internationally to start learning.",
+        "Cerebrocure is headquartered in Lahore, not San Francisco. Pakistan has universities, hospitals, and a growing pool of engineers. Women in South Punjab or Karachi can access training through [Pakish.ORG](/courses) live online or at our [Karachi campus](/campus/gulshan-e-iqbal) without relocating internationally to start learning.",
     },
     {
       type: "h3",
@@ -137,7 +137,7 @@ export const sairaOsamaArticle: InsightArticle = {
     {
       type: "p",
       content:
-        "Dr. Saira Osama's career shows where disciplined learning can lead. Start with structured training, build projects that solve real problems, and connect with mentors who have shipped software before. Explore our [courses](/#courses), support our [Fi Sabilillah mission](/#benefits), or [contact us](/#contact) to enroll at a campus or online session.",
+        "Dr. Saira Osama's career shows where disciplined learning can lead. Start with structured training, build projects that solve real problems, and connect with mentors who have shipped software before. Explore our [courses](/courses) or [apply for admission](/admission) to enroll at a campus or online session.",
     },
   ],
   faq: [
@@ -160,7 +160,7 @@ export const sairaOsamaArticle: InsightArticle = {
     {
       question: "How can Pakistani women start learning AI?",
       answer:
-        "Begin with structured programs covering prompting, practical projects, and web integration — such as Pakish.ORG's Generative AI and Pro Developer tracks available in Karachi, Lodhran, and online.",
+        "Begin with structured programs covering prompting, practical projects, and web integration — such as Pakish.ORG's professional AI and web development courses available in Karachi and online.",
     },
   ],
 };

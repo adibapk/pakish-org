@@ -1,6 +1,25 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: "standalone",
+  async redirects() {
+    return [
+      {
+        source: "/signup",
+        destination: "/admission",
+        permanent: true,
+      },
+      {
+        source: "/academy",
+        destination: "https://academy.pakish.org",
+        permanent: true,
+      },
+      {
+        source: "/academy/:path*",
+        destination: "https://academy.pakish.org/:path*",
+        permanent: true,
+      },
+    ];
+  },
   async rewrites() {
     return [
       {

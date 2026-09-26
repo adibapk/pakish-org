@@ -11,39 +11,39 @@ interface FeaturesProps {
 const featureList: FeaturesProps[] = [
   {
     icon: "GraduationCap",
-    title: "Fee-Based Programs with Need-Based Support",
+    title: "Project-Based Learning",
     description:
-      "Structured IT and AI programs with mentorship and career-focused curriculum. Need-based support may be available for eligible learners.",
+      "Structured programs with live instruction, practical assignments, and portfolio-ready work — not theory-only slides.",
   },
   {
     icon: "MapPin",
-    title: "Karachi & Lodhran Campuses",
+    title: "Karachi Campus",
     description:
-      "On-site learning at our Gulshan-e-Iqbal, Karachi and Lodhran campuses with mentors, supported workspace, and high-speed internet.",
+      "On-site learning at Gulshan-e-Iqbal, Karachi when cohorts are scheduled, with mentor support and equipped workspaces.",
   },
   {
     icon: "Video",
-    title: "Online via Zoom & Google Meet",
+    title: "Live Online Training",
     description:
-      "Cannot attend in person? Join live instructor-led classes remotely and learn from anywhere in Pakistan.",
+      "Join instructor-led Google Meet sessions from anywhere in Pakistan — one-to-one, group, or team formats.",
   },
   {
     icon: "Bot",
-    title: "Generative AI Focus",
+    title: "AI & Modern Tools",
     description:
-      "Master ChatGPT, prompt engineering, and AI-powered tools that are reshaping the global freelance market.",
+      "Train with current Generative AI, web, cloud, and productivity tools used in real workplaces and freelance delivery.",
   },
   {
     icon: "Globe",
-    title: "Global Freelancing",
+    title: "Career-Ready Skills",
     description:
-      "From Canva service samples to Next.js applications — build skills relevant to international remote projects.",
+      "From AI productivity to full-stack development and freelancing — skills aligned to today's digital economy.",
   },
   {
     icon: "Shield",
     title: "Backed by Experience Since 1999",
     description:
-      "Backed by Pakish Group, a software house established in 1999 with decades of real-world industry experience.",
+      "Pakish Institute is backed by Pakish Group, a software house established in 1999 with decades of industry experience.",
   },
 ];
 
@@ -51,26 +51,25 @@ export const FeaturesSection = () => {
   return (
     <section id="features" className="w-full bg-muted/30 py-16 sm:py-24">
       <div className="container">
-        <p className="text-lg text-primary text-center mb-2 tracking-wider">
-          Why Pakish.ORG
+        <p className="mb-2 text-center text-lg tracking-wider text-primary">
+          Why Pakish Institute
         </p>
 
-        <h2 className="text-3xl md:text-4xl text-center font-bold mb-4">
-          Built for Women Entering Tech
+        <h2 className="mb-4 text-center text-3xl font-bold md:text-4xl">
+          Practical Training for Modern Tech Careers
         </h2>
 
-        <p className="md:w-2/3 mx-auto text-xl text-center text-muted-foreground mb-8">
-          A family-led initiative combining decades of software expertise with
-          a mission to close Pakistan&apos;s tech gender gap through
-          practical, career-ready training.
+        <p className="mx-auto mb-8 max-w-2xl text-center text-xl text-muted-foreground">
+          Instructor-led programs for students, professionals, freelancers,
+          teams, and businesses — with clear fees and multiple delivery formats.
         </p>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {featureList.map(({ icon, title, description }) => (
             <div key={title}>
-              <Card className="h-full bg-background border-0 shadow-none transition-shadow hover:shadow-md">
-                <CardHeader className="flex justify-center items-center">
-                  <div className="bg-primary/20 p-2 rounded-full ring-8 ring-primary/10 mb-4">
+              <Card className="h-full border-0 bg-background shadow-none transition-shadow hover:shadow-md">
+                <CardHeader className="flex items-center justify-center">
+                  <div className="mb-4 rounded-full bg-primary/20 p-2 ring-8 ring-primary/10">
                     <Icon
                       name={icon as keyof typeof icons}
                       size={24}
@@ -82,7 +81,7 @@ export const FeaturesSection = () => {
                   <CardTitle>{title}</CardTitle>
                 </CardHeader>
 
-                <CardContent className="text-muted-foreground text-center">
+                <CardContent className="text-center text-muted-foreground">
                   {description}
                 </CardContent>
               </Card>

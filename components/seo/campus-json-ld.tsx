@@ -2,6 +2,10 @@ import type { CampusData } from "@/lib/campus-data";
 import { SITE_URL } from "@/lib/seo";
 
 export function CampusJsonLd({ campus }: { campus: CampusData }) {
+  if (campus.status === "planned") {
+    return null;
+  }
+
   const url = `${SITE_URL}/campus/${campus.slug}`;
   const schemas = [
     {

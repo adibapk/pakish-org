@@ -1,7 +1,7 @@
 {
-  "name": "Pakish.ORG",
-  "short_name": "Pakish.ORG",
-  "description": "Free and subsidized IT and AI training for women in Pakistan",
+  "name": "Pakish Institute",
+  "short_name": "Pakish",
+  "description": "Professional IT and AI courses in Pakistan — live online, campus, and team training",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

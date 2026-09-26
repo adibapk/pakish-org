@@ -83,7 +83,7 @@ export const sehatKahaniArticle: InsightArticle = {
     {
       type: "p",
       content:
-        "Critically, the platform also creates economic opportunity for women doctors who need flexible, remote-friendly careers — a parallel to the work-from-home pathways we champion through training at our [Gulshan-e-Iqbal campus](/campus/gulshan-e-iqbal) and [Lodhran campus](/campus/lodhran). Technology here is not abstract; it is income, access, and dignity.",
+        "Critically, the platform also creates economic opportunity for women doctors who need flexible, remote-friendly careers — a parallel to the work-from-home pathways we champion through training at our [Gulshan-e-Iqbal campus](/campus/gulshan-e-iqbal) and live online. Technology here is not abstract; it is income, access, and dignity.",
     },
     {
       type: "h2",
@@ -114,7 +114,7 @@ export const sehatKahaniArticle: InsightArticle = {
     {
       type: "p",
       content:
-        "Being the first all-women-led Pakistani company at Series A is a milestone, but it also highlights how much room remains for investors to fund women founders systematically. Initiatives like [Pakish.ORG's Fi Sabilillah mission](/#benefits) exist because talent is evenly distributed while opportunity is not — training and mentorship can close that gap long before a founder reaches a term sheet.",
+        "Being the first all-women-led Pakistani company at Series A is a milestone, but it also highlights how much room remains for investors to fund women founders systematically. Initiatives like [Pakish Institute's Women's Empowerment program](/womens-empowerment) exist because talent is evenly distributed while opportunity is not — training and mentorship can close that gap long before a founder reaches a term sheet.",
     },
     {
       type: "h2",
@@ -128,7 +128,7 @@ export const sehatKahaniArticle: InsightArticle = {
     {
       type: "p",
       content:
-        "For students considering a technology career, health-tech demonstrates that Pakistan's addressable problems are large enough to support venture-scale businesses. You do not need to relocate to Silicon Valley to build meaningful software; you need skills, persistence, and access to mentors. That is why we offer professional programs online via Zoom and at physical campuses — with limited subsidized seats for eligible learners — so geography does not determine who gets to participate in this story.",
+        "For students considering a technology career, health-tech demonstrates that Pakistan's addressable problems are large enough to support venture-scale businesses. You do not need to relocate to Silicon Valley to build meaningful software; you need skills, persistence, and access to mentors. That is why Pakish Institute offers professional programs live online and at physical campuses — so geography does not determine who gets to participate in this story.",
     },
     {
       type: "h2",
@@ -161,7 +161,7 @@ export const sehatKahaniArticle: InsightArticle = {
       question:
         "How can Pakistani women start a career in health-tech or IT?",
       answer:
-        "Structured training in web development, AI, and digital freelancing — such as fee-based programs offered by Pakish.ORG at Gulshan-e-Iqbal, Karachi, Lodhran, and online — provides a practical entry point into remote and product-focused tech careers. Limited subsidized seats are available for eligible learners.",
+        "Structured training in web development, AI, and digital freelancing — such as professional programs offered by Pakish Institute at Gulshan-e-Iqbal, Karachi, and live online — provides a practical entry point into remote and product-focused tech careers.",
     },
   ],
 };

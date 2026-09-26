@@ -149,24 +149,23 @@ export const learningModes: LearningMode[] = [
     icon: "MapPin",
     title: "Karachi Campus — Gulshan-e-Iqbal",
     description:
-      "In-house training at our Gulshan-e-Iqbal campus on Main University Road with mentors, computers, high-speed internet, and a supportive all-women learning environment.",
+      "In-center training at our Gulshan-e-Iqbal campus on Main University Road with mentors, computers, and high-speed internet when cohorts are scheduled.",
     href: "/campus/gulshan-e-iqbal",
     cta: "Visit Karachi Campus",
   },
   {
-    icon: "MapPin",
-    title: "Lodhran Campus (Dunyapur)",
+    icon: "Video",
+    title: "Live Online (Google Meet)",
     description:
-      "On-site classes in South Punjab for women who prefer in-person mentorship close to home — same curriculum, local community support.",
-    href: "/campus/lodhran",
-    cta: "Visit Lodhran Campus",
+      "Join live instructor-led sessions from anywhere in Pakistan — one-to-one, group, or team formats.",
+    cta: "Apply Online",
   },
   {
-    icon: "Video",
-    title: "Live Online (Zoom & Google Meet)",
+    icon: "Building2",
+    title: "Office / Team Training",
     description:
-      "Join live instructor-led sessions from anywhere in Pakistan. Perfect for students with mobility constraints or caregiving responsibilities who still want real-time mentorship.",
-    cta: "Enroll Online",
+      "Customized workshops and team upskilling at your workplace or preferred location.",
+    cta: "Request Team Training",
   },
 ];
 

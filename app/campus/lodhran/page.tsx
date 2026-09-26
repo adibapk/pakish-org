@@ -1,9 +1,10 @@
-import { CampusPageContent } from "@/components/campus/campus-page-content";
+import { FuturePlanCampusContent } from "@/components/campus/future-plan-campus-content";
 import { lodhranCampus } from "@/lib/campus-data";
 import { ogImagePath } from "@/lib/og";
 import { createPageMetadata } from "@/lib/seo";
+import type { Metadata } from "next";
 
-export const metadata = createPageMetadata({
+const baseMetadata = createPageMetadata({
   title: lodhranCampus.metaTitle,
   description: lodhranCampus.metaDescription,
   path: "/campus/lodhran",
@@ -11,11 +12,19 @@ export const metadata = createPageMetadata({
   absoluteTitle: true,
   keywords: [
     lodhranCampus.primaryKeyword,
-    "AI training in Dunyapur",
-    "digital skills for women South Punjab",
+    "future rural digital skills campus",
+    "Pakish Institute South Punjab plan",
   ],
 });
 
-export default function LodhranCampusPage() {
-  return <CampusPageContent campus={lodhranCampus} />;
+export const metadata: Metadata = {
+  ...baseMetadata,
+  robots: {
+    index: false,
+    follow: true,
+  },
+};
+
+export default function LodhranFuturePlanPage() {
+  return <FuturePlanCampusContent campus={lodhranCampus} />;
 }

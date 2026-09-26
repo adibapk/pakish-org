@@ -17,7 +17,7 @@ import { SITE_ICONS } from "@/lib/site-icons";
 const inter = Inter({ subsets: ["latin"] });
 
 const DEFAULT_TITLE =
-  "IT & AI Courses for Women in Pakistan | Pakish.ORG";
+  "Professional IT & AI Courses in Pakistan | Pakish Institute";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -28,12 +28,12 @@ export const metadata: Metadata = {
   description: DEFAULT_DESCRIPTION,
   applicationName: SITE_NAME,
   keywords: [
-    "Pakish.ORG",
-    "IT courses for women in Pakistan",
-    "AI courses for women in Pakistan",
-    "online IT courses for women",
-    "freelancing courses for women",
-    "AI courses in Karachi for women",
+    "Pakish Institute",
+    "professional IT courses Pakistan",
+    "AI courses Pakistan",
+    "online IT training Pakistan",
+    "web development courses Pakistan",
+    "freelancing courses Pakistan",
   ],
   authors: [{ name: SITE_NAME, url: SITE_URL }],
   creator: SITE_NAME,
@@ -67,7 +67,7 @@ export const metadata: Metadata = {
         url: absoluteUrl(DEFAULT_OG_IMAGE),
         width: 1200,
         height: 630,
-        alt: `${SITE_NAME} — Women's IT & AI Institute`,
+        alt: `${SITE_NAME} — Professional IT & AI Training`,
       },
     ],
   },
@@ -118,30 +118,17 @@ export default function RootLayout({
                     areaServed: "PK",
                   },
                   sameAs: ["https://www.facebook.com/pakishinstitute/"],
-                  location: [
-                    {
-                      "@type": "Place",
-                      name: "Pakish.ORG Gulshan-e-Iqbal Campus",
-                      address: {
-                        "@type": "PostalAddress",
-                        streetAddress: "Main University Road, Gulshan-e-Iqbal",
-                        addressLocality: "Karachi",
-                        addressRegion: "Sindh",
-                        addressCountry: "PK",
-                      },
+                  location: {
+                    "@type": "Place",
+                    name: "Pakish.ORG Gulshan-e-Iqbal Campus",
+                    address: {
+                      "@type": "PostalAddress",
+                      streetAddress: "Main University Road, Gulshan-e-Iqbal",
+                      addressLocality: "Karachi",
+                      addressRegion: "Sindh",
+                      addressCountry: "PK",
                     },
-                    {
-                      "@type": "Place",
-                      name: "Pakish.ORG Lodhran Campus",
-                      address: {
-                        "@type": "PostalAddress",
-                        streetAddress: "Chak No. 319, Dunyapur",
-                        addressLocality: "Lodhran",
-                        addressRegion: "Punjab",
-                        addressCountry: "PK",
-                      },
-                    },
-                  ],
+                  },
                 },
                 {
                   "@type": "WebSite",

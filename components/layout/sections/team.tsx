@@ -60,7 +60,8 @@ export const TeamSection = () => {
           </h2>
           <p className="md:w-2/3 mx-auto text-xl text-center text-muted-foreground mt-4">
             A family-led team with decades of software industry experience,
-            dedicated to guiding the next generation of women in tech.
+            dedicated to practical mentorship for students, professionals, and
+            teams building modern technology skills.
           </p>
         </div>
 

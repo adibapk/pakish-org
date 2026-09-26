@@ -1,28 +1,28 @@
 export const HOME_FAQS = [
   {
-    question: "Who can enroll in Pakish.ORG programs?",
+    question: "Who can enroll at Pakish Institute?",
     answer:
-      "Pakish.ORG programs are designed primarily for women and youth in Pakistan who want practical skills in IT, AI, web development, or digital freelancing. Beginners can start with the Fast-Track program; a counselor can help more experienced learners choose the right path.",
+      "Pakish Institute offers professional IT and AI training for students, career switchers, professionals, freelancers, teams, and businesses across Pakistan. Programs are delivered live online, at campus when scheduled, one-to-one, in groups, or as customized workshops.",
   },
   {
-    question: "Are Pakish.ORG courses free for every student?",
+    question: "How much do courses cost?",
     answer:
-      "No. Regular admission is fee-based. A limited number of free or subsidized seats may be available for eligible learners who cannot afford the standard fee under the Fi Sabilillah quota. Support depends on need review and seat availability.",
+      "Course fees vary by program, duration, training format, and customization. Each course page shows a starting price or custom quote. Contact admissions for an exact quotation before enrolling.",
   },
   {
-    question: "How do I request a free or subsidized seat?",
+    question: "Is need-based fee support available?",
     answer:
-      "Choose the Fi Sabilillah subsidy review option on the admission form. Pakish.ORG reviews each request individually and confirms whether support is available for the selected program. Submitting a request does not guarantee approval.",
+      "Limited need-based fee support may be available for eligible women through our Women's Empowerment initiative. Support is reviewed individually, depends on available seats and resources, and is not guaranteed. Requests must be submitted through the Women's Empowerment fee-support pathway.",
   },
   {
-    question: "Can women join Pakish.ORG classes online from anywhere in Pakistan?",
+    question: "Can I join classes online from anywhere in Pakistan?",
     answer:
-      "Yes. Programs are available through live online sessions as well as at the Gulshan-e-Iqbal, Karachi and Lodhran campuses. Availability and schedules are confirmed during admission counseling.",
+      "Yes. Programs are available through live online sessions, at the Gulshan-e-Iqbal, Karachi campus when cohorts are scheduled, and through office or team training formats. Availability and schedules are confirmed during admission counseling.",
   },
   {
-    question: "Which IT or AI course should a beginner choose?",
+    question: "Which course should a beginner choose?",
     answer:
-      "The 1-Month Fast-Track is the simplest starting point for freelancing, Canva, client communication, and AI-assisted content. The 3-Month Professional path adds WordPress, digital marketing, and SEO. The 6-Month Mastery path is for learners ready to study Next.js, APIs, and AI integration.",
+      "Start with your goal: AI & Productivity for everyday AI tools, Web/WordPress/Cloud for technical build skills, or Freelancing & Digital Business for client-facing digital careers. Browse all six courses on the courses page or speak with admissions for guidance.",
   },
   {
     question: "Where is the Karachi campus?",

@@ -1,17 +1,19 @@
-import { curriculumTracks } from "@/lib/curriculum-data";
+import { getAllCourses } from "@/lib/courses";
 import { HOME_FAQS } from "@/lib/home-content";
 import { SITE_URL } from "@/lib/seo";
 
 export function HomeJsonLd() {
+  const courses = getAllCourses();
+
   const schemas = [
     {
       "@context": "https://schema.org",
       "@type": "WebPage",
       "@id": `${SITE_URL}/#webpage`,
       url: SITE_URL,
-      name: "IT & AI Courses for Women in Pakistan | Pakish.ORG",
+      name: "Professional IT & AI Courses in Pakistan | Pakish Institute",
       description:
-        "Practical IT, AI, web development, and freelancing courses for women in Pakistan, available in Karachi, Lodhran, and live online.",
+        "Build practical skills in AI, web development, WordPress, cloud and freelancing through live online, campus and team training at Pakish Institute.",
       isPartOf: { "@id": `${SITE_URL}/#website` },
       about: { "@id": `${SITE_URL}/#organization` },
       inLanguage: "en-PK",
@@ -19,18 +21,17 @@ export function HomeJsonLd() {
     {
       "@context": "https://schema.org",
       "@type": "ItemList",
-      name: "Pakish.ORG IT, AI and freelancing programs",
-      itemListElement: curriculumTracks.map((track, index) => ({
+      name: "Pakish Institute professional courses",
+      itemListElement: courses.map((course, index) => ({
         "@type": "ListItem",
         position: index + 1,
         item: {
           "@type": "Course",
-          name: track.title,
-          description: track.outcome,
+          name: course.title,
+          description: course.summary,
           provider: { "@id": `${SITE_URL}/#organization` },
-          timeRequired: track.isoDuration,
-          educationalLevel: track.level,
-          url: `${SITE_URL}/#courses`,
+          timeRequired: course.isoDuration,
+          url: `${SITE_URL}/courses/${course.slug}`,
           inLanguage: "en-PK",
         },
       })),

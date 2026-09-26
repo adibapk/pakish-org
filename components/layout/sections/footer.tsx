@@ -1,16 +1,18 @@
 import { BrandLogo } from "@/components/brand/brand-logo";
+import { ACADEMY_LOGIN_URL } from "@/lib/academy";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
 import Link from "next/link";
 
 const quickLinks = [
+  { href: "/courses", label: "Courses" },
   { href: "/admission", label: "Admission" },
   { href: "/payment-methods", label: "Payment Methods" },
+  { href: "/womens-empowerment", label: "Women's Empowerment" },
+  { href: ACADEMY_LOGIN_URL, label: "Academy Login" },
   { href: "/insights", label: "Insights" },
   { href: "/privacy", label: "Privacy" },
-  { href: "/#benefits", label: "Mission" },
-  { href: "/courses", label: "Courses" },
   { href: "/#team", label: "Team" },
   { href: "/#contact", label: "Contact" },
   { href: "/#faq", label: "FAQ" },
@@ -31,8 +33,8 @@ export const FooterSection = () => {
           <div className="sm:col-span-2">
             <BrandLogo href="/" imageClassName="h-10" />
             <p className="mt-4 text-muted-foreground max-w-sm">
-              Professional IT &amp; AI training for women across Pakistan —
-              Gulshan-e-Iqbal, Karachi, Lodhran, and online.
+              Professional IT &amp; AI training across Pakistan — Gulshan-e-Iqbal,
+              Karachi, live online, and team training.
             </p>
             <div className="mt-6">
               <p className="mb-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">

@@ -172,12 +172,12 @@ export const genAiRoadmapArticle: InsightArticle = {
     },
     {
       type: "h2",
-      content: "Learning environment: online, Karachi, and Lodhran",
+      content: "Learning environment: online and Karachi campus",
     },
     {
       type: "p",
       content:
-        "Self-study works, but cohort-based learning with mentors prevents common pitfalls — bad prompts, insecure API keys, plagiarized portfolios. [Pakish.ORG](/) offers Generative AI training through the Fi Sabilillah Initiative at our [Gulshan-e-Iqbal campus](/campus/gulshan-e-iqbal), [Lodhran campus](/campus/lodhran), and online via Zoom. Students learn alongside peers facing similar cultural and economic contexts, with guidance from the Pakish Group mentor family.",
+        "Self-study works, but cohort-based learning with mentors prevents common pitfalls — bad prompts, insecure API keys, plagiarized portfolios. [Pakish Institute](/) offers Generative AI training at our [Gulshan-e-Iqbal campus](/campus/gulshan-e-iqbal) and live online. Learners practice alongside peers with guidance from the Pakish Group mentor family.",
     },
     {
       type: "p",
@@ -226,7 +226,7 @@ export const genAiRoadmapArticle: InsightArticle = {
     {
       question: "Where can Pakistani women learn Generative AI in person?",
       answer:
-        "Pakish.ORG offers Generative AI modules at Gulshan-e-Iqbal, Karachi and Lodhran campuses, plus online Zoom sessions, as part of fee-based IT training programs with limited subsidized seats for eligible learners.",
+        "Pakish Institute offers Generative AI modules at Gulshan-e-Iqbal, Karachi, plus live online sessions, as part of its professional IT and AI course catalogue.",
     },
     {
       question: "How is this different from just watching YouTube tutorials?",

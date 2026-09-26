@@ -3,13 +3,14 @@ import path from "node:path";
 import sharp from "sharp";
 
 const cards = {
-  home: ["Women-focused technology training", "IT & AI Courses for Women in Pakistan", "Karachi · Lodhran · Live online", "#34d399"],
-  admission: ["Pakish.ORG admission", "Start Your IT, AI or Freelancing Journey", "Regular admission · Need-based support review", "#5eead4"],
-  privacy: ["Trust & transparency", "How Pakish.ORG Handles Application Information", "Clear choices for WhatsApp, email, and subsidy review", "#a7f3d0"],
+  home: ["Professional technology training", "Professional IT & AI Courses in Pakistan", "Karachi · Live online · Team training", "#34d399"],
+  admission: ["Pakish Institute admission", "Apply for Professional IT & AI Courses", "Course counseling · Transparent fees · Academy access", "#5eead4"],
+  privacy: ["Trust & transparency", "How Pakish Institute Handles Application Information", "Clear choices for admission and fee-support review", "#a7f3d0"],
+  "womens-empowerment": ["Pakish Institute initiative", "Women's Empowerment Through Digital Skills", "Gatherings · Mentorship · Limited fee support", "#86efac"],
   "payment-methods": ["Course fee payment", "Pay Your Pakish.ORG Course Fees", "Bank · JazzCash · PayPal · Payoneer", "#34d399"],
   insights: ["Pakish.ORG Insights", "Women in Tech, AI & Freelancing in Pakistan", "Practical guides · Sourced stories · Career roadmaps", "#86efac"],
-  "campus-gulshan-e-iqbal": ["Gulshan-e-Iqbal · Main University Road", "AI & IT Courses for Women in Karachi", "Mentor-led learning at Pakish.ORG", "#2dd4bf"],
-  "campus-lodhran": ["Dunyapur · Lodhran", "IT & AI Courses for Women in South Punjab", "Practical skills · Local mentorship · Remote careers", "#84cc16"],
+  "campus-gulshan-e-iqbal": ["Gulshan-e-Iqbal · Main University Road", "IT & AI Courses in Gulshan-e-Iqbal, Karachi", "Professional training at Pakish Institute", "#2dd4bf"],
+  "campus-lodhran": ["Future plan · Lodhran", "Planned Lodhran Digital Skills Campus", "Land secured · Planning in progress · Not yet operational", "#84cc16"],
   "sehat-kahani-women-led-healthtech-series-a": ["Women-led technology in Pakistan", "The Sehat Kahani Series A Story", "A sourced Pakish.ORG insight", "#22d3ee"],
   "jehan-ara-nest-io-women-in-pakistani-tech": ["Pakistan's technology ecosystem", "Jehan Ara: Building Pathways into Tech", "A sourced Pakish.ORG insight", "#c4b5fd"],
   "saira-osama-ai-stroke-care-cerebrocure": ["AI for health impact", "Dr. Saira Osama & Cerebrocure", "A sourced Pakish.ORG insight", "#67e8f9"],
