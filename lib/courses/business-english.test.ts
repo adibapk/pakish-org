@@ -125,18 +125,24 @@ describe("Business English course catalogue", () => {
     }
   });
 
-  it("ships optimized instructor and classroom imagery", () => {
+  it("ships optimized portrait and classroom imagery", () => {
     const classroom = join(
       ROOT,
       "public/images/courses/business-english/irfan-velmi-classroom.webp"
     );
-    const instructor = join(
+    const portrait = join(
       ROOT,
-      "public/images/courses/business-english/irfan-velmi-instructor.webp"
+      "public/images/courses/business-english/irfan-velmi-portrait.webp"
     );
     assert.ok(existsSync(classroom));
-    assert.ok(existsSync(instructor));
+    assert.ok(existsSync(portrait));
     assert.ok(readFileSync(classroom).byteLength > 10_000);
-    assert.ok(readFileSync(instructor).byteLength > 10_000);
+    assert.ok(readFileSync(portrait).byteLength > 10_000);
+    assert.equal(
+      businessEnglishCourse.instructor?.image.src,
+      "/images/courses/business-english/irfan-velmi-portrait.webp"
+    );
+    assert.equal(businessEnglishCourse.media?.hero, undefined);
+    assert.ok(businessEnglishCourse.media?.spotlight);
   });
 });

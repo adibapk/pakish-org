@@ -30,14 +30,18 @@ export interface CourseInstructor {
   };
 }
 
+export interface CourseMediaImage {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  caption?: string;
+}
+
 export interface CourseMedia {
-  hero?: {
-    src: string;
-    alt: string;
-    width: number;
-    height: number;
-    caption?: string;
-  };
+  hero?: CourseMediaImage;
+  /** In-page feature image shown below the hero (not in the header band) */
+  spotlight?: CourseMediaImage;
 }
 
 export interface CourseCtaConfig {

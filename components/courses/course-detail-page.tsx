@@ -57,6 +57,7 @@ export function CourseDetailPage({ course }: CourseDetailPageProps) {
   const secondaryCtaLabel = course.cta?.secondaryLabel;
   const toolsLabel = course.toolsSectionLabel ?? "Technologies & Tools";
   const heroImage = course.media?.hero;
+  const spotlightImage = course.media?.spotlight;
 
   return (
     <>
@@ -132,7 +133,7 @@ export function CourseDetailPage({ course }: CourseDetailPageProps) {
               What this program covers
             </h2>
             {course.overview.map((paragraph) => (
-              <p key={paragraph} className="text-lg text-muted-foreground">
+              <p key={paragraph} className="text-lg leading-relaxed text-muted-foreground">
                 {paragraph}
               </p>
             ))}
@@ -142,32 +143,56 @@ export function CourseDetailPage({ course }: CourseDetailPageProps) {
         {/* Instructor */}
         {course.instructor ? (
           <section className="border-t border-border py-12 md:py-16">
-            <div className="mx-auto grid max-w-4xl gap-8 md:grid-cols-[240px_1fr] md:items-start">
-              <div className="mx-auto w-full max-w-[240px]">
-                <Image
-                  src={course.instructor.image.src}
-                  alt={course.instructor.image.alt}
-                  width={course.instructor.image.width}
-                  height={course.instructor.image.height}
-                  sizes="240px"
-                  className="h-auto w-full rounded-2xl border border-border/60 object-cover"
-                />
-              </div>
-              <div>
-                <p className="text-lg tracking-wider text-primary">Instructor</p>
-                <h2 className="mt-2 text-3xl font-bold md:text-4xl">
-                  {course.instructor.name}
-                </h2>
-                <p className="mt-2 text-base font-medium text-muted-foreground">
-                  {course.instructor.role}
-                </p>
-                <div className="mt-4 space-y-3 text-muted-foreground">
-                  {course.instructor.bio.map((paragraph) => (
-                    <p key={paragraph}>{paragraph}</p>
-                  ))}
+            <div className="mx-auto max-w-4xl rounded-2xl border border-border/60 bg-muted/20 p-6 sm:p-8 md:p-10">
+              <div className="grid gap-8 md:grid-cols-[minmax(200px,260px)_1fr] md:items-start">
+                <div className="mx-auto w-full max-w-[260px]">
+                  <div className="relative aspect-[4/5] overflow-hidden rounded-2xl border border-border/60 bg-background shadow-sm">
+                    <Image
+                      src={course.instructor.image.src}
+                      alt={course.instructor.image.alt}
+                      fill
+                      sizes="(max-width: 768px) 220px, 260px"
+                      className="object-cover object-[center_18%]"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <p className="text-lg tracking-wider text-primary">Instructor</p>
+                  <h2 className="mt-2 text-3xl font-bold md:text-4xl">
+                    {course.instructor.name}
+                  </h2>
+                  <p className="mt-2 text-base font-medium text-muted-foreground">
+                    {course.instructor.role}
+                  </p>
+                  <div className="mt-5 space-y-3 text-base leading-relaxed text-muted-foreground">
+                    {course.instructor.bio.map((paragraph) => (
+                      <p key={paragraph}>{paragraph}</p>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
+          </section>
+        ) : null}
+
+        {/* In-page spotlight (classroom / environment imagery) */}
+        {spotlightImage ? (
+          <section className="border-t border-border py-12 md:py-16">
+            <figure className="mx-auto max-w-4xl overflow-hidden rounded-2xl border border-border/60 bg-muted/20">
+              <Image
+                src={spotlightImage.src}
+                alt={spotlightImage.alt}
+                width={spotlightImage.width}
+                height={spotlightImage.height}
+                sizes="(max-width: 768px) 100vw, 896px"
+                className="h-auto w-full object-cover"
+              />
+              {spotlightImage.caption ? (
+                <figcaption className="px-5 py-4 text-center text-sm leading-relaxed text-muted-foreground sm:text-base">
+                  {spotlightImage.caption}
+                </figcaption>
+              ) : null}
+            </figure>
           </section>
         ) : null}
 

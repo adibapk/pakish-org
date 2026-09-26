@@ -7,9 +7,11 @@ import path from "node:path";
 import sharp from "sharp";
 
 const ROOT = path.resolve(import.meta.dirname, "..");
-const OUT_DIR = path.join(
-  ROOT,
-  "public/images/courses/business-english"
+const OUT_DIR = path.join(ROOT, "public/images/courses/business-english");
+
+const PASSPORT_SOURCE = path.join(
+  process.env.USERPROFILE ?? "",
+  ".cursor/projects/c-Users-pakis-My-Projects-pakish-org/assets/c__Users_pakis_AppData_Roaming_Cursor_User_workspaceStorage_6679b796f3e2517113bc0f5cf0143b6d_images_image-2fcff502-ab6a-4411-abcb-11ab9d8eafe2.png"
 );
 
 const SOURCES = {
@@ -17,13 +19,28 @@ const SOURCES = {
     process.env.USERPROFILE ?? "",
     "AppData/Local/Temp/codex-clipboard-f1ae0a67-e328-4aac-9ad8-113e030d1f62.png"
   ),
-  instructor: path.join(
-    process.env.USERPROFILE ?? "",
-    "Downloads/WhatsApp Image 2026-09-26 at 14.53.36.jpeg"
-  ),
+  passport: PASSPORT_SOURCE,
 };
 
 async function processClassroom() {
+  const existing = path.join(OUT_DIR, "irfan-velmi-classroom.webp");
+  try {
+    await fs.access(existing);
+    const outMeta = await sharp(existing).metadata();
+    return {
+      file: "irfan-velmi-classroom.webp",
+      width: outMeta.width,
+      height: outMeta.height,
+      skipped: true,
+    };
+  } catch {
+    // regenerate only when source is available
+  }
+
+  if (!(await fs.stat(SOURCES.classroom).catch(() => null))) {
+    return { file: "irfan-velmi-classroom.webp", skipped: true, reason: "no source" };
+  }
+
   const meta = await sharp(SOURCES.classroom).metadata();
   const width = meta.width ?? 1200;
   const height = meta.height ?? 1600;
@@ -53,30 +70,20 @@ async function processClassroom() {
   };
 }
 
-async function processInstructor() {
-  const meta = await sharp(SOURCES.instructor).metadata();
-  const width = meta.width ?? 1600;
-  const height = meta.height ?? 1200;
-
-  await sharp(SOURCES.instructor)
+async function processPortrait() {
+  await sharp(SOURCES.passport)
     .rotate()
-    .extract({
-      left: Math.round(width * 0.22),
-      top: Math.round(height * 0.08),
-      width: Math.round(width * 0.38),
-      height: Math.round(height * 0.88),
-    })
-    .resize(800, 1000, { fit: "cover", position: "centre" })
-    .modulate({ brightness: 1.02 })
-    .sharpen({ sigma: 0.5 })
-    .webp({ quality: 86, effort: 4 })
-    .toFile(path.join(OUT_DIR, "irfan-velmi-instructor.webp"));
+    .resize(640, 800, { fit: "cover", position: "centre" })
+    .modulate({ brightness: 1.02, saturation: 0.92 })
+    .sharpen({ sigma: 0.45 })
+    .webp({ quality: 88, effort: 4 })
+    .toFile(path.join(OUT_DIR, "irfan-velmi-portrait.webp"));
 
   const outMeta = await sharp(
-    path.join(OUT_DIR, "irfan-velmi-instructor.webp")
+    path.join(OUT_DIR, "irfan-velmi-portrait.webp")
   ).metadata();
   return {
-    file: "irfan-velmi-instructor.webp",
+    file: "irfan-velmi-portrait.webp",
     width: outMeta.width,
     height: outMeta.height,
   };
@@ -84,5 +91,5 @@ async function processInstructor() {
 
 await fs.mkdir(OUT_DIR, { recursive: true });
 const classroom = await processClassroom();
-const instructor = await processInstructor();
-console.log(JSON.stringify({ classroom, instructor }, null, 2));
+const portrait = await processPortrait();
+console.log(JSON.stringify({ classroom, portrait }, null, 2));

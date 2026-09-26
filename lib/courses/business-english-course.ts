@@ -276,19 +276,20 @@ export const businessEnglishCourse: Course = {
       "Sessions focus on learner-specific communication goals, guided practice, feedback, and realistic workplace scenarios rather than theory-only instruction.",
     ],
     image: {
-      src: "/images/courses/business-english/irfan-velmi-instructor.webp",
+      src: "/images/courses/business-english/irfan-velmi-portrait.webp",
       alt: "Business English instructor Irfan Velmi",
-      width: 800,
-      height: 1000,
+      width: 640,
+      height: 800,
     },
   },
   media: {
-    hero: {
+    spotlight: {
       src: "/images/courses/business-english/irfan-velmi-classroom.webp",
       alt: "Irfan Velmi leading a professional English communication session",
       width: 1200,
       height: 675,
-      caption: "Practical, consultation-led professional communication training.",
+      caption:
+        "Live, consultation-led sessions with guided practice in spoken and written professional English.",
     },
   },
   cta: {
