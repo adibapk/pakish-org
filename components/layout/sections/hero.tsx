@@ -12,7 +12,7 @@ const heroIndicators = [
 
 export const HeroSection = () => {
   return (
-    <section className="container w-full pt-8 pb-8 sm:pt-10 md:pt-12 md:pb-10">
+    <section className="container w-full pt-8 pb-6 sm:pt-10 md:pt-12 md:pb-8">
       <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
         <div className="text-center lg:text-left">
           <Badge variant="outline" className="gap-2 py-2 text-sm">

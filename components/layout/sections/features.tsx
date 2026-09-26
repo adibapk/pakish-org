@@ -49,7 +49,10 @@ const featureList: FeaturesProps[] = [
 
 export const FeaturesSection = () => {
   return (
-    <section id="features" className="w-full bg-muted/30 py-16 sm:py-24">
+    <section
+      id="features"
+      className="w-full border-t border-border/40 bg-background py-16 sm:py-24"
+    >
       <div className="container">
         <p className="mb-2 text-center text-lg tracking-wider text-primary">
           Why Pakish Institute

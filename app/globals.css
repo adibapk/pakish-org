@@ -252,6 +252,25 @@ html {
   animation: hero-dash 4s linear infinite;
 }
 
+/* Curriculum tools ticker — transform-only seamless loop */
+@keyframes curriculum-ticker {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.curriculum-ticker-scroll-parent:hover .curriculum-ticker-track,
+.curriculum-ticker-scroll-parent:focus-within .curriculum-ticker-track {
+  animation-play-state: paused;
+}
+
+.curriculum-ticker-track--paused {
+  animation-play-state: paused !important;
+}
+
 /* Respect the user's motion preference across all decorative animation */
 @media (prefers-reduced-motion: reduce) {
   .animate-hero-float,
@@ -263,6 +282,25 @@ html {
   .animate-ping,
   .animate-pulse {
     animation: none !important;
+  }
+
+  .curriculum-ticker-scroll-parent {
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scrollbar-gutter: stable;
+  }
+
+  .curriculum-ticker-track {
+    animation: none !important;
+    transform: none !important;
+  }
+
+  .curriculum-ticker-track > [aria-hidden="true"] {
+    display: none !important;
+  }
+
+  .curriculum-ticker-fade {
+    display: none !important;
   }
 }
 
