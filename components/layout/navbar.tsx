@@ -54,7 +54,7 @@ const campusLinks: CampusLinkProps[] = [
 const routeList: RouteProps[] = [
   { href: "/insights", label: "Insights" },
   { href: "/courses", label: "Courses" },
-  { href: "/payment-methods", label: "Fees" },
+  { href: "/payment-methods", label: "Payment Methods" },
   { href: "#benefits", label: "Mission" },
   { href: "#faq", label: "FAQ" },
 ];
