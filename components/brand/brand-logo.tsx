@@ -1,54 +1,28 @@
-import Image from "next/image";
 import Link from "next/link";
-import { BRAND_LOGO_MARK } from "@/lib/brand";
+import { LogoGraphic } from "@/components/brand/logo-graphic";
 import { cn } from "@/lib/utils";
 
 interface BrandLogoProps {
   href?: string;
-  showWordmark?: boolean;
-  wordmark?: string;
   className?: string;
-  markClassName?: string;
-  wordmarkClassName?: string;
+  imageClassName?: string;
   onClick?: () => void;
 }
 
 export function BrandLogo({
   href = "/",
-  showWordmark = true,
-  wordmark = "Pakish.ORG",
   className,
-  markClassName,
-  wordmarkClassName,
+  imageClassName,
   onClick,
 }: BrandLogoProps) {
-  const content = (
-    <>
-      <Image
-        src={BRAND_LOGO_MARK}
-        alt=""
-        width={36}
-        height={36}
-        className={cn("h-9 w-9 shrink-0", markClassName)}
-        aria-hidden={showWordmark}
-        priority
-      />
-      {showWordmark ? (
-        <span className={cn("font-bold", wordmarkClassName)}>{wordmark}</span>
-      ) : (
-        <span className="sr-only">{wordmark}</span>
-      )}
-    </>
-  );
-
   return (
     <Link
       href={href}
-      className={cn("flex items-center gap-2", className)}
+      className={cn("inline-flex items-center", className)}
       onClick={onClick}
-      aria-label={`${wordmark} home`}
+      aria-label="Pakish.ORG home"
     >
-      {content}
+      <LogoGraphic className={cn("h-9", imageClassName)} />
     </Link>
   );
 }

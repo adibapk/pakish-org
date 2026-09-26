@@ -29,7 +29,7 @@ export const FooterSection = () => {
       <div className="p-10 bg-card border border-secondary rounded-2xl">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-12 gap-y-8">
           <div className="sm:col-span-2">
-            <BrandLogo href="/" className="text-2xl" wordmarkClassName="text-2xl" />
+            <BrandLogo href="/" imageClassName="h-10" />
             <p className="mt-4 text-muted-foreground max-w-sm">
               Professional IT &amp; AI training for women across Pakistan —
               Gulshan-e-Iqbal, Karachi, Lodhran, and online.

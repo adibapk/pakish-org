@@ -154,6 +154,14 @@ html {
   }
 }
 
+.pakish-logo-wordmark-fill {
+  fill: #005a43;
+}
+
+.dark .pakish-logo-wordmark-fill {
+  fill: #ffffff;
+}
+
 /* Minimal marquee styles (avoid @devnomic/marquee/dist/index.css preflight reset) */
 @keyframes marquee-left {
   from {

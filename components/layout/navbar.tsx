@@ -79,8 +79,8 @@ export const Navbar = () => {
       <div className="flex items-center justify-between gap-2 p-2">
         <BrandLogo
           href="/"
-          className="text-lg shrink-0"
-          wordmarkClassName="hidden sm:inline"
+          className="shrink-0"
+          imageClassName="h-8 sm:h-9"
         />
 
         <div className="flex items-center xl:hidden">
@@ -100,7 +100,6 @@ export const Navbar = () => {
                   <SheetTitle>
                     <BrandLogo
                       href="/"
-                      className="text-base"
                       onClick={() => setIsOpen(false)}
                     />
                   </SheetTitle>

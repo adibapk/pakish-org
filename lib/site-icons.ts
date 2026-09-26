@@ -3,10 +3,10 @@ import {
   BRAND_FAVICON_16,
   BRAND_FAVICON_32,
   BRAND_FAVICON_48,
-  BRAND_LOGO_MARK,
+  BRAND_LOGO,
 } from "@/lib/brand";
 
-export const SITE_LOGO = BRAND_LOGO_MARK;
+export const SITE_LOGO = BRAND_LOGO;
 
 export const SITE_ICONS: Metadata["icons"] = {
   icon: [
