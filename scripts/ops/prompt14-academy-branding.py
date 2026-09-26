@@ -169,8 +169,9 @@ FORBIDDEN_COMPILED_PATTERNS = (
 
 # Compiled AuthFooter still ships two Links joined by auth.and even after URL remaps.
 # Actual minified ending: children:t("auth.privacy_policy",{defaultValue:"Privacy Policy"})})
+# Remove ," ",auth.and," ",Link2 — keep Link1's closing paren intact.
 AUTH_FOOTER_DUAL_LINK_RE = re.compile(
-    r'\)," ",([a-zA-Z_$][\w$]*)\("auth\.and",\{defaultValue:"and"\}\)," ",'
+    r'," ",([a-zA-Z_$][\w$]*)\("auth\.and",\{defaultValue:"and"\}\)," ",'
     r'\(0,([a-zA-Z_$][\w$]*)\.jsx\)\(([a-zA-Z_$][\w$]*)\.default,'
     r'\{href:([a-zA-Z_$][\w$]*),target:"_blank",rel:"noopener noreferrer",'
     r'className:"text-black/50 hover:text-black/70 transition-colors",'
