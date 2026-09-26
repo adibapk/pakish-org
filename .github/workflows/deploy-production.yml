@@ -1,0 +1,26 @@
+name: Deploy Production
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-pakish-org-production
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to pakish-sg
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: 129.150.34.133
+          username: opc
+          key: ${{ secrets.PAKISH_SG_SSH_KEY }}
+          script_stop: true
+          command_timeout: 30m
+          script: |
+            bash /data/migrations/pakish/apps/pakish-org/scripts/deploy-pakish-org-prod.sh
