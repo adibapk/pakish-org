@@ -43,7 +43,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2, MessageCircle } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 
 const courseSlugs = getAllCourses().map((course) => course.slug) as [
@@ -104,7 +104,10 @@ export function CourseAdmissionForm({
     },
   });
 
-  const watchedCourseSlug = form.watch("courseSlug");
+  const watchedCourseSlug = useWatch({
+    control: form.control,
+    name: "courseSlug",
+  });
   const selectedCourse = getCourseBySlug(watchedCourseSlug ?? "");
 
   useEffect(() => {
@@ -157,7 +160,6 @@ export function CourseAdmissionForm({
         leadStatus: data.leadStatus || "New",
         paymentStatus: data.paymentStatus || "Pending",
         integrations: {
-          lmsCourseId: course.integrations?.lmsCourseId,
           aiTutorId: course.integrations?.aiTutorId,
         },
       };
@@ -208,6 +210,9 @@ export function CourseAdmissionForm({
             </h1>
             <p className="mt-4 text-lg text-muted-foreground">
               {ADMISSION_PAGE_COPY.heroDescription}
+            </p>
+            <p className="mt-3 text-sm text-muted-foreground">
+              {ADMISSION_PAGE_COPY.academyAccessNote}
             </p>
           </div>
 

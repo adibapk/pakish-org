@@ -31,15 +31,17 @@ import {
   learningModes,
   type CurriculumTrackId,
 } from "@/lib/curriculum-data";
+import { getAllCourses, getCourseBySlug } from "@/lib/courses";
 import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CheckCircle2, Mail, MessageCircle, ShieldCheck } from "lucide-react";
 import { useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 
+// Internal enum value `subsidy` retained for historical lead compatibility.
 const enrollmentTypes = {
   fee: "Regular fee-based admission",
-  subsidy: "Fi Sabilillah subsidy review",
+  subsidy: "Need-based fee-support review",
 } as const;
 
 type EnrollmentType = keyof typeof enrollmentTypes;
@@ -79,7 +81,7 @@ const formSchema = z
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["needSummary"],
-        message: "Please briefly explain why subsidy support is needed.",
+        message: "Please briefly explain why fee support is needed.",
       });
     }
 
@@ -118,19 +120,29 @@ const formSchema = z
 
 type AdmissionFormValues = z.infer<typeof formSchema>;
 
+type AdmissionFormContext = "legacy" | "womens-empowerment";
+
 interface AdmissionFormProps {
+  context?: AdmissionFormContext;
   initialType?: string;
   initialProgram?: string;
   initialCampus?: string;
+  initialCourseSlug?: string;
 }
 
 export function AdmissionForm({
+  context = "legacy",
   initialType,
   initialProgram,
   initialCampus,
+  initialCourseSlug,
 }: AdmissionFormProps) {
+  const isWomensEmpowerment = context === "womens-empowerment";
   const defaultType: EnrollmentType =
-    initialType === "subsidy" ? "subsidy" : "fee";
+    isWomensEmpowerment || initialType === "subsidy" ? "subsidy" : "fee";
+  const courses = getAllCourses();
+  const defaultCourseTitle =
+    getCourseBySlug(initialCourseSlug ?? "")?.title ?? "";
   const defaultProgram = getTrackById(initialProgram as CurriculumTrackId)?.enrollmentValue ?? "";
   const defaultLearningMode =
     initialCampus === "gulshan-e-iqbal"
@@ -156,7 +168,7 @@ export function AdmissionForm({
       ram: "",
       generation: "",
       internetSpeed: "",
-      program: defaultProgram,
+      program: defaultCourseTitle || defaultProgram,
       learningMode: defaultLearningMode,
       enrollmentType: defaultType,
       needSummary: "",
@@ -199,7 +211,7 @@ export function AdmissionForm({
     if (values.enrollmentType === "subsidy") {
       lines.push(
         "",
-        "Subsidy review details:",
+        "Fee-support review details (Women's Empowerment):",
         `Need summary: ${values.needSummary}`,
         `Family/guardian support: ${values.familySupport}`,
         `Possible monthly contribution: ${values.monthlyContribution}`,
@@ -235,12 +247,14 @@ export function AdmissionForm({
               Admission
             </p>
             <h1 className="text-3xl font-bold md:text-5xl">
-              Apply for IT, AI, and Freelancing Courses
+              {isWomensEmpowerment
+                ? "Women's Empowerment Fee-Support Request"
+                : "Apply for IT, AI, and Freelancing Courses"}
             </h1>
             <p className="mt-4 text-lg text-muted-foreground">
-              Choose regular paid admission or request a Fi Sabilillah subsidy
-              review. Tell us your goals and current skill level so the team can
-              recommend the right program and learning mode.
+              {isWomensEmpowerment
+                ? "Request a need-based fee-support review for eligible women. Support is limited, reviewed individually, and not guaranteed."
+                : "Tell us your goals and current skill level so the team can recommend the right program and learning mode."}
             </p>
           </div>
 
@@ -248,13 +262,15 @@ export function AdmissionForm({
             <div className="flex gap-3">
               <ShieldCheck className="mt-1 size-5 shrink-0 text-primary" />
               <div>
-                <h2 className="font-semibold">How support requests work</h2>
+                <h2 className="font-semibold">
+                  {isWomensEmpowerment
+                    ? "How fee-support review works"
+                    : "Paid admission"}
+                </h2>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                  Regular admission is fee-based. Limited subsidy seats are
-                  reviewed case by case. For subsidy requests, Pakish.ORG may
-                  share the learner profile and application details with trusted
-                  donors only after consent, so they can decide whether to
-                  sponsor course fees and required premium learning tools.
+                  {isWomensEmpowerment
+                    ? "This pathway is for eligible women through the Women's Empowerment initiative. With your consent, application details may be shared with trusted reviewers to assess need-based fee support. Approval is not guaranteed."
+                    : "Standard admission is fee-based. For course fees and payment methods, see the payment methods page."}
                 </p>
                 <p className="mt-3 text-sm">
                   <Link
@@ -269,12 +285,19 @@ export function AdmissionForm({
           </div>
 
           <div className="grid gap-3 text-sm text-muted-foreground">
-            {[
-              "One form link for all learners",
-              "Interest, education, address, and social profile collected for every applicant",
-              "Extra donor-facing details only for subsidy review",
-              "No subsidy approval guarantee before review",
-            ].map((item) => (
+            {(isWomensEmpowerment
+              ? [
+                  "Women's Empowerment fee-support pathway only",
+                  "Eligibility and need reviewed individually",
+                  "Consent required before any reviewer contact",
+                  "No fee-support guarantee before review",
+                ]
+              : [
+                  "Legacy admission form for older program links",
+                  "For current courses, use the main admission page",
+                  "Fee-based enrollment with counseling",
+                ]
+            ).map((item) => (
               <div key={item} className="flex items-center gap-2">
                 <CheckCircle2 className="size-4 text-primary" />
                 <span>{item}</span>
@@ -285,10 +308,13 @@ export function AdmissionForm({
 
         <Card className="bg-muted/50 dark:bg-card">
           <CardHeader>
-            <CardTitle>Apply for admission</CardTitle>
+            <CardTitle>
+              {isWomensEmpowerment ? "Fee-support application" : "Apply for admission"}
+            </CardTitle>
             <CardDescription>
-              Paid applications are focused; subsidy applications include enough
-              detail to share with trusted donors after consent.
+              {isWomensEmpowerment
+                ? "Include enough detail for eligibility review. Information is shared only with your explicit consent."
+                : "Complete the form and send via WhatsApp or email for counseling."}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -297,37 +323,39 @@ export function AdmissionForm({
                 onSubmit={form.handleSubmit(sendWhatsApp)}
                 className="grid gap-4"
               >
-                <FormField
-                  control={form.control}
-                  name="enrollmentType"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Admission type</FormLabel>
-                      <FormControl>
-                        <div className="grid gap-2 sm:grid-cols-2">
-                          {Object.entries(enrollmentTypes).map(
-                            ([value, label]) => (
-                              <label
-                                key={value}
-                                className="flex cursor-pointer items-start gap-3 rounded-lg border border-input bg-background p-3 text-sm transition-colors hover:bg-accent"
-                              >
-                                <input
-                                  type="radio"
-                                  value={value}
-                                  checked={field.value === value}
-                                  onChange={() => field.onChange(value)}
-                                  className="mt-1"
-                                />
-                                <span>{label}</span>
-                              </label>
-                            )
-                          )}
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                {!isWomensEmpowerment ? (
+                  <FormField
+                    control={form.control}
+                    name="enrollmentType"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Admission type</FormLabel>
+                        <FormControl>
+                          <div className="grid gap-2 sm:grid-cols-2">
+                            {Object.entries(enrollmentTypes)
+                              .filter(([value]) => value === "fee")
+                              .map(([value, label]) => (
+                                <label
+                                  key={value}
+                                  className="flex cursor-pointer items-start gap-3 rounded-lg border border-input bg-background p-3 text-sm transition-colors hover:bg-accent"
+                                >
+                                  <input
+                                    type="radio"
+                                    value={value}
+                                    checked={field.value === value}
+                                    onChange={() => field.onChange(value)}
+                                    className="mt-1"
+                                  />
+                                  <span>{label}</span>
+                                </label>
+                              ))}
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                ) : null}
 
                 <div className="grid gap-4 sm:grid-cols-2">
                   <FormField
@@ -367,7 +395,7 @@ export function AdmissionForm({
                       <FormItem>
                         <FormLabel>City / area</FormLabel>
                         <FormControl>
-                          <Input placeholder="Karachi, Lodhran, online..." {...field} />
+                          <Input placeholder="Karachi, online, workplace..." {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -427,14 +455,20 @@ export function AdmissionForm({
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            {curriculumTracks.map((track) => (
-                              <SelectItem
-                                key={track.id}
-                                value={track.enrollmentValue}
-                              >
-                                {track.title}
-                              </SelectItem>
-                            ))}
+                            {isWomensEmpowerment
+                              ? courses.map((course) => (
+                                  <SelectItem key={course.slug} value={course.title}>
+                                    {course.title}
+                                  </SelectItem>
+                                ))
+                              : curriculumTracks.map((track) => (
+                                  <SelectItem
+                                    key={track.id}
+                                    value={track.enrollmentValue}
+                                  >
+                                    {track.title}
+                                  </SelectItem>
+                                ))}
                             <SelectItem value="Not sure yet">
                               Not sure yet
                             </SelectItem>
@@ -643,11 +677,11 @@ export function AdmissionForm({
                 {isSubsidy ? (
                   <div className="grid gap-4 rounded-xl border border-primary/20 bg-primary/5 p-4">
                     <div>
-                      <h3 className="font-semibold">Subsidy review details</h3>
+                      <h3 className="font-semibold">Fee-support review details</h3>
                       <p className="mt-1 text-sm text-muted-foreground">
-                        These details help trusted donors understand the
-                        learner&apos;s situation and decide whether they can
-                        sponsor fees and required premium learning tools.
+                        These details help reviewers understand your situation
+                        and assess eligibility for limited need-based fee
+                        support.
                       </p>
                     </div>
 
@@ -656,7 +690,7 @@ export function AdmissionForm({
                       name="needSummary"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Why is subsidy support needed?</FormLabel>
+                          <FormLabel>Why is fee support needed?</FormLabel>
                           <FormControl>
                             <Textarea
                               rows={3}
@@ -796,9 +830,9 @@ export function AdmissionForm({
                 </div>
                 <p className="text-xs leading-relaxed text-muted-foreground">
                   When you continue, the details you entered are opened in
-                  WhatsApp or your email app for you to send. Subsidy details are
-                  shared with a trusted donor only when you select the subsidy
-                  option and give the required consent. Read our{" "}
+                  WhatsApp or your email app for you to send. Fee-support details
+                  are shared for review only when you give the required consent.
+                  Read our{" "}
                   <Link href="/privacy" className="font-medium text-primary hover:underline">
                     privacy notice
                   </Link>

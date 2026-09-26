@@ -10,6 +10,7 @@
  */
 
 import type { CourseSlug } from "@/lib/courses/types";
+import type { AdmissionLeadLifecycle } from "./lifecycle";
 import type { TrainingPreference } from "./types";
 
 export type LeadStatus =
@@ -37,12 +38,13 @@ export interface LeadIntegrations {
   studentAccountId?: string;
   enrollmentId?: string;
   lmsCourseId?: string;
+  academyCourseUuid?: string;
   aiTutorId?: string;
   certificateId?: string;
   progressPercent?: number;
 }
 
-export interface AdmissionLead {
+export interface AdmissionLead extends AdmissionLeadLifecycle {
   id: string;
   fullName: string;
   whatsapp: string;
@@ -75,6 +77,7 @@ export interface CreateAdmissionLeadInput {
   courseSlug: CourseSlug;
   trainingPreference: TrainingPreference;
   message?: string;
+  enrollmentType?: string;
   /** Honeypot — must be empty */
   website?: string;
 }

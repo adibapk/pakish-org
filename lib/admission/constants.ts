@@ -42,9 +42,11 @@ export const ADMISSION_NEXT_STEPS = [
 export const ADMISSION_PAGE_COPY = {
   heroHeading: "Start Your Learning Journey",
   heroDescription:
-    "Submit your admission request and our team will contact you with course details, schedule and next steps.",
+    "Submit your admission request and our team will contact you with course details, schedule and next steps. Academy login access is issued after admission review, payment confirmation, and enrollment — not instantly at signup.",
   paymentConfirmNote:
     "After payment, please share your payment screenshot. Our team will verify and send confirmation.",
+  academyAccessNote:
+    "Pakish Academy (academy.pakish.org) uses invite-only registration. Approved and enrolled learners receive login access from our academic team.",
 } as const;
 
 export function getAdmissionPath(courseSlug?: string): string {

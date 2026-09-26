@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { requireAdminSession } from "@/lib/admin/auth";
-import { listAdmissionLeads, toPublicLead } from "@/lib/admission/store";
+import { listAdmissionLeads, toAdminListLead } from "@/lib/admission/store";
 
 export const runtime = "nodejs";
 
@@ -12,10 +12,6 @@ export async function GET() {
 
   const leads = await listAdmissionLeads();
   return NextResponse.json({
-    leads: leads.map((lead) => ({
-      ...lead,
-      // keep meta for admin ops; never expose via public APIs
-      public: toPublicLead(lead),
-    })),
+    leads: leads.map((lead) => toAdminListLead(lead)),
   });
 }
