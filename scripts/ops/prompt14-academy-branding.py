@@ -16,6 +16,8 @@ from pathlib import Path
 
 CONTAINER = "learnhouse-app-d1110885"
 DB = "learnhouse-db-d1110885"
+EXPECTED_IMAGE = "ghcr.io/learnhouse/app:1.3.6"
+BACKUP_DIR = Path("/home/opc/.learnhouse/pakish/backups")
 SCRIPT_DIR = Path(__file__).resolve().parent
 
 
@@ -50,59 +52,91 @@ def docker_cp(local: Path, remote: str) -> None:
     run(["docker", "cp", str(local), f"{CONTAINER}:{remote}"])
 
 
-def docker_exec(cmd: list[str]) -> subprocess.CompletedProcess:
-    return run(["docker", "exec", CONTAINER, *cmd])
+def docker_exec(cmd: list[str], check: bool = True) -> subprocess.CompletedProcess:
+    return run(["docker", "exec", CONTAINER, *cmd], check=check)
+
+
+def verify_container_image() -> None:
+    proc = run(
+        ["docker", "inspect", CONTAINER, "--format", "{{.Config.Image}}"],
+        check=False,
+    )
+    image = proc.stdout.strip()
+    if image != EXPECTED_IMAGE:
+        raise RuntimeError(
+            f"Unexpected Academy image {image!r}; expected {EXPECTED_IMAGE!r}"
+        )
+    print(f"verified container image {image}")
+
+
+def backup_database() -> Path:
+    from datetime import datetime, timezone
+
+    BACKUP_DIR.mkdir(parents=True, exist_ok=True)
+    stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    out = BACKUP_DIR / f"learnhouse-db-prompt21-branding-{stamp}.dump"
+    run(
+        [
+            "docker",
+            "exec",
+            DB,
+            "pg_dump",
+            "-U",
+            "learnhouse",
+            "-d",
+            "learnhouse",
+            "-Fc",
+            "-f",
+            f"/tmp/{out.name}",
+        ]
+    )
+    run(["docker", "cp", f"{DB}:/tmp/{out.name}", str(out)])
+    run(["docker", "exec", DB, "rm", "-f", f"/tmp/{out.name}"], check=False)
+    print(f"database backup written to {out}")
+    return out
 
 
 def patch_built_text_branding() -> None:
     """Replace LearnHouse strings in pre-built Next.js output (no rebuild required)."""
-    replacements = [
-        ("https://www.learnhouse.io/terms", PRIVACY_URL),
-        ("https://www.learnhouse.io/privacy", PRIVACY_URL),
-        ("https://learnhouse.app/", "https://pakish.org/"),
-        ("https://learnhouse.app", "https://pakish.org"),
-        (
-            "By continuing, you agree to LearnHouse's",
-            "By continuing, you agree to Pakish Institute's",
-        ),
-        (
-            "By continuing, you agree to Pakish Institute's Terms of Service and Privacy Policy.",
-            "By continuing, you agree to Pakish Institute's Privacy Policy.",
-        ),
-        ("Terms of Service and Privacy Policy", "Privacy Policy"),
-        ("Terms of Service", "Privacy Policy"),
-        ("LearnHouse, Inc.", "Pakish Institute"),
-        ("Welcome back to LearnHouse.", "Welcome back to Pakish Institute."),
-        ('alt="LearnHouse"', 'alt="Pakish Institute"'),
-        ('alt="Learnhouse"', 'alt="Pakish Institute"'),
-        (
-            "Don't have an account? Sign up",
-            "Academy access is issued after admission and enrollment confirmation.",
-        ),
-        ("Don't have an account?", "Need Academy access?"),
-        ("Sign up", "Apply for admission"),
-        ("LearnHouse", "Pakish Institute"),
-    ]
-    proc = docker_exec(
-        [
-            "sh",
-            "-c",
-            "find /app/web/.next -type f \\( -name '*.js' -o -name '*.html' -o -name '*.json' \\) 2>/dev/null",
-        ]
-    )
-    files = [line.strip() for line in proc.stdout.splitlines() if line.strip()]
-    patched = 0
-    for remote in files:
-        content = docker_exec(["cat", remote]).stdout
-        updated = content
-        for old, new in replacements:
-            updated = updated.replace(old, new)
-        if updated != content:
-            tmp = Path(f"/tmp/lh-brand-{patched}.bin")
-            tmp.write_bytes(updated.encode("utf-8"))
-            docker_cp(tmp, remote)
-            patched += 1
-    print(f"patched LearnHouse strings in {patched} built asset files")
+    # Run in-container sed for reliability on large/minified bundles.
+    sed_script = r"""
+set -e
+patched=0
+for file in $(find /app/web/.next -type f \( -name '*.js' -o -name '*.html' -o -name '*.json' \) 2>/dev/null); do
+  before=$(grep -E 'learnhouse\.io|learnhouse\.app|LearnHouse' "$file" 2>/dev/null | wc -l || true)
+  [ "$before" = "0" ] && continue
+  sed -i \
+    -e 's|https://www.learnhouse.io/terms|https://pakish.org/privacy|g' \
+    -e 's|https://www.learnhouse.io/privacy|https://pakish.org/privacy|g' \
+    -e 's|https://learnhouse.io/terms|https://pakish.org/privacy|g' \
+    -e 's|https://learnhouse.io/privacy|https://pakish.org/privacy|g' \
+    -e 's|learnhouse.io/terms|pakish.org/privacy|g' \
+    -e 's|learnhouse.io/privacy|pakish.org/privacy|g' \
+    -e 's|https://learnhouse.app/|https://pakish.org/|g' \
+    -e 's|https://learnhouse.app|https://pakish.org|g' \
+    -e 's|learnhouse.app/|pakish.org/|g' \
+    -e 's|learnhouse.app|pakish.org|g' \
+    -e "s|By continuing, you agree to LearnHouse's|By continuing, you agree to Pakish Institute's|g" \
+    -e 's|Terms of Service and Privacy Policy|Privacy Policy|g' \
+    -e 's|Terms of Service|Privacy Policy|g' \
+    -e 's|LearnHouse, Inc.|Pakish Institute|g' \
+    -e 's|Welcome back to LearnHouse.|Welcome back to Pakish Institute.|g' \
+    -e 's|alt="LearnHouse"|alt="Pakish Institute"|g' \
+    -e 's|alt="Learnhouse"|alt="Pakish Institute"|g' \
+    -e 's|?utm_source=LearnHouse&utm_medium=referral|?utm_source=PakishInstitute&utm_medium=referral|g' \
+    "$file"
+  after=$(grep -E 'learnhouse\\.io|learnhouse\\.app|LearnHouse' "$file" 2>/dev/null | wc -l || true)
+  if [ "$before" != "$after" ]; then
+    patched=$((patched + 1))
+  fi
+done
+echo "patched LearnHouse strings in ${patched} built asset files"
+"""
+    proc = docker_exec(["sh", "-c", sed_script], check=False)
+    print(proc.stdout.strip() or "patched built assets")
+    if proc.returncode != 0:
+        print(proc.stderr, file=sys.stderr)
+        raise SystemExit(proc.returncode)
 
 
 def replace_bundled_logos() -> None:
@@ -202,19 +236,37 @@ def patch_legal_footers() -> None:
 def patch_auth_branding_panel() -> None:
     path = "/app/web/components/Auth/AuthBrandingPanel.tsx"
     content = docker_exec(["cat", path]).stdout
-    updated = content.replace(
-        "href=\"https://learnhouse.app\"",
-        "href=\"https://pakish.org\"",
-    ).replace(
-        "import learnhouseIcon from 'public/learnhouse_bigicon_1.png'",
-        "import pakishIcon from 'public/learnhouse_bigicon_1.png'",
-    ).replace(
-        "src={learnhouseIcon}\n                          alt=\"LearnHouse\"",
-        "src={org?.logo_image ? getOrgLogoMediaDirectory(org.org_uuid, org.logo_image) : '/black_logo.png'}\n                          alt={org?.name || 'Pakish Institute'}",
-    ).replace(
-        "<h1 className=\"font-black text-3xl tracking-tight\">{org?.name || 'LearnHouse'}</h1>",
-        "<h1 className=\"font-black text-3xl tracking-tight\">{org?.name || 'Pakish Institute'}</h1>",
-    )
+    updated = content
+    replacements = [
+        ('href="https://learnhouse.app"', 'href="https://pakish.org"'),
+        (
+            "import learnhouseIcon from 'public/learnhouse_bigicon_1.png'",
+            "import pakishIcon from 'public/learnhouse_bigicon_1.png'",
+        ),
+        (
+            "?utm_source=LearnHouse&utm_medium=referral",
+            "?utm_source=PakishInstitute&utm_medium=referral",
+        ),
+        (
+            "const noOrgTitle = title || 'Welcome back to LearnHouse.'",
+            "const noOrgTitle = title || 'Welcome back to Pakish Institute.'",
+        ),
+        ('alt="LearnHouse"', 'alt="Pakish Institute"'),
+        (
+            "<h1 className=\"font-black text-3xl tracking-tight\">{org?.name || 'LearnHouse'}</h1>",
+            "<h1 className=\"font-black text-3xl tracking-tight\">{org?.name || 'Pakish Institute'}</h1>",
+        ),
+        (
+            "src={learnhouseIcon}\n                          alt=\"LearnHouse\"",
+            "src={org?.logo_image ? getOrgLogoMediaDirectory(org.org_uuid, org.logo_image) : '/black_logo.png'}\n                          alt={org?.name || 'Pakish Institute'}",
+        ),
+        (
+            "src={pakishIcon}\n                          alt=\"LearnHouse\"",
+            "src={org?.logo_image ? getOrgLogoMediaDirectory(org.org_uuid, org.logo_image) : '/black_logo.png'}\n                          alt={org?.name || 'Pakish Institute'}",
+        ),
+    ]
+    for old, new in replacements:
+        updated = updated.replace(old, new)
     if updated == content:
         print("AuthBrandingPanel.tsx already patched")
         return
@@ -222,6 +274,72 @@ def patch_auth_branding_panel() -> None:
     tmp.write_text(updated, encoding="utf-8")
     docker_cp(tmp, path)
     print("patched AuthBrandingPanel.tsx")
+
+
+def patch_auth_mobile_header() -> None:
+    path = "/app/web/components/Auth/AuthMobileHeader.tsx"
+    content = docker_exec(["cat", path]).stdout
+    updated = content
+    replacements = [
+        (
+            "import learnhouseIcon from 'public/learnhouse_bigicon_1.png'",
+            "import pakishIcon from 'public/learnhouse_bigicon_1.png'",
+        ),
+        ("src={learnhouseIcon}", "src={pakishIcon}"),
+        ('alt="LearnHouse"', 'alt="Pakish Institute"'),
+        ("{org?.name || 'LearnHouse'}", "{org?.name || 'Pakish Institute'}"),
+        (
+            "?utm_source=LearnHouse&utm_medium=referral",
+            "?utm_source=PakishInstitute&utm_medium=referral",
+        ),
+    ]
+    for old, new in replacements:
+        updated = updated.replace(old, new)
+    if updated == content:
+        print("AuthMobileHeader.tsx already patched")
+        return
+    tmp = Path("/tmp/AuthMobileHeader.tsx")
+    tmp.write_text(updated, encoding="utf-8")
+    docker_cp(tmp, path)
+    print("patched AuthMobileHeader.tsx")
+
+
+def patch_dash_left_menu() -> None:
+    path = "/app/web/components/Dashboard/Menus/DashLeftMenu.tsx"
+    content = docker_exec(["cat", path]).stdout
+    updated = content.replace('alt="LearnHouse"', 'alt="Pakish Institute"').replace(
+        'alt="Learnhouse"', 'alt="Pakish Institute"'
+    )
+    if updated == content:
+        print("DashLeftMenu.tsx already patched")
+        return
+    tmp = Path("/tmp/DashLeftMenu.tsx")
+    tmp.write_text(updated, encoding="utf-8")
+    docker_cp(tmp, path)
+    print("patched DashLeftMenu.tsx")
+
+
+def verify_branding() -> None:
+    """Fail if compiled assets still expose public LearnHouse legal/watermark URLs."""
+    proc = docker_exec(
+        [
+            "sh",
+            "-c",
+            "grep -RIl "
+            "-e learnhouse.io/terms -e learnhouse.io/privacy "
+            "-e www.learnhouse.io -e learnhouse.app "
+            "-e 'alt=\"LearnHouse\"' "
+            "/app/web/.next/static/chunks /app/web/.next/server/app/auth 2>/dev/null | head -20 || true",
+        ],
+        check=False,
+    )
+    hits = [line.strip() for line in proc.stdout.splitlines() if line.strip()]
+    if hits:
+        print("branding verification found residual LearnHouse URLs:", file=sys.stderr)
+        for line in hits[:10]:
+            print(line, file=sys.stderr)
+        raise SystemExit(1)
+    print("branding verification passed (.next static/server bundles)")
 
 
 def patch_login_invite_only() -> None:
@@ -387,18 +505,27 @@ def update_org_config() -> None:
 
 
 def main() -> int:
+    verify_container_image()
+    backup_database()
     copy_logos()
     patch_not_found()
     patch_legal_footers()
     patch_en_locale()
     patch_auth_branding_panel()
+    patch_auth_mobile_header()
     patch_login_invite_only()
     patch_org_menu()
+    patch_dash_left_menu()
     patch_dash_mobile_menu()
     patch_org_footer()
     update_org_config()
+    patch_built_text_branding()
+    verify_branding()
     run(["docker", "restart", CONTAINER], check=False)
-    print("branding applied — container restarted")
+    print("container restarted — re-patching compiled assets after boot")
+    patch_built_text_branding()
+    verify_branding()
+    print("branding applied — container restarted and compiled assets re-patched")
     return 0
 
 

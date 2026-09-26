@@ -162,7 +162,7 @@ export function buildAdminEmailHtml(lead: AdmissionLead): string {
           </tr>
           <tr>
             <td style="padding:16px 24px;background:#f9fafb;color:#6b7280;font-size:12px;">
-              This notification was sent to billing@pakish.org for Pakish Institute course admissions.
+              This is an internal Pakish Institute admission notification.
             </td>
           </tr>
         </table>

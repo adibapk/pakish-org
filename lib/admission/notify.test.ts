@@ -116,6 +116,26 @@ describe("admission notify", () => {
     assert.ok((notification?.attemptCount ?? 0) >= 2);
   });
 
+  it("does not hard-code admin recipient email in HTML notification copy", async () => {
+    const { buildAdminEmailHtml } = await import("./notify");
+    const html = buildAdminEmailHtml({
+      id: "adm_copy_test",
+      fullName: "Copy Test",
+      whatsapp: "+920000000001",
+      courseSlug: "ai-productivity",
+      courseTitle: "AI Productivity & Automation",
+      trainingPreference: "live-online",
+      createdAt: "2026-01-01T00:00:00.000Z",
+      updatedAt: "2026-01-01T00:00:00.000Z",
+      leadStatus: "New",
+      paymentStatus: "Pending",
+      source: "web-admission-form",
+      integrations: {},
+    });
+    assert.doesNotMatch(html, /billing@pakish\.org/i);
+    assert.match(html, /internal Pakish Institute admission notification/);
+  });
+
   it("migrates legacy email channel to provider-accepted", async () => {
     const { getAdminNotification, canRetryAdminNotification } = await import(
       "./notification-state"
