@@ -1,0 +1,5 @@
+Open and read the following authoritative prompt completely, then execute only that prompt in the current Pakish Institute workspace:
+
+C:\Users\pakis\My-Projects\pakish-org\docs\cursor-prompts\PROMPT_13_ACADEMY_COURSES_TEACHERS_AND_DELIVERY.md
+
+Confirm Prompts 10-12 have been reviewed, use verified identities only, implement and test one pilot course and the operating model, return the required evidence report, and stop before Prompt 14.

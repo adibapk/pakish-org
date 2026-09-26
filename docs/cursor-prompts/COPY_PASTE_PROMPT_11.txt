@@ -1,0 +1,5 @@
+Open and read the following authoritative prompt completely, then execute only that prompt in the current Pakish Institute workspace:
+
+C:\Users\pakis\My-Projects\pakish-org\docs\cursor-prompts\PROMPT_11_ACADEMY_SUBDOMAIN_AND_HARDENING.md
+
+Confirm Prompt 10 has been reviewed, follow all coordination and backup gates, implement and verify only Prompt 11, return the required evidence report, and stop before Prompt 12.

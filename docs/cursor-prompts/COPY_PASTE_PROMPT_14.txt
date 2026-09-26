@@ -1,0 +1,5 @@
+Open and read the following authoritative prompt completely, then execute only that prompt in the current Pakish Institute workspace:
+
+C:\Users\pakis\My-Projects\pakish-org\docs\cursor-prompts\PROMPT_14_LAUNCH_QA_COMMIT_PUSH_DEPLOY.md
+
+Run the complete release preflight and all acceptance gates. Commit, push, and deploy only scoped reviewed work if every mandatory gate passes; otherwise stop safely and report exact blockers. Return production proof and final repository status.

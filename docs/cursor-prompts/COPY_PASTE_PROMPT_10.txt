@@ -1,0 +1,5 @@
+Open and read the following authoritative prompt completely, then execute only that prompt in the current Pakish Institute workspace:
+
+C:\Users\pakis\My-Projects\pakish-org\docs\cursor-prompts\PROMPT_10_COMMERCIAL_POSITIONING_AND_WOMENS_EMPOWERMENT.md
+
+Follow its investigation-first sequence, protect all unrelated and other-agent work, implement and verify only Prompt 10, return the required evidence report, and stop before Prompt 11.

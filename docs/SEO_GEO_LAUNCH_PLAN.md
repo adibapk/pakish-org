@@ -1,5 +1,7 @@
 # Pakish.ORG launch SEO, GEO, content, and conversion plan
 
+> Historical baseline only. The women-focused/Fi Sabilillah positioning in this document was superseded on 2026-09-26 by [`PAKISH_COMMERCIAL_LAUNCH_MASTER_PLAN.md`](./PAKISH_COMMERCIAL_LAUNCH_MASTER_PLAN.md). Do not implement this older positioning.
+
 Date: 2026-08-08
 
 ## Outcome

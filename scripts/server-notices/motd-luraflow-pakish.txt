@@ -1,0 +1,3 @@
+
+*** PAKISH sites migrated to pakish-sg (129.150.34.133) — NOT on this server ***
+Read: ~/PAKISH-MIGRATED-READ-FIRST.txt

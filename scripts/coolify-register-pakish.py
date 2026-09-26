@@ -279,6 +279,43 @@ def main() -> None:
         """
     )
 
+    psql_exec(
+        """
+        INSERT INTO application_settings (
+          is_static, is_git_submodules_enabled, is_git_lfs_enabled, is_auto_deploy_enabled,
+          is_force_https_enabled, is_debug_enabled, is_preview_deployments_enabled,
+          application_id, created_at, updated_at, is_log_drain_enabled, is_gpu_enabled,
+          gpu_driver, gpu_count, gpu_device_ids, gpu_options, is_include_timestamps,
+          is_swarm_only_worker_nodes, is_raw_compose_deployment_enabled, is_build_server_enabled,
+          is_consistent_container_name_enabled, is_gzip_enabled, is_stripprefix_enabled,
+          connect_to_docker_network, custom_internal_name, is_container_label_escape_enabled,
+          is_env_sorting_enabled, is_container_label_readonly_enabled, is_preserve_repository_enabled,
+          disable_build_cache, is_spa, is_git_shallow_clone_enabled, is_pr_deployments_public_enabled,
+          use_build_secrets, stop_grace_period, inject_build_args_to_dockerfile,
+          include_source_commit_in_build, docker_images_to_keep
+        )
+        SELECT
+          s.is_static, s.is_git_submodules_enabled, s.is_git_lfs_enabled, s.is_auto_deploy_enabled,
+          s.is_force_https_enabled, s.is_debug_enabled, s.is_preview_deployments_enabled,
+          a.id, NOW(), NOW(), s.is_log_drain_enabled, s.is_gpu_enabled,
+          s.gpu_driver, s.gpu_count, s.gpu_device_ids, s.gpu_options, s.is_include_timestamps,
+          s.is_swarm_only_worker_nodes, s.is_raw_compose_deployment_enabled, s.is_build_server_enabled,
+          s.is_consistent_container_name_enabled, s.is_gzip_enabled, s.is_stripprefix_enabled,
+          s.connect_to_docker_network, s.custom_internal_name, s.is_container_label_escape_enabled,
+          s.is_env_sorting_enabled, s.is_container_label_readonly_enabled, s.is_preserve_repository_enabled,
+          s.disable_build_cache, s.is_spa, s.is_git_shallow_clone_enabled, s.is_pr_deployments_public_enabled,
+          s.use_build_secrets, s.stop_grace_period, s.inject_build_args_to_dockerfile,
+          s.include_source_commit_in_build, s.docker_images_to_keep
+        FROM applications a
+        CROSS JOIN application_settings s
+        WHERE a.id IN (2, 3)
+          AND s.application_id = 1
+          AND NOT EXISTS (
+            SELECT 1 FROM application_settings existing WHERE existing.application_id = a.id
+          );
+        """
+    )
+
     for uuid in ("x1d77bx25p08ziy9glnehy8t", "kss4kwgs4w8cs8cskswosog8"):
         subprocess.run(
             ["sudo", "mkdir", "-p", f"/data/coolify/applications/{uuid}"],
