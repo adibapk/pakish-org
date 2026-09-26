@@ -1,5 +1,5 @@
-Open and read the following authoritative prompt completely, then execute only that prompt in the current Pakish Institute workspace:
+Open and read the following authoritative prompt completely, then execute it in the current Pakish Institute workspace:
 
 C:\Users\pakis\My-Projects\pakish-org\docs\cursor-prompts\PROMPT_14_LAUNCH_QA_COMMIT_PUSH_DEPLOY.md
 
-Run the complete release preflight and all acceptance gates. Commit, push, and deploy only scoped reviewed work if every mandatory gate passes; otherwise stop safely and report exact blockers. Return production proof and final repository status.
+This is the final launch and cutover prompt. Investigate current repository, production website, Academy, deployment, and rollback state before changing anything. Implement the approved `/signup` to `/admission` permanent redirect, the exact inclusive commercial homepage hero, complete retired free-charity cleanup, and the Lodhran future-plan/noindex conversion. Correct the discovered Academy course-mapping mismatches, reverify Prompt 13 claims, clean temporary tokens and QA residue safely, run every automated/browser/accessibility/SEO/business-flow gate, and only then create exact-path commits, push, deploy, and prove the exact production release. Preserve unrelated WIP and never expose credentials or perform real payments, notifications, enrollments, or public pilot publication. If a mandatory gate fails, stop safely and report the precise blocker instead of claiming completion.

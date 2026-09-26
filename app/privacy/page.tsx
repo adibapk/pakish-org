@@ -6,7 +6,7 @@ import Link from "next/link";
 export const metadata = createPageMetadata({
   title: "Privacy Notice",
   description:
-    "How Pakish.ORG handles admission, contact, and Fi Sabilillah subsidy-review information sent through WhatsApp or email.",
+    "How Pakish Institute handles admission, contact, and Women's Empowerment fee-support review information sent through WhatsApp or email.",
   path: "/privacy",
   image: ogImagePath("privacy"),
 });
@@ -35,20 +35,20 @@ export default function PrivacyPage() {
       <article className="container py-16 sm:py-24">
         <div className="mx-auto max-w-3xl">
           <p className="mb-2 text-lg tracking-wider text-primary">Trust &amp; Privacy</p>
-          <h1 className="text-3xl font-bold md:text-5xl">Pakish.ORG Privacy Notice</h1>
+          <h1 className="text-3xl font-bold md:text-5xl">Pakish Institute Privacy Notice</h1>
           <p className="mt-5 text-lg text-muted-foreground">
             This notice explains what happens when you use the contact or
-            admission forms on Pakish.ORG. Last updated: 8 August 2026.
+            admission forms on pakish.org. Last updated: 26 September 2026.
           </p>
 
           <div className="mt-10 space-y-9 text-base leading-7 text-muted-foreground">
             <section>
               <h2 className="text-2xl font-bold text-foreground">What the website does</h2>
               <p className="mt-3">
-                Pakish.ORG does not silently submit these forms to a database.
-                After validation, the website opens WhatsApp or your email app
-                with the information you entered. You review and send that
-                message using the selected service.
+                Pakish Institute stores admission requests submitted through the
+                online admission form. Contact messages may open WhatsApp or
+                your email app for you to review and send. You choose what to
+                share and when to send it.
               </p>
             </section>
 
@@ -57,18 +57,19 @@ export default function PrivacyPage() {
               <p className="mt-3">
                 Admission information can include contact details, city or
                 address, education, skills, interests, social-profile link,
-                chosen program, and learning mode. A subsidy request also asks
-                about financial need, family support, possible contribution,
-                and donor-review consent.
+                chosen course, and training preference. A Women&apos;s Empowerment
+                fee-support request also asks about financial need, family
+                support, possible contribution, and review consent.
               </p>
             </section>
 
             <section>
               <h2 className="text-2xl font-bold text-foreground">How information is used</h2>
               <p className="mt-3">
-                Pakish.ORG uses the information to respond to questions, guide
-                program selection, process admission, and review eligibility for
-                limited Fi Sabilillah support. Do not include passwords,
+                Pakish Institute uses the information to respond to questions,
+                guide course selection, process paid admission, and review
+                eligibility for limited need-based fee support through the
+                Women&apos;s Empowerment initiative. Do not include passwords,
                 financial-account details, identity-document images, or other
                 sensitive records unless an authorized team member later
                 explains why they are needed and how they will be handled.
@@ -76,13 +77,14 @@ export default function PrivacyPage() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold text-foreground">Subsidy and donor review</h2>
+              <h2 className="text-2xl font-bold text-foreground">Fee-support review</h2>
               <p className="mt-3">
-                Subsidy application details may be shared with a trusted
-                donor or sponsor only when the applicant selects the subsidy
-                route and gives the stated consent. A donor may contact the
-                applicant directly only when the separate contact consent is
-                given. Consent does not guarantee funding or admission.
+                Fee-support application details may be shared with a trusted
+                reviewer only when the applicant uses the Women&apos;s Empowerment
+                fee-support pathway and gives the stated consent. A reviewer may
+                contact the applicant directly only when the separate contact
+                consent is given. Consent does not guarantee funding or
+                admission.
               </p>
             </section>
 
@@ -90,9 +92,9 @@ export default function PrivacyPage() {
               <h2 className="text-2xl font-bold text-foreground">Third-party communication services</h2>
               <p className="mt-3">
                 WhatsApp and your email provider process messages under their
-                own privacy terms. Pakish.ORG does not control those services.
-                You can choose email instead of WhatsApp, or contact the team
-                before sharing application details.
+                own privacy terms. Pakish Institute does not control those
+                services. You can choose email instead of WhatsApp, or contact
+                the team before sharing application details.
               </p>
             </section>
 

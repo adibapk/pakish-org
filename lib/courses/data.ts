@@ -291,7 +291,6 @@ export const courses: Course[] = [
         "Practical Generative AI training for faster research, writing and everyday workflow automation.",
     },
     integrations: {
-      lmsCourseId: "lms-ai-productivity",
       aiTutorId: "tutor-ai-productivity",
     },
     updatedAt: "2026-09-25",
@@ -509,7 +508,6 @@ export const courses: Course[] = [
         "Customized AI training packages for companies and teams — productivity, automation and process improvement.",
     },
     integrations: {
-      lmsCourseId: "lms-ai-business",
       aiTutorId: "tutor-ai-business",
     },
     updatedAt: "2026-09-25",
@@ -752,7 +750,6 @@ export const courses: Course[] = [
         "From web fundamentals to Next.js projects — accelerated with AI coding assistants.",
     },
     integrations: {
-      lmsCourseId: "lms-full-stack-ai",
       aiTutorId: "tutor-full-stack-ai",
     },
     updatedAt: "2026-09-25",
@@ -976,7 +973,6 @@ export const courses: Course[] = [
         "Build business websites and WooCommerce stores with practical, client-ready skills.",
     },
     integrations: {
-      lmsCourseId: "lms-wordpress-woocommerce",
       aiTutorId: "tutor-wordpress-woocommerce",
     },
     updatedAt: "2026-09-25",
@@ -1208,7 +1204,6 @@ export const courses: Course[] = [
         "Practical Linux, VPS, deployment, DNS, SSL and cloud operations training.",
     },
     integrations: {
-      lmsCourseId: "lms-cloud-devops",
       aiTutorId: "tutor-cloud-devops",
     },
     updatedAt: "2026-09-25",
@@ -1425,7 +1420,6 @@ export const courses: Course[] = [
         "Build freelance services, proposals and portfolios with AI-assisted delivery workflows.",
     },
     integrations: {
-      lmsCourseId: "lms-ai-freelancing",
       aiTutorId: "tutor-ai-freelancing",
     },
     updatedAt: "2026-09-25",

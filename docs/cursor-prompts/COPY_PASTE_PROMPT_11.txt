@@ -2,4 +2,4 @@ Open and read the following authoritative prompt completely, then execute only t
 
 C:\Users\pakis\My-Projects\pakish-org\docs\cursor-prompts\PROMPT_11_ACADEMY_SUBDOMAIN_AND_HARDENING.md
 
-Confirm Prompt 10 has been reviewed, follow all coordination and backup gates, implement and verify only Prompt 11, return the required evidence report, and stop before Prompt 12.
+This revised Prompt 11 first closes and browser-verifies the three remaining Prompt 10 acceptance gaps, then implements and proves the native academy.pakish.org architecture with backup and rollback protection. Preserve the entire current Prompt 10 working tree and all unrelated work. Do not stage, commit, push, or deploy the main website. Return the required evidence report and stop before Prompt 12.

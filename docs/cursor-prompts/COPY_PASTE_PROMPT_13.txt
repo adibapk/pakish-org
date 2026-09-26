@@ -2,4 +2,4 @@ Open and read the following authoritative prompt completely, then execute only t
 
 C:\Users\pakis\My-Projects\pakish-org\docs\cursor-prompts\PROMPT_13_ACADEMY_COURSES_TEACHERS_AND_DELIVERY.md
 
-Confirm Prompts 10-12 have been reviewed, use verified identities only, implement and test one pilot course and the operating model, return the required evidence report, and stop before Prompt 14.
+First close the remaining Prompt 12 concurrency and authenticated Academy verification gaps. Then investigate the actual LearnHouse 1.3.6 role, course, assignment, progress, media, and live-class capabilities; build evidence-based six-course mapping and operating documentation; and create and test exactly one private pilot course with least-privilege synthetic instructor/student access. Preserve all current work, use verified identities and storage only, do not contact real users, do not publish the pilot, and do not stage, commit, push, or deploy the main website. Return the required evidence report and stop before Prompt 14.
