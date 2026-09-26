@@ -1,0 +1,61 @@
+services:
+  frontend-nextgen:
+    networks:
+      - coolify
+      - pakishnews-internal
+      - pakishnews-stack
+    labels:
+      - traefik.enable=true
+      - traefik.http.middlewares.gzip.compress=true
+      - traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https
+      - traefik.http.middlewares.redirect-to-https.redirectscheme.permanent=true
+      - traefik.http.routers.http-pakishnews.entryPoints=http
+      - traefik.http.routers.http-pakishnews.middlewares=redirect-to-https
+      - traefik.http.routers.http-pakishnews.rule=Host(`pakishnews.com`) || Host(`www.pakishnews.com`)
+      - traefik.http.routers.http-pakishnews.service=pakishnews-frontend
+      - traefik.http.routers.https-pakishnews.entryPoints=https
+      - traefik.http.routers.https-pakishnews.middlewares=gzip
+      - traefik.http.routers.https-pakishnews.rule=Host(`pakishnews.com`) || Host(`www.pakishnews.com`)
+      - traefik.http.routers.https-pakishnews.service=pakishnews-frontend
+      - traefik.http.routers.https-pakishnews.tls=true
+      - traefik.http.routers.https-pakishnews.tls.certresolver=letsencrypt
+      - traefik.http.services.pakishnews-frontend.loadbalancer.server.port=3100
+  ghost-en:
+    networks:
+      - coolify
+      - pakishnews-internal
+      - pakishnews-stack
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.https-ghost-en.rule=Host(`en-ghost.pakishnews.com`)
+      - traefik.http.routers.https-ghost-en.entryPoints=https
+      - traefik.http.routers.https-ghost-en.tls=true
+      - traefik.http.routers.https-ghost-en.tls.certresolver=letsencrypt
+      - traefik.http.routers.https-ghost-en.service=ghost-en-svc
+      - traefik.http.services.ghost-en-svc.loadbalancer.server.port=2368
+  ghost-ur:
+    networks:
+      - coolify
+      - pakishnews-internal
+      - pakishnews-stack
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.https-ghost-ur.rule=Host(`ur-ghost.pakishnews.com`)
+      - traefik.http.routers.https-ghost-ur.entryPoints=https
+      - traefik.http.routers.https-ghost-ur.tls=true
+      - traefik.http.routers.https-ghost-ur.tls.certresolver=letsencrypt
+      - traefik.http.routers.https-ghost-ur.service=ghost-ur-svc
+      - traefik.http.services.ghost-ur-svc.loadbalancer.server.port=2368
+  ghost-ar:
+    networks:
+      - coolify
+      - pakishnews-internal
+      - pakishnews-stack
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.https-ghost-ar.rule=Host(`ar-ghost.pakishnews.com`)
+      - traefik.http.routers.https-ghost-ar.entryPoints=https
+      - traefik.http.routers.https-ghost-ar.tls=true
+      - traefik.http.routers.https-ghost-ar.tls.certresolver=letsencrypt
+      - traefik.http.routers.https-ghost-ar.service=ghost-ar-svc
+      - traefik.http.services.ghost-ar-svc.loadbalancer.server.port=2368

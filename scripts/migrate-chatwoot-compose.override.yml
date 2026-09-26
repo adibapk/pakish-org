@@ -1,0 +1,71 @@
+# Singapore deployment override for /opt/pakish-whatsapp-platform/deploy/docker-compose.yml
+# Replaces luraflow-net with Coolify Traefik routing for inbox.pakish.net + copilot.pakish.net
+
+networks:
+  luraflow-net:
+    name: coolify
+    external: true
+
+services:
+  postgres:
+    env_file:
+      - .env.postgres
+    environment:
+      POSTGRES_DB: chatwoot
+      POSTGRES_USER: chatwoot
+
+  postgres-backup:
+    env_file:
+      - .env.postgres
+
+  chatwoot-prepare:
+    environment:
+      REDIS_URL: redis://deploy-redis-1:6379
+
+  chatwoot:
+    ports: []
+    expose:
+      - "3000"
+    environment:
+      REDIS_URL: redis://deploy-redis-1:6379
+    labels:
+      - traefik.enable=true
+      - traefik.http.middlewares.gzip.compress=true
+      - traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https
+      - traefik.http.middlewares.redirect-to-https.redirectscheme.permanent=true
+      - traefik.http.routers.http-inbox.entryPoints=http
+      - traefik.http.routers.http-inbox.middlewares=redirect-to-https
+      - traefik.http.routers.http-inbox.rule=Host(`inbox.pakish.net`)
+      - traefik.http.routers.http-inbox.service=inbox-svc
+      - traefik.http.routers.https-inbox.entryPoints=https
+      - traefik.http.routers.https-inbox.middlewares=gzip
+      - traefik.http.routers.https-inbox.rule=Host(`inbox.pakish.net`)
+      - traefik.http.routers.https-inbox.service=inbox-svc
+      - traefik.http.routers.https-inbox.tls=true
+      - traefik.http.routers.https-inbox.tls.certresolver=letsencrypt
+      - traefik.http.services.inbox-svc.loadbalancer.server.port=3000
+
+  copilot-api:
+    ports: []
+    expose:
+      - "8080"
+    labels:
+      - traefik.enable=true
+      - traefik.http.middlewares.gzip.compress=true
+      - traefik.http.routers.http-copilot.entryPoints=http
+      - traefik.http.routers.http-copilot.rule=Host(`copilot.pakish.net`)
+      - traefik.http.routers.http-copilot.service=copilot-svc
+      - traefik.http.routers.https-copilot.entryPoints=https
+      - traefik.http.routers.https-copilot.middlewares=gzip
+      - traefik.http.routers.https-copilot.rule=Host(`copilot.pakish.net`)
+      - traefik.http.routers.https-copilot.service=copilot-svc
+      - traefik.http.routers.https-copilot.tls=true
+      - traefik.http.routers.https-copilot.tls.certresolver=letsencrypt
+      - traefik.http.services.copilot-svc.loadbalancer.server.port=8080
+
+  chatwoot-sidekiq:
+    environment:
+      REDIS_URL: redis://deploy-redis-1:6379
+
+  globnic-copilot-api:
+    ports: []

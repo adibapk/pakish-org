@@ -10,6 +10,8 @@ interface CoursePricingBlockProps {
   compact?: boolean;
   /** Show contact CTA (detail pages) */
   showCta?: boolean;
+  /** Prefill admission with this course */
+  enrollHref?: string;
   className?: string;
 }
 
@@ -17,6 +19,7 @@ export function CoursePricingBlock({
   pricing,
   compact = false,
   showCta = false,
+  enrollHref = "/admission",
   className,
 }: CoursePricingBlockProps) {
   return (
@@ -59,10 +62,10 @@ export function CoursePricingBlock({
           {showCta && (
             <div className="mt-6 flex flex-col gap-3 sm:flex-row">
               <Button asChild>
-                <Link href="/admission">Apply for Admission</Link>
+                <Link href={enrollHref}>Enroll Now</Link>
               </Button>
               <Button asChild variant="outline">
-                <Link href="/payment-methods">Payment Methods</Link>
+                <Link href="/payment-methods">View Payment Methods</Link>
               </Button>
             </div>
           )}

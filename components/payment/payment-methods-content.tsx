@@ -29,7 +29,8 @@ import {
   Smartphone,
 } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { trackEvent } from "@/lib/analytics";
 
 function CopyButton({ value, label }: { value: string; label: string }) {
   const [copied, setCopied] = useState(false);
@@ -190,6 +191,10 @@ export function PaymentMethodsContent() {
     "Hello Pakish Institute, please send me a Payoneer payment request for my course fee. Student name: ____. Course: ____. Amount: ____. Currency: ____. Payer email: ____."
   );
 
+  useEffect(() => {
+    trackEvent("payment_page_visited", { source: "payment_methods_page" });
+  }, []);
+
   return (
     <div>
       {/* Hero */}
@@ -202,8 +207,8 @@ export function PaymentMethodsContent() {
             Course Fee Payment Methods
           </h1>
           <p className="mt-5 text-lg text-muted-foreground">
-            Choose your preferred payment method and submit your payment
-            confirmation to complete your admission process.
+            This page is for <strong className="text-foreground">Pakish Institute course fee payments only</strong>.
+            Choose a method below, then share your payment confirmation so we can verify admission.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Button asChild>
@@ -244,8 +249,9 @@ export function PaymentMethodsContent() {
             Choose Your Payment Method
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
-            Same company payment channels as Pakish Group. Bank transfer and
-            JazzCash are typically the fastest options in Pakistan.
+            Use these verified channels for your Pakish Institute course fees.
+            Bank transfer and JazzCash are typically the fastest options in
+            Pakistan.
           </p>
         </div>
 
@@ -438,8 +444,8 @@ export function PaymentMethodsContent() {
               Payment Confirmation
             </h2>
             <p className="mt-3 text-muted-foreground">
-              After payment, please share your payment screenshot with our team.
-              We will verify and send your payment acknowledgement.
+              After paying your course fee, share the payment screenshot with our
+              team. We will verify and confirm your admission.
             </p>
 
             <div className="mt-8 space-y-5">

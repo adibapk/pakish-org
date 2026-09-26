@@ -42,14 +42,14 @@ export function CourseJsonLd({ course }: CourseJsonLdProps) {
           priceCurrency: course.pricing.currency ?? "PKR",
           price: course.pricing.startingAmount,
           availability: "https://schema.org/InStock",
-          url: `${SITE_URL}/admission`,
+          url: `${SITE_URL}/admission?course=${course.slug}`,
           description: course.pricing.displayLabel,
         }
       : {
           "@type": "Offer",
           category: "Paid",
           availability: "https://schema.org/InStock",
-          url: `${SITE_URL}/admission`,
+          url: `${SITE_URL}/admission?course=${course.slug}`,
           description:
             course.pricing.displayLabel ?? "Customized training quotation",
         },

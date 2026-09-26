@@ -1,0 +1,70 @@
+services:
+  pakish-org:
+    image: pakish-org:latest
+    container_name: pakish-org-app
+    restart: unless-stopped
+    networks:
+      - coolify
+    expose:
+      - "3000"
+    env_file:
+      - pakish-org.env
+    volumes:
+      - pakish_org_data:/app/.data
+    environment:
+      NODE_ENV: production
+      PORT: "3000"
+      HOSTNAME: 0.0.0.0
+    labels:
+      - traefik.enable=true
+      - traefik.http.middlewares.gzip.compress=true
+      - traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https
+      - traefik.http.middlewares.redirect-to-https.redirectscheme.permanent=true
+      - traefik.http.routers.http-pakish-org.entryPoints=http
+      - traefik.http.routers.http-pakish-org.middlewares=redirect-to-https
+      - traefik.http.routers.http-pakish-org.rule=Host(`pakish.org`) || Host(`www.pakish.org`)
+      - traefik.http.routers.http-pakish-org.service=pakish-org-svc
+      - traefik.http.routers.https-pakish-org.entryPoints=https
+      - traefik.http.routers.https-pakish-org.middlewares=gzip
+      - traefik.http.routers.https-pakish-org.rule=Host(`pakish.org`) || Host(`www.pakish.org`)
+      - traefik.http.routers.https-pakish-org.service=pakish-org-svc
+      - traefik.http.routers.https-pakish-org.tls=true
+      - traefik.http.routers.https-pakish-org.tls.certresolver=letsencrypt
+      - traefik.http.services.pakish-org-svc.loadbalancer.server.port=3000
+
+  pakish-net:
+    image: pakish-net:latest
+    container_name: pakish-net-app
+    restart: unless-stopped
+    networks:
+      - coolify
+    expose:
+      - "3000"
+    env_file:
+      - pakish-net.env
+    volumes:
+      - /var/www/pakish/secrets/google-sa.json:/run/secrets/google-sa.json:ro
+    labels:
+      - traefik.enable=true
+      - traefik.http.middlewares.gzip.compress=true
+      - traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https
+      - traefik.http.middlewares.redirect-to-https.redirectscheme.permanent=true
+      - traefik.http.routers.http-pakish-net.entryPoints=http
+      - traefik.http.routers.http-pakish-net.middlewares=redirect-to-https
+      - traefik.http.routers.http-pakish-net.rule=Host(`pakish.net`) || Host(`www.pakish.net`)
+      - traefik.http.routers.http-pakish-net.service=pakish-net-svc
+      - traefik.http.routers.https-pakish-net.entryPoints=https
+      - traefik.http.routers.https-pakish-net.middlewares=gzip
+      - traefik.http.routers.https-pakish-net.rule=Host(`pakish.net`) || Host(`www.pakish.net`)
+      - traefik.http.routers.https-pakish-net.service=pakish-net-svc
+      - traefik.http.routers.https-pakish-net.tls=true
+      - traefik.http.routers.https-pakish-net.tls.certresolver=letsencrypt
+      - traefik.http.services.pakish-net-svc.loadbalancer.server.port=3000
+
+volumes:
+  pakish_org_data:
+
+networks:
+  coolify:
+    external: true
+    name: coolify

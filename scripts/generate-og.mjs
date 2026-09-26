@@ -16,6 +16,12 @@ const cards = {
   "pakistani-women-wfh-it-freelancing-career-guide": ["Practical career guide", "WFH IT Freelancing for Pakistani Women", "Skills · Portfolio · Clients · Payment safety", "#fbbf24"],
   "generative-ai-skills-roadmap-women-pakistan": ["Generative AI learning roadmap", "From ChatGPT Basics to Real AI Projects", "A practical roadmap for women in Pakistan", "#f0abfc"],
   "domain-infrastructure-and-women-empowerment": ["Portfolio infrastructure", "Domains, Hosting & Credible Remote Work", "Turn coursework into live portfolio proof", "#93c5fd"],
+  "courses-ai-productivity": ["Pakish Institute course", "AI Productivity & Automation", "ChatGPT · Claude · Gemini · Workflow automation", "#34d399"],
+  "courses-ai-business": ["Corporate AI training", "AI for Business & Workplace Automation", "Customized packages for teams and companies", "#5eead4"],
+  "courses-full-stack-ai-development": ["Full stack development", "Modern Full Stack Web Development with AI", "React · Next.js · APIs · AI coding assistants", "#2dd4bf"],
+  "courses-wordpress-woocommerce": ["WordPress professional track", "WordPress & WooCommerce Development", "Business sites · Stores · Client delivery", "#86efac"],
+  "courses-cloud-devops": ["Cloud & operations", "Cloud, Servers & DevOps Fundamentals", "Linux · VPS · DNS · SSL · Deployment", "#84cc16"],
+  "courses-ai-freelancing": ["Digital career track", "AI-Powered Freelancing Career", "Proposals · Portfolio · AI-assisted delivery", "#a7f3d0"],
 };
 
 const escapeXml = (value) =>

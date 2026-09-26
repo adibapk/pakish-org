@@ -1,6 +1,7 @@
 import { CourseCard } from "@/components/courses/course-card";
 import { FooterSection } from "@/components/layout/sections/footer";
 import { Button } from "@/components/ui/button";
+import { getAdmissionPath } from "@/lib/admission";
 import { COURSE_CATALOG_META } from "@/lib/courses/data";
 import type { Course } from "@/lib/courses/types";
 import Link from "next/link";
@@ -28,7 +29,7 @@ export function CoursesIndexContent({ courses }: CoursesIndexContentProps) {
             </p>
             <div className="flex flex-col items-center gap-3 pt-2 sm:flex-row">
               <Button asChild>
-                <Link href="/admission">Apply for Admission</Link>
+                <Link href={getAdmissionPath()}>Enroll Now</Link>
               </Button>
               <Button asChild variant="outline">
                 <Link href="/#contact">Ask About Custom Training</Link>

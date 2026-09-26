@@ -16,6 +16,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { getAdmissionPath, buildCourseInfoWhatsAppUrl } from "@/lib/admission";
 import { TRAINING_FORMAT, TRAINING_OPTIONS } from "@/lib/courses/data";
 import type { Course } from "@/lib/courses/types";
 import {
@@ -24,6 +25,7 @@ import {
   Clock,
   GraduationCap,
   Laptop,
+  MessageCircle,
   Users,
 } from "lucide-react";
 import Link from "next/link";
@@ -35,6 +37,9 @@ interface CourseDetailPageProps {
 const optionIcons = [Laptop, Users, Building2, GraduationCap] as const;
 
 export function CourseDetailPage({ course }: CourseDetailPageProps) {
+  const enrollHref = getAdmissionPath(course.slug);
+  const whatsappHref = buildCourseInfoWhatsAppUrl(course.title);
+
   return (
     <>
       <CourseJsonLd course={course} />
@@ -60,10 +65,17 @@ export function CourseDetailPage({ course }: CourseDetailPageProps) {
             </p>
             <div className="flex flex-col items-center gap-3 pt-2 sm:flex-row">
               <Button asChild>
-                <Link href="/admission">Apply for Admission</Link>
+                <Link href={enrollHref}>Enroll Now</Link>
               </Button>
               <Button asChild variant="outline">
-                <Link href="/courses">All Courses</Link>
+                <a
+                  href={whatsappHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <MessageCircle className="mr-2 size-4" />
+                  Ask on WhatsApp
+                </a>
               </Button>
             </div>
           </div>
@@ -280,7 +292,11 @@ export function CourseDetailPage({ course }: CourseDetailPageProps) {
           <div className="mx-auto max-w-3xl">
             <p className="mb-2 text-lg tracking-wider text-primary">Fees</p>
             <h2 className="mb-6 text-3xl font-bold md:text-4xl">Pricing</h2>
-            <CoursePricingBlock pricing={course.pricing} showCta />
+            <CoursePricingBlock
+              pricing={course.pricing}
+              showCta
+              enrollHref={enrollHref}
+            />
           </div>
         </section>
 

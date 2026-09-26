@@ -1,5 +1,5 @@
 /**
- * Shared company payment channels (same as Pakish.NET).
+ * Pakish Institute course fee payment channels.
  * Structured for future student portal / enrollment / payment tracking.
  */
 
@@ -99,7 +99,7 @@ export const QR_PAYMENT_METHODS: QrPaymentMethod[] = [
   },
 ];
 
-/** Company Payoneer recipient (same as Pakish.NET). */
+/** Payoneer recipient for international course fee payments. */
 export const PAYONEER = {
   recipientEmail: "billing@pakish.net",
   paymentPath: "Pay → Pay to a recipient’s Payoneer account",

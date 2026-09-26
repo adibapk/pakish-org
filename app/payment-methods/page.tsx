@@ -4,17 +4,18 @@ import { ogImagePath } from "@/lib/og";
 import { SITE_URL, createPageMetadata } from "@/lib/seo";
 
 export const metadata = createPageMetadata({
-  title: "Course Fee Payment Methods",
+  title: "Course Fee Payment Methods | Pakish Institute",
   description:
-    "Pay your Pakish.ORG course fees via Meezan Bank, JazzCash, PayPal, or Payoneer, then share payment proof on WhatsApp or email to confirm admission.",
+    "Pay your Pakish Institute course fees via Meezan Bank, JazzCash, PayPal, or Payoneer, then share payment proof on WhatsApp or email to confirm admission.",
   path: "/payment-methods",
   image: ogImagePath("payment-methods"),
+  absoluteTitle: true,
   keywords: [
-    "Pakish course fee payment",
+    "Pakish Institute course fee payment",
     "IT course payment Pakistan",
     "JazzCash course fee",
     "Meezan Bank Pakish Institute",
-    "women IT training fees Pakistan",
+    "Pakish Institute fees",
   ],
 });
 

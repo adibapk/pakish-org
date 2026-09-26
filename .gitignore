@@ -31,6 +31,10 @@ yarn-error.log*
 
 # local env files
 .env*.local
+.env
+
+# admission lead store (local/dev persistence)
+.data/
 
 # vercel
 .vercel
