@@ -23,4 +23,9 @@ jobs:
           script_stop: true
           command_timeout: 30m
           script: |
-            bash /data/migrations/pakish/apps/pakish-org/scripts/deploy-pakish-org-prod.sh
+            cd /data/migrations/pakish/apps/pakish-org
+            git fetch origin master
+            git checkout master
+            git pull --ff-only origin master
+            sed -i 's/\r$//' scripts/deploy-pakish-org-prod.sh
+            bash scripts/deploy-pakish-org-prod.sh
