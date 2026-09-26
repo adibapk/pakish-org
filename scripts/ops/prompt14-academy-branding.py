@@ -182,6 +182,10 @@ def patch_legal_footers() -> None:
         " {' '}\n        {t('auth.and', { defaultValue: 'and' })}{' '}\n        <Link href={PRIVACY_URL}",
         " <Link href={PRIVACY_URL}",
     )
+    updated = updated.replace(
+        "{t('common.copyright', { defaultValue: '© {{year}} LearnHouse, Inc.', year })}",
+        "{t('common.copyright', { defaultValue: '© {{year}} Pakish Institute', year })}",
+    )
     if updated == content:
         print("LegalFooters.tsx already patched")
         return
@@ -244,6 +248,31 @@ def patch_login_invite_only() -> None:
     tmp.write_text(updated, encoding="utf-8")
     docker_cp(tmp, path)
     print("patched login.tsx invite-only UX")
+
+
+def patch_en_locale() -> None:
+    path = "/app/web/locales/en.json"
+    raw = docker_exec(["cat", path]).stdout
+    locale = json.loads(raw)
+    replacements = {
+        ("common", "copyright"): "© {{year}} Pakish Institute",
+        ("auth", "terms_text"): "By continuing, you agree to Pakish Institute's",
+        ("auth", "image_title_login"): "Welcome back to Pakish Institute.",
+        ("auth", "image_title_signup"): "Start learning with Pakish Institute.",
+        ("footer", "powered_by"): "Powered by Pakish Institute",
+    }
+    changed = False
+    for (section, key), value in replacements.items():
+        if locale.get(section, {}).get(key) != value:
+            locale.setdefault(section, {})[key] = value
+            changed = True
+    if not changed:
+        print("en.json locale already patched")
+        return
+    tmp = Path("/tmp/en.json")
+    tmp.write_text(json.dumps(locale, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    docker_cp(tmp, path)
+    print("patched en.json auth/footer locale strings")
 
 
 def patch_org_footer() -> None:
@@ -315,6 +344,7 @@ def main() -> int:
     copy_logos()
     patch_not_found()
     patch_legal_footers()
+    patch_en_locale()
     patch_auth_branding_panel()
     patch_login_invite_only()
     patch_org_footer()
