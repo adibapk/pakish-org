@@ -65,8 +65,15 @@ def main() -> int:
         if not token_id:
             continue
         if name.startswith("prompt13-pilot-") or name.startswith("prompt13"):
-            admin.request("DELETE", f"{pilot.API}/orgs/{ORG_ID}/api-tokens/{token_id}")
-            revoked += 1
+            try:
+                admin.request(
+                    "DELETE",
+                    f"{pilot.API}/orgs/{ORG_ID}/api-tokens/{token_id}",
+                    expect=(200, 204, 404),
+                )
+                revoked += 1
+            except RuntimeError:
+                evidence.setdefault("api_token_revoke_errors", []).append(name)
     evidence["api_tokens_revoked"] = revoked
 
     tokens_after = admin.request("GET", f"{pilot.API}/orgs/{ORG_ID}/api-tokens")
