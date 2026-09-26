@@ -1,51 +1,67 @@
 #!/usr/bin/env python3
-"""Purge Cloudflare cache for academy.pakish.org (run on pakish-sg)."""
+"""
+Purge Cloudflare cache for academy.pakish.org only.
+
+Fail-closed helper: requires explicit least-privilege credentials in the
+process environment. Does nothing when inputs or permissions are missing.
+
+Usage (on pakish-sg or any host with outbound HTTPS):
+  CF_API_TOKEN=... CF_ZONE_ID=... python3 scripts/ops/p21-purge-academy-cache.py
+
+Dashboard alternative: Cloudflare → Caching → Custom Purge → Hostname:
+  academy.pakish.org
+"""
 from __future__ import annotations
 
 import json
+import os
 import sys
-import urllib.parse
+import urllib.error
 import urllib.request
-from pathlib import Path
 
 API = "https://api.cloudflare.com/client/v4"
-ENV_PATH = "/data/migrations/pakish/pakishnews/service.env"
-
-
-def load_env(path: str) -> dict[str, str]:
-    vals: dict[str, str] = {}
-    for line in Path(path).read_text(encoding="utf-8").splitlines():
-        if not line or line.startswith("#") or "=" not in line:
-            continue
-        key, value = line.split("=", 1)
-        vals[key.strip()] = value.strip().strip("'\"").strip('"')
-    return vals
+ALLOWED_HOST = "academy.pakish.org"
 
 
 def main() -> int:
-    news = load_env(ENV_PATH)
+    token = os.environ.get("CF_API_TOKEN", "").strip()
+    zone_id = os.environ.get("CF_ZONE_ID", "").strip()
+    if not token or not zone_id:
+        print(
+            "error: CF_API_TOKEN and CF_ZONE_ID must both be set; "
+            "or purge academy.pakish.org manually in the Cloudflare dashboard.",
+            file=sys.stderr,
+        )
+        return 2
+
     headers = {
-        "X-Auth-Email": news.get("CF_AUTH_EMAIL", "admin@pakish.net"),
-        "X-Auth-Key": news["CF_GLOBAL_API_KEY"],
+        "Authorization": f"Bearer {token}",
         "Content-Type": "application/json",
     }
-    q = urllib.parse.urlencode({"name": "pakish.org"})
-    with urllib.request.urlopen(
-        urllib.request.Request(f"{API}/zones?{q}", headers=headers), timeout=30
-    ) as resp:
-        zone_id = json.load(resp)["result"][0]["id"]
-
-    body = json.dumps({"hosts": ["academy.pakish.org"]}).encode()
+    body = json.dumps({"hosts": [ALLOWED_HOST]}).encode()
     req = urllib.request.Request(
         f"{API}/zones/{zone_id}/purge_cache",
         data=body,
         headers=headers,
         method="POST",
     )
-    with urllib.request.urlopen(req, timeout=60) as resp:
-        payload = json.load(resp)
-    print(json.dumps(payload, indent=2))
-    return 0 if payload.get("success") else 1
+    try:
+        with urllib.request.urlopen(req, timeout=60) as resp:
+            payload = json.load(resp)
+    except urllib.error.HTTPError as error:
+        print(
+            f"error: Cloudflare purge failed with HTTP {error.code}; "
+            "verify token scope (Cache Purge) and zone ID.",
+            file=sys.stderr,
+        )
+        return 1
+
+    if not payload.get("success"):
+        print("error: Cloudflare purge rejected the request.", file=sys.stderr)
+        return 1
+
+    print(f"purged Cloudflare cache for hostname {ALLOWED_HOST}")
+    return 0
 
 
 if __name__ == "__main__":

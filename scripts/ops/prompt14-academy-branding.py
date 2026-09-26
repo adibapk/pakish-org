@@ -1,8 +1,14 @@
 #!/usr/bin/env python3
 """
 Apply Pakish branding to the LearnHouse Academy deployment on pakish-sg.
+
+This is a version-pinned compatibility overlay for LearnHouse 1.3.6 — not an
+upstream-supported theme system. Revalidate every replacement count and auth
+surface before upgrading the LearnHouse image or digest.
+
 Replaces LearnHouse logos, fixes org logo PNG references, invite-only UX copy,
-and disables the footer watermark. Safe to re-run after container recreate.
+and disables the footer watermark on public auth/nav surfaces only.
+Safe to re-run after container recreate.
 
 Run only from the checked-out repository on pakish-sg after `git pull`.
 Never copy this script over the tracked deployment checkout with scp.
@@ -17,7 +23,15 @@ from pathlib import Path
 CONTAINER = "learnhouse-app-d1110885"
 DB = "learnhouse-db-d1110885"
 EXPECTED_IMAGE = "ghcr.io/learnhouse/app:1.3.6"
+EXPECTED_IMAGE_DIGEST = (
+    "sha256:f911d7cb60680f1f99ec67f831c8f5f9fc3107f55f479e65e47e6a24c2e183f9"
+)
 BACKUP_DIR = Path("/home/opc/.learnhouse/pakish/backups")
+COMPILED_SEARCH_ROOTS = (
+    "/app/web/.next/static/chunks",
+    "/app/web/.next/server/app/auth",
+    "/app/web/.next/server/chunks/ssr",
+)
 SCRIPT_DIR = Path(__file__).resolve().parent
 
 
@@ -43,6 +57,44 @@ ORG_UUID = "org_e3575732-8173-4b7b-bd4c-f80c0ccdb71e"
 PRIVACY_URL = "https://pakish.org/privacy"
 ADMISSION_URL = "https://pakish.org/admission"
 
+# (old, new, min_hits_before, max_hits_before) — public auth/legal/watermark only.
+COMPILED_REPLACEMENTS: list[tuple[str, str, int, int]] = [
+    ("https://www.learnhouse.io/terms", PRIVACY_URL, 0, 40),
+    ("https://www.learnhouse.io/privacy", PRIVACY_URL, 0, 40),
+    ("https://learnhouse.io/terms", PRIVACY_URL, 0, 20),
+    ("https://learnhouse.io/privacy", PRIVACY_URL, 0, 20),
+    ("https://learnhouse.app/", "https://pakish.org/", 0, 30),
+    ("https://learnhouse.app", "https://pakish.org", 0, 30),
+    (
+        "By continuing, you agree to LearnHouse's",
+        "By continuing, you agree to Pakish Institute's",
+        0,
+        20,
+    ),
+    ('alt="LearnHouse"', 'alt="Pakish Institute"', 0, 50),
+    ('alt="Learnhouse"', 'alt="Pakish Institute"', 0, 10),
+    (
+        "Welcome back to LearnHouse.",
+        "Welcome back to Pakish Institute.",
+        0,
+        10,
+    ),
+    ("LearnHouse, Inc.", "Pakish Institute", 0, 10),
+    (
+        "?utm_source=LearnHouse&utm_medium=referral",
+        "?utm_source=PakishInstitute&utm_medium=referral",
+        0,
+        20,
+    ),
+]
+FORBIDDEN_COMPILED_PATTERNS = (
+    "learnhouse.io/terms",
+    "learnhouse.io/privacy",
+    "www.learnhouse.io",
+    "learnhouse.app",
+    'alt="LearnHouse"',
+)
+
 
 def run(cmd: list[str], check: bool = True) -> subprocess.CompletedProcess:
     return subprocess.run(cmd, check=check, capture_output=True, text=True)
@@ -66,7 +118,18 @@ def verify_container_image() -> None:
         raise RuntimeError(
             f"Unexpected Academy image {image!r}; expected {EXPECTED_IMAGE!r}"
         )
-    print(f"verified container image {image}")
+    digest_proc = run(
+        ["docker", "image", "inspect", image, "--format", "{{index .RepoDigests 0}}"],
+        check=False,
+    )
+    digest_ref = digest_proc.stdout.strip()
+    if EXPECTED_IMAGE_DIGEST not in digest_ref:
+        raise RuntimeError(
+            f"Unexpected Academy image digest {digest_ref!r}; "
+            f"expected {EXPECTED_IMAGE_DIGEST!r}. "
+            "Revalidate overlay replacements before upgrading LearnHouse."
+        )
+    print(f"verified container image {image} ({EXPECTED_IMAGE_DIGEST})")
 
 
 def backup_database() -> Path:
@@ -96,47 +159,68 @@ def backup_database() -> Path:
     return out
 
 
+def _list_compiled_bundle_files() -> list[str]:
+    roots = " ".join(COMPILED_SEARCH_ROOTS)
+    proc = docker_exec(
+        [
+            "sh",
+            "-c",
+            f"find {roots} -type f -name '*.js' 2>/dev/null",
+        ],
+        check=False,
+    )
+    return [line.strip() for line in proc.stdout.splitlines() if line.strip()]
+
+
+def _count_in_bundles(pattern: str) -> int:
+    total = 0
+    for remote in _list_compiled_bundle_files():
+        proc = docker_exec(["grep", "-F", "-o", pattern, remote], check=False)
+        if proc.returncode == 0 and proc.stdout:
+            total += len(proc.stdout.splitlines())
+    return total
+
+
 def patch_built_text_branding() -> None:
-    """Replace LearnHouse strings in pre-built Next.js output (no rebuild required)."""
-    # Run in-container sed for reliability on large/minified bundles.
-    sed_script = r"""
-set -e
-patched=0
-for file in $(find /app/web/.next -type f \( -name '*.js' -o -name '*.html' -o -name '*.json' \) 2>/dev/null); do
-  before=$(grep -E 'learnhouse\.io|learnhouse\.app|LearnHouse' "$file" 2>/dev/null | wc -l || true)
-  [ "$before" = "0" ] && continue
-  sed -i \
-    -e 's|https://www.learnhouse.io/terms|https://pakish.org/privacy|g' \
-    -e 's|https://www.learnhouse.io/privacy|https://pakish.org/privacy|g' \
-    -e 's|https://learnhouse.io/terms|https://pakish.org/privacy|g' \
-    -e 's|https://learnhouse.io/privacy|https://pakish.org/privacy|g' \
-    -e 's|learnhouse.io/terms|pakish.org/privacy|g' \
-    -e 's|learnhouse.io/privacy|pakish.org/privacy|g' \
-    -e 's|https://learnhouse.app/|https://pakish.org/|g' \
-    -e 's|https://learnhouse.app|https://pakish.org|g' \
-    -e 's|learnhouse.app/|pakish.org/|g' \
-    -e 's|learnhouse.app|pakish.org|g' \
-    -e "s|By continuing, you agree to LearnHouse's|By continuing, you agree to Pakish Institute's|g" \
-    -e 's|Terms of Service and Privacy Policy|Privacy Policy|g' \
-    -e 's|Terms of Service|Privacy Policy|g' \
-    -e 's|LearnHouse, Inc.|Pakish Institute|g' \
-    -e 's|Welcome back to LearnHouse.|Welcome back to Pakish Institute.|g' \
-    -e 's|alt="LearnHouse"|alt="Pakish Institute"|g' \
-    -e 's|alt="Learnhouse"|alt="Pakish Institute"|g' \
-    -e 's|?utm_source=LearnHouse&utm_medium=referral|?utm_source=PakishInstitute&utm_medium=referral|g' \
-    "$file"
-  after=$(grep -E 'learnhouse\\.io|learnhouse\\.app|LearnHouse' "$file" 2>/dev/null | wc -l || true)
-  if [ "$before" != "$after" ]; then
-    patched=$((patched + 1))
-  fi
-done
-echo "patched LearnHouse strings in ${patched} built asset files"
-"""
-    proc = docker_exec(["sh", "-c", sed_script], check=False)
-    print(proc.stdout.strip() or "patched built assets")
-    if proc.returncode != 0:
-        print(proc.stderr, file=sys.stderr)
-        raise SystemExit(proc.returncode)
+    """Patch allowlisted public auth/legal strings in compiled auth bundles only."""
+    files = _list_compiled_bundle_files()
+    if not files:
+        raise RuntimeError("no compiled auth bundle files found under allowlisted paths")
+
+    totals: dict[str, int] = {}
+    for old, _new, min_before, max_before in COMPILED_REPLACEMENTS:
+        count = _count_in_bundles(old)
+        totals[old] = count
+        if count < min_before or count > max_before:
+            raise RuntimeError(
+                f"replacement source {old!r} hit count {count} outside "
+                f"expected range [{min_before}, {max_before}] for {EXPECTED_IMAGE_DIGEST}"
+            )
+
+    patched_files = 0
+    for remote in files:
+        proc = docker_exec(["cat", remote], check=False)
+        if proc.returncode != 0:
+            continue
+        content = proc.stdout
+        updated = content
+        for old, new, _min_before, _max_before in COMPILED_REPLACEMENTS:
+            updated = updated.replace(old, new)
+        if updated != content:
+            tmp = Path(f"/tmp/lh-brand-{patched_files}.bin")
+            tmp.write_bytes(updated.encode("utf-8"))
+            docker_cp(tmp, remote)
+            patched_files += 1
+
+    applied = {
+        old: totals[old] - _count_in_bundles(old)
+        for old, _new, _min_before, _max_before in COMPILED_REPLACEMENTS
+        if totals[old] > 0
+    }
+    print(
+        f"patched {patched_files} compiled auth bundle files; "
+        f"replacement counts: {applied or 'already clean'}"
+    )
 
 
 def replace_bundled_logos() -> None:
@@ -320,26 +404,20 @@ def patch_dash_left_menu() -> None:
 
 
 def verify_branding() -> None:
-    """Fail if compiled assets still expose public LearnHouse legal/watermark URLs."""
-    proc = docker_exec(
-        [
-            "sh",
-            "-c",
-            "grep -RIl "
-            "-e learnhouse.io/terms -e learnhouse.io/privacy "
-            "-e www.learnhouse.io -e learnhouse.app "
-            "-e 'alt=\"LearnHouse\"' "
-            "/app/web/.next/static/chunks /app/web/.next/server/app/auth 2>/dev/null | head -20 || true",
-        ],
-        check=False,
-    )
-    hits = [line.strip() for line in proc.stdout.splitlines() if line.strip()]
+    """Fail if allowlisted auth bundles still expose public LearnHouse branding."""
+    hits: list[str] = []
+    for pattern in FORBIDDEN_COMPILED_PATTERNS:
+        if _count_in_bundles(pattern) > 0:
+            hits.append(pattern)
     if hits:
-        print("branding verification found residual LearnHouse URLs:", file=sys.stderr)
-        for line in hits[:10]:
-            print(line, file=sys.stderr)
+        print(
+            "branding verification found forbidden public LearnHouse tokens:",
+            file=sys.stderr,
+        )
+        for pattern in hits:
+            print(f"  - {pattern}", file=sys.stderr)
         raise SystemExit(1)
-    print("branding verification passed (.next static/server bundles)")
+    print("branding verification passed (allowlisted auth bundle surfaces)")
 
 
 def patch_login_invite_only() -> None:
@@ -448,7 +526,7 @@ def patch_org_footer() -> None:
     ).replace(
         "href=\"https://learnhouse.app\"",
         "href=\"https://pakish.org\"",
-    ).replace("LearnHouse", "Pakish Institute")
+    )
     if updated == content:
         print("org footer already patched")
         return
