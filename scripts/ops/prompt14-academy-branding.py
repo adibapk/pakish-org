@@ -86,6 +86,7 @@ COMPILED_REPLACEMENTS: list[tuple[str, str, int, int]] = [
         0,
         20,
     ),
+    ("Privacy Policy and Privacy Policy", "Privacy Policy", 0, 30),
 ]
 FORBIDDEN_COMPILED_PATTERNS = (
     "learnhouse.io/terms",
@@ -93,7 +94,69 @@ FORBIDDEN_COMPILED_PATTERNS = (
     "www.learnhouse.io",
     "learnhouse.app",
     'alt="LearnHouse"',
+    "Privacy Policy and Privacy Policy",
 )
+LEGAL_FOOTERS_TSX = f"""'use client'
+// Pakish Institute auth/legal footer overlay (LearnHouse 1.3.6 compatibility).
+import React from 'react'
+import Link from 'next/link'
+import {{ useTranslation }} from 'react-i18next'
+
+const PRIVACY_URL = '{PRIVACY_URL}'
+
+export function AuthFooter({{ className = '' }}: {{ className?: string }}) {{
+  const {{ t }} = useTranslation()
+  return (
+    <div className={{`pb-8 pt-6 text-center px-6 ${{className}}`}}>
+      <p className="text-[13px] text-black/30 font-medium">
+        {{t('auth.terms_text', {{ defaultValue: "By continuing, you agree to Pakish Institute's" }})}}{{' '}}
+        <Link
+          href={{PRIVACY_URL}}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-black/50 hover:text-black/70 transition-colors"
+        >
+          {{t('auth.privacy_policy', {{ defaultValue: 'Privacy Policy' }})}}
+        </Link>
+        .
+      </p>
+    </div>
+  )
+}}
+
+export function CopyrightFooter({{
+  year,
+  className = '',
+  tone = 'light',
+}}: {{
+  year: number
+  className?: string
+  tone?: 'light' | 'dark'
+}}) {{
+  const {{ t }} = useTranslation()
+  const base = tone === 'dark' ? 'text-white/40' : 'text-black/35'
+  const link = tone === 'dark' ? 'text-white/60 hover:text-white/80' : 'text-black/55 hover:text-black/75'
+  return (
+    <footer className={{`w-full py-6 px-6 ${{className}}`}}>
+      <div className="flex flex-col sm:flex-row items-center justify-center gap-x-5 gap-y-2 text-[13px] font-medium">
+        <p className={{base}}>
+          {{t('common.copyright', {{ defaultValue: '© {{{{year}}}} Pakish Institute', year }})}}
+        </p>
+        <nav className="flex items-center gap-x-5">
+          <Link
+            href={{PRIVACY_URL}}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={{`${{link}} transition-colors`}}
+          >
+            {{t('auth.privacy_policy', {{ defaultValue: 'Privacy Policy' }})}}
+          </Link>
+        </nav>
+      </div>
+    </footer>
+  )
+}}
+"""
 
 
 def run(cmd: list[str], check: bool = True) -> subprocess.CompletedProcess:
@@ -281,40 +344,55 @@ def patch_not_found() -> None:
 
 
 def patch_legal_footers() -> None:
+    """Replace auth/legal footer with a single approved Pakish privacy link."""
     path = "/app/web/components/Footers/LegalFooters.tsx"
     content = docker_exec(["cat", path]).stdout
-    updated = content
-    updated = updated.replace(
-        "const TERMS_URL = getPlatformUrl('/terms') || 'https://www.learnhouse.io/terms'",
-        f"const TERMS_URL = '{PRIVACY_URL}'",
-    )
-    updated = updated.replace(
-        "const PRIVACY_URL = getPlatformUrl('/privacy') || 'https://www.learnhouse.io/privacy'",
-        f"const PRIVACY_URL = '{PRIVACY_URL}'",
-    )
-    updated = updated.replace(
-        "{t('auth.terms_text', { defaultValue: \"By continuing, you agree to LearnHouse's\" })}{' '}",
-        "{t('auth.terms_text', { defaultValue: \"By continuing, you agree to Pakish Institute's\" })}{' '}",
-    )
-    updated = updated.replace(
-        "{t('auth.terms_of_service', { defaultValue: 'Terms of Service' })}",
-        "{t('auth.privacy_policy', { defaultValue: 'Privacy Policy' })}",
-    )
-    updated = updated.replace(
-        " {' '}\n        {t('auth.and', { defaultValue: 'and' })}{' '}\n        <Link href={PRIVACY_URL}",
-        " <Link href={PRIVACY_URL}",
-    )
-    updated = updated.replace(
-        "{t('common.copyright', { defaultValue: '© {{year}} LearnHouse, Inc.', year })}",
-        "{t('common.copyright', { defaultValue: '© {{year}} Pakish Institute', year })}",
-    )
-    if updated == content:
+    if content == LEGAL_FOOTERS_TSX:
         print("LegalFooters.tsx already patched")
         return
     tmp = Path("/tmp/LegalFooters.tsx")
-    tmp.write_text(updated, encoding="utf-8")
+    tmp.write_text(LEGAL_FOOTERS_TSX, encoding="utf-8")
     docker_cp(tmp, path)
-    print("patched LegalFooters.tsx")
+    print("patched LegalFooters.tsx (single privacy link)")
+
+
+def verify_legal_copy() -> None:
+    """Fail closed if auth legal copy still duplicates the privacy link."""
+    path = "/app/web/components/Footers/LegalFooters.tsx"
+    content = docker_exec(["cat", path]).stdout
+    auth_section = content.split("export function CopyrightFooter", 1)[0]
+
+    if "Privacy Policy and Privacy Policy" in content:
+        raise SystemExit("LegalFooters.tsx still contains duplicated privacy copy")
+    if "auth.and" in auth_section:
+        raise SystemExit("AuthFooter still contains auth.and conjunction")
+    if "TERMS_URL" in content:
+        raise SystemExit("LegalFooters.tsx still references TERMS_URL")
+    if auth_section.count("<Link") != 1:
+        raise SystemExit(
+            f"AuthFooter must contain exactly one privacy link (found {auth_section.count('<Link')})"
+        )
+    if _count_in_bundles("Privacy Policy and Privacy Policy") > 0:
+        raise SystemExit(
+            "compiled auth bundles still contain duplicated privacy copy"
+        )
+
+    for login_path in (
+        "/app/web/.next/server/app/auth/login.html",
+        "/app/web/.next/server/app/auth/signup.html",
+    ):
+        proc = docker_exec(["cat", login_path], check=False)
+        if proc.returncode != 0:
+            continue
+        html = proc.stdout
+        if "Privacy Policy and Privacy Policy" in html:
+            raise SystemExit(f"{login_path} still contains duplicated privacy copy")
+        if html.count(PRIVACY_URL) > 1:
+            raise SystemExit(
+                f"{login_path} exposes more than one privacy URL ({html.count(PRIVACY_URL)})"
+            )
+
+    print("legal copy verification passed (single privacy link)")
 
 
 def patch_auth_branding_panel() -> None:
@@ -599,10 +677,13 @@ def main() -> int:
     update_org_config()
     patch_built_text_branding()
     verify_branding()
+    verify_legal_copy()
     run(["docker", "restart", CONTAINER], check=False)
     print("container restarted — re-patching compiled assets after boot")
+    patch_legal_footers()
     patch_built_text_branding()
     verify_branding()
+    verify_legal_copy()
     print("branding applied — container restarted and compiled assets re-patched")
     return 0
 
