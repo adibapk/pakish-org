@@ -56,6 +56,28 @@ PAKISH_FAVICON = REPO_PUBLIC / "favicon-48x48.svg"
 ORG_UUID = "org_e3575732-8173-4b7b-bd4c-f80c0ccdb71e"
 PRIVACY_URL = "https://pakish.org/privacy"
 ADMISSION_URL = "https://pakish.org/admission"
+CONTACT_URL = "https://pakish.org/#contact"
+PAKISH_SITE_URL = "https://pakish.org"
+ACADEMY_DOMAIN_LABEL = "academy.pakish.org"
+MIN_PAKISH_LOGO_BYTES = 5000
+PUBLIC_BRAND_ASSETS = (
+    "/app/web/public/lrn.svg",
+    "/app/web/public/lrn-text.svg",
+    "/app/web/public/lrn-dash.svg",
+)
+LRN_REFERENCE_FILES = (
+    "/app/web/components/Auth/AuthBrandingPanel.tsx",
+    "/app/web/components/Dashboard/Boards/BoardToolbar.tsx",
+    "/app/web/components/Dashboard/Boards/BoardTopBar.tsx",
+    "/app/web/components/Dashboard/Pages/Org/OrgEditBranding/AuthBrandingTab.tsx",
+    "/app/web/components/Objects/Editor/Editor.tsx",
+    "/app/web/components/Playground/PlaygroundEditor.tsx",
+    "/app/web/app/(hub)/new/page.tsx",
+    "/app/web/app/embed/[orgslug]/course/[courseuuid]/activity/[activityid]/EmbedActivityClient.tsx",
+    "/app/web/app/home/home.tsx",
+    "/app/web/app/orgs/[orgslug]/(withmenu)/layout.tsx",
+    "/app/web/components/Objects/Menus/OrgMenu.tsx",
+)
 
 # (old, new, min_hits_before, max_hits_before) — public auth/legal/watermark only.
 COMPILED_REPLACEMENTS: list[tuple[str, str, int, int]] = [
@@ -87,6 +109,25 @@ COMPILED_REPLACEMENTS: list[tuple[str, str, int, int]] = [
         20,
     ),
     ("Privacy Policy and Privacy Policy", "Privacy Policy", 0, 30),
+    ("mailto:support@learnhouse.io", CONTACT_URL, 0, 20),
+    ("support@learnhouse.io", "billing@pakish.org", 0, 20),
+    ("https://www.learnhouse.app/?source=in-app", PAKISH_SITE_URL, 0, 20),
+    ("https://www.learnhouse.app/", f"{PAKISH_SITE_URL}/", 0, 20),
+    ("learnhouse.io", ACADEMY_DOMAIN_LABEL, 0, 80),
+    ('"and":"and","privacy_policy":"Privacy Policy"', '"and":"","privacy_policy":""', 0, 40),
+    (
+        '"terms_of_service":"Privacy Policy","and":"and","privacy_policy":"Privacy Policy"',
+        '"terms_of_service":"Privacy Policy","and":"","privacy_policy":""',
+        0,
+        40,
+    ),
+    (
+        '"terms_of_service":"Terms of Service","and":"and","privacy_policy":"Privacy Policy"',
+        '"terms_of_service":"Privacy Policy","and":"","privacy_policy":""',
+        0,
+        40,
+    ),
+    ("Made with LearnHouse", "Pakish Institute", 0, 20),
 ]
 FORBIDDEN_COMPILED_PATTERNS = (
     "learnhouse.io/terms",
@@ -95,7 +136,20 @@ FORBIDDEN_COMPILED_PATTERNS = (
     "learnhouse.app",
     'alt="LearnHouse"',
     "Privacy Policy and Privacy Policy",
+    "mailto:support@learnhouse.io",
+    "support@learnhouse.io",
+    "Made with LearnHouse",
+    "https://www.learnhouse.app",
 )
+WATERMARK_TSX = """import React from 'react'
+
+// Pakish Institute overlay: public watermark removed (LearnHouse 1.3.6 compatibility).
+function Watermark() {
+  return null
+}
+
+export default Watermark
+"""
 LEGAL_FOOTERS_TSX = f"""'use client'
 // Pakish Institute auth/legal footer overlay (LearnHouse 1.3.6 compatibility).
 import React from 'react'
@@ -235,13 +289,26 @@ def _list_compiled_bundle_files() -> list[str]:
     return [line.strip() for line in proc.stdout.splitlines() if line.strip()]
 
 
+def _shell_quote(value: str) -> str:
+    return "'" + value.replace("'", "'\\''") + "'"
+
+
 def _count_in_bundles(pattern: str) -> int:
-    total = 0
-    for remote in _list_compiled_bundle_files():
-        proc = docker_exec(["grep", "-F", "-o", pattern, remote], check=False)
-        if proc.returncode == 0 and proc.stdout:
-            total += len(proc.stdout.splitlines())
-    return total
+    roots = " ".join(COMPILED_SEARCH_ROOTS)
+    proc = docker_exec(
+        [
+            "sh",
+            "-c",
+            f"grep -rFo {_shell_quote(pattern)} {roots} 2>/dev/null | wc -l",
+        ],
+        check=False,
+    )
+    if proc.returncode != 0 and not proc.stdout.strip():
+        return 0
+    try:
+        return int(proc.stdout.strip() or "0")
+    except ValueError:
+        return 0
 
 
 def patch_built_text_branding() -> None:
@@ -289,14 +356,84 @@ def patch_built_text_branding() -> None:
 def replace_bundled_logos() -> None:
     """Overwrite hashed Next.js media assets that still reference LearnHouse."""
     proc = docker_exec(
-        ["sh", "-c", "find /app/web/.next/static/media -name 'black_logo*.png' 2>/dev/null || true"]
+        [
+            "sh",
+            "-c",
+            "find /app/web/.next/static/media "
+            "-name 'black_logo*.png' -o -name 'lrn-text*.svg' 2>/dev/null || true",
+        ]
     )
     targets = [line.strip() for line in proc.stdout.splitlines() if line.strip()]
     if not targets:
-        print("no bundled black_logo assets found (may be ok after rebuild)")
+        print("no bundled brand media assets found (may be ok after rebuild)")
     for remote in targets:
-        docker_cp(PAKISH_LOGO_PNG, remote)
+        local = PAKISH_LOGO_SVG if remote.endswith(".svg") else PAKISH_LOGO_PNG
+        docker_cp(local, remote)
         print(f"replaced bundled asset {remote}")
+
+
+def replace_public_brand_assets() -> None:
+    """Overwrite LearnHouse public logo/wordmark files with Pakish artwork."""
+    for remote in PUBLIC_BRAND_ASSETS:
+        docker_cp(PAKISH_LOGO_SVG, remote)
+        print(f"replaced public brand asset {remote}")
+
+
+def _patch_file_replacements(path: str, replacements: list[tuple[str, str]], label: str) -> None:
+    content = docker_exec(["cat", path]).stdout
+    updated = content
+    for old, new in replacements:
+        updated = updated.replace(old, new)
+    if updated == content:
+        print(f"{label} already patched")
+        return
+    tmp = Path(f"/tmp/{label.replace('/', '_')}")
+    tmp.write_text(updated, encoding="utf-8")
+    docker_cp(tmp, path)
+    print(f"patched {label}")
+
+
+def patch_lrn_references() -> None:
+    """Point allowlisted UI surfaces at Pakish logo assets instead of LearnHouse marks."""
+    replacements = [
+        ('src="/lrn.svg"', 'src="/pakish-logo.svg"'),
+        ("src='/lrn.svg'", "src='/pakish-logo.svg'"),
+        ('src="/lrn-text.svg"', 'src="/pakish-logo.svg"'),
+        ("src='/lrn-text.svg'", "src='/pakish-logo.svg'"),
+        ('url(/lrn.svg)', 'url(/pakish-logo.svg)'),
+        ('alt="LearnHouse"', 'alt="Pakish Institute"'),
+        ('alt="Learnhouse"', 'alt="Pakish Institute"'),
+        (">LearnHouse<", ">Pakish Institute<"),
+    ]
+    for path in LRN_REFERENCE_FILES:
+        proc = docker_exec(["test", "-f", path], check=False)
+        if proc.returncode != 0:
+            continue
+        _patch_file_replacements(path, replacements, path)
+
+
+def patch_watermark_component() -> None:
+    path = "/app/web/components/Objects/Watermark.tsx"
+    content = docker_exec(["cat", path]).stdout
+    if content == WATERMARK_TSX:
+        print("Watermark.tsx already patched")
+        return
+    tmp = Path("/tmp/Watermark.tsx")
+    tmp.write_text(WATERMARK_TSX, encoding="utf-8")
+    docker_cp(tmp, path)
+    print("patched Watermark.tsx (public watermark removed)")
+
+
+def patch_error_actions() -> None:
+    path = "/app/web/components/Objects/StyledElements/Error/ErrorActions.tsx"
+    replacements = [
+        (
+            "const supportHref = getPlatformUrl('/contact') || 'mailto:support@learnhouse.io'",
+            f"const supportHref = '{CONTACT_URL}'",
+        ),
+        ("mailto:support@learnhouse.io", CONTACT_URL),
+    ]
+    _patch_file_replacements(path, replacements, "ErrorActions.tsx")
 
 
 def copy_logos() -> None:
@@ -311,6 +448,7 @@ def copy_logos() -> None:
     docker_cp(PAKISH_LOGO_PNG, "/app/web/public/black_logo.png")
     docker_cp(PAKISH_LOGO_PNG, "/app/web/public/lrn.png")
     docker_cp(PAKISH_LOGO_PNG, "/app/web/public/learnhouse_bigicon_1.png")
+    replace_public_brand_assets()
 
     if PAKISH_FAVICON.exists():
         docker_cp(PAKISH_FAVICON, "/app/web/public/favicon.ico")
@@ -321,7 +459,6 @@ def copy_logos() -> None:
     docker_cp(PAKISH_LOGO_SVG, f"{org_logo_dir}/logo.svg")
 
     replace_bundled_logos()
-    patch_built_text_branding()
     print("copied Pakish logos into container")
 
 
@@ -377,6 +514,15 @@ def verify_legal_copy() -> None:
             "compiled auth bundles still contain duplicated privacy copy"
         )
 
+    locale = json.loads(docker_exec(["cat", "/app/web/locales/en.json"]).stdout)
+    auth_locale = locale.get("auth", {})
+    if auth_locale.get("and"):
+        raise SystemExit("en.json auth.and must be empty for single-link legal copy")
+    if auth_locale.get("privacy_policy"):
+        raise SystemExit("en.json auth.privacy_policy must be empty for single-link legal copy")
+    if auth_locale.get("terms_of_service") != "Privacy Policy":
+        raise SystemExit("en.json auth.terms_of_service must be the single Privacy Policy label")
+
     for login_path in (
         "/app/web/.next/server/app/auth/login.html",
         "/app/web/.next/server/app/auth/signup.html",
@@ -393,6 +539,49 @@ def verify_legal_copy() -> None:
             )
 
     print("legal copy verification passed (single privacy link)")
+
+
+def verify_public_brand_assets() -> None:
+    """Fail closed if public LearnHouse artwork remains or Pakish assets are broken."""
+    for remote in PUBLIC_BRAND_ASSETS:
+        proc = docker_exec(["wc", "-c", remote], check=False)
+        if proc.returncode != 0:
+            raise SystemExit(f"missing public brand asset {remote}")
+        try:
+            size = int(proc.stdout.strip().split()[0])
+        except (IndexError, ValueError):
+            raise SystemExit(f"unable to read size for {remote}")
+        if size < MIN_PAKISH_LOGO_BYTES:
+            raise SystemExit(
+                f"{remote} is too small ({size} bytes) — expected Pakish artwork overlay"
+            )
+
+    proc = docker_exec(
+        [
+            "sh",
+            "-c",
+            "find /app/web/.next/static/media -name 'lrn-text*.svg' -size -5k 2>/dev/null",
+        ],
+        check=False,
+    )
+    broken = [line.strip() for line in proc.stdout.splitlines() if line.strip()]
+    if broken:
+        raise SystemExit(f"broken bundled lrn-text assets remain: {broken[:3]}")
+
+    watermark = docker_exec(["cat", "/app/web/components/Objects/Watermark.tsx"]).stdout
+    if "learnhouse.app" in watermark or "lrnTextLogo" in watermark:
+        raise SystemExit("Watermark.tsx still references LearnHouse branding")
+
+    print("public brand asset verification passed")
+
+
+def verify_client_artifacts() -> None:
+    """Fail closed on hydrated/client-visible branding artifacts beyond SSR source."""
+    if _count_in_bundles('"and":"and","privacy_policy":"Privacy Policy"') > 0:
+        raise SystemExit("client locale bundles still expose auth.and privacy conjunction")
+    if _count_in_bundles("mailto:support@learnhouse.io") > 0:
+        raise SystemExit("client bundles still expose support@learnhouse.io fallback")
+    print("client artifact verification passed")
 
 
 def patch_auth_branding_panel() -> None:
@@ -528,13 +717,42 @@ def patch_login_invite_only() -> None:
     print("patched login.tsx invite-only UX")
 
 
+def _replace_visible_strings(value: object, mapping: dict[str, str]) -> tuple[object, bool]:
+    changed = False
+    if isinstance(value, dict):
+        updated: dict[str, object] = {}
+        for key, item in value.items():
+            new_item, item_changed = _replace_visible_strings(item, mapping)
+            updated[key] = new_item
+            changed = changed or item_changed
+        return updated, changed
+    if isinstance(value, list):
+        updated_list: list[object] = []
+        for item in value:
+            new_item, item_changed = _replace_visible_strings(item, mapping)
+            updated_list.append(new_item)
+            changed = changed or item_changed
+        return updated_list, changed
+    if isinstance(value, str):
+        updated = value
+        for old, new in mapping.items():
+            if old in updated:
+                updated = updated.replace(old, new)
+        return updated, updated != value
+    return value, False
+
+
 def patch_en_locale() -> None:
     path = "/app/web/locales/en.json"
     raw = docker_exec(["cat", path]).stdout
     locale = json.loads(raw)
     replacements = {
         ("common", "copyright"): "© {{year}} Pakish Institute",
+        ("common", "made_with"): "",
         ("auth", "terms_text"): "By continuing, you agree to Pakish Institute's",
+        ("auth", "terms_of_service"): "Privacy Policy",
+        ("auth", "and"): "",
+        ("auth", "privacy_policy"): "",
         ("auth", "image_title_login"): "Welcome back to Pakish Institute.",
         ("auth", "image_title_signup"): "Start learning with Pakish Institute.",
         ("footer", "powered_by"): "Powered by Pakish Institute",
@@ -544,13 +762,24 @@ def patch_en_locale() -> None:
         if locale.get(section, {}).get(key) != value:
             locale.setdefault(section, {})[key] = value
             changed = True
+    visible_mapping = {
+        "LearnHouse": "Pakish Institute",
+        "Learnhouse": "Pakish Institute",
+        "learnhouse.io": ACADEMY_DOMAIN_LABEL,
+        "learnhouse.app": ACADEMY_DOMAIN_LABEL,
+        "Made with LearnHouse": "Pakish Institute",
+        "Powered by LearnHouse": "Powered by Pakish Institute",
+        "support@learnhouse.io": "billing@pakish.org",
+    }
+    locale, mapping_changed = _replace_visible_strings(locale, visible_mapping)
+    changed = changed or mapping_changed
     if not changed:
         print("en.json locale already patched")
         return
     tmp = Path("/tmp/en.json")
     tmp.write_text(json.dumps(locale, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     docker_cp(tmp, path)
-    print("patched en.json auth/footer locale strings")
+    print("patched en.json public branding locale strings")
 
 
 def patch_org_menu() -> None:
@@ -660,6 +889,15 @@ def update_org_config() -> None:
     print("updated organization config (watermark off, logo.png references)")
 
 
+def _post_restart_repatches() -> None:
+    replace_public_brand_assets()
+    replace_bundled_logos()
+    patch_legal_footers()
+    patch_watermark_component()
+    patch_lrn_references()
+    patch_built_text_branding()
+
+
 def main() -> int:
     verify_container_image()
     backup_database()
@@ -667,6 +905,9 @@ def main() -> int:
     patch_not_found()
     patch_legal_footers()
     patch_en_locale()
+    patch_watermark_component()
+    patch_error_actions()
+    patch_lrn_references()
     patch_auth_branding_panel()
     patch_auth_mobile_header()
     patch_login_invite_only()
@@ -678,12 +919,15 @@ def main() -> int:
     patch_built_text_branding()
     verify_branding()
     verify_legal_copy()
+    verify_public_brand_assets()
+    verify_client_artifacts()
     run(["docker", "restart", CONTAINER], check=False)
     print("container restarted — re-patching compiled assets after boot")
-    patch_legal_footers()
-    patch_built_text_branding()
+    _post_restart_repatches()
     verify_branding()
     verify_legal_copy()
+    verify_public_brand_assets()
+    verify_client_artifacts()
     print("branding applied — container restarted and compiled assets re-patched")
     return 0
 
