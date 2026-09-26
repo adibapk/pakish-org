@@ -6,7 +6,6 @@ import { FAQSection } from "@/components/layout/sections/faq";
 import { FeaturedCoursesSection } from "@/components/layout/sections/featured-courses";
 import { FeaturesSection } from "@/components/layout/sections/features";
 import { FooterSection } from "@/components/layout/sections/footer";
-import { GlimpsesSection } from "@/components/layout/sections/glimpses";
 import { HeroSection } from "@/components/layout/sections/hero";
 import { HomeJsonLd } from "@/components/seo/home-json-ld";
 import { TechTrustSection } from "@/components/layout/sections/tech-trust";
@@ -44,7 +43,6 @@ export default function Home() {
       <LearningOptionsSection />
       <EnrollmentSection />
       <TestimonialSection />
-      <GlimpsesSection />
       <TeamSection />
       <WomensEmpowermentPreviewSection />
       <Suspense fallback={null}>
