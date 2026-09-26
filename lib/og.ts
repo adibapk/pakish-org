@@ -126,6 +126,12 @@ export const OG_CARDS: Record<string, OgCard> = {
     description: "Proposals · Portfolio · AI-assisted delivery",
     accent: "#a7f3d0",
   },
+  "courses-business-english-professional-communication": {
+    eyebrow: "Professional skills",
+    title: "Business English & Professional Communication",
+    description: "Speaking · Writing · Workplace Confidence",
+    accent: "#5eead4",
+  },
 };
 
 export function ogImagePath(key: string): string {

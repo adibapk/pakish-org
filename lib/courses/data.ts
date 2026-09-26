@@ -1,3 +1,4 @@
+import { businessEnglishCourse } from "./business-english-course";
 import type { Course, CourseCatalogMeta } from "./types";
 
 export const COURSE_CATALOG_META: CourseCatalogMeta = {
@@ -1426,4 +1427,5 @@ export const courses: Course[] = [
     published: true,
     order: 6,
   },
+  businessEnglishCourse,
 ];

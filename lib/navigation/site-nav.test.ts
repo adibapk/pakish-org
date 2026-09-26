@@ -10,9 +10,9 @@ import {
 } from "./site-nav";
 
 describe("site navigation information architecture", () => {
-  it("exposes six canonical courses in the courses menu", () => {
+  it("exposes all published courses in the courses menu", () => {
     const items = getCourseNavItems();
-    assert.equal(items.length, 6);
+    assert.equal(items.length, 7);
     assert.ok(items.every((item) => item.href.startsWith("/courses/")));
   });
 

@@ -111,6 +111,20 @@ export const ACADEMY_COURSE_MAPPINGS: AcademyCourseMapping[] = [
     liveCohortReadiness: "inventory-pending",
     publicationState: "unpublished",
   },
+  {
+    websiteCourseId: "course-business-english",
+    websiteSlug: "business-english-professional-communication",
+    websiteTitle: "Business English & Professional Communication",
+    status: "unmapped",
+    proposedAcademyTitle: "Business English & Professional Communication",
+    moduleCount: 6,
+    instructorOwner: "assigned",
+    recordingReadiness: "not-started",
+    liveCohortReadiness: "not-started",
+    publicationState: "unpublished",
+    notes:
+      "Website-only commercial course led by Irfan Velmi. No LearnHouse UUID or cohort in Prompt 20.",
+  },
 ];
 
 export function getAcademyMappingForSlug(slug: string): AcademyCourseMapping | undefined {

@@ -3,8 +3,9 @@ import { FooterSection } from "@/components/layout/sections/footer";
 import { Button } from "@/components/ui/button";
 import { getAdmissionPath } from "@/lib/admission";
 import type { CourseGoal } from "@/lib/course-goals";
+import { CATALOGUE_GROUPS } from "@/lib/courses/catalogue-groups";
 import { COURSE_CATALOG_META } from "@/lib/courses/data";
-import type { Course } from "@/lib/courses/types";
+import type { Course, CourseCatalogueGroup } from "@/lib/courses/types";
 import Link from "next/link";
 
 interface CoursesIndexContentProps {
@@ -12,6 +13,33 @@ interface CoursesIndexContentProps {
   activeGoal?: CourseGoal;
   invalidGoal?: boolean;
   totalCourseCount: number;
+  groupedCourses?: Partial<Record<CourseCatalogueGroup, Course[]>>;
+}
+
+function CourseGroupSection({
+  title,
+  description,
+  courses,
+}: {
+  title: string;
+  description: string;
+  courses: Course[];
+}) {
+  if (courses.length === 0) return null;
+
+  return (
+    <div className="space-y-8">
+      <div className="mx-auto max-w-2xl text-center">
+        <h3 className="text-2xl font-bold md:text-3xl">{title}</h3>
+        <p className="mt-3 text-muted-foreground">{description}</p>
+      </div>
+      <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+        {courses.map((course) => (
+          <CourseCard key={course.id} course={course} />
+        ))}
+      </div>
+    </div>
+  );
 }
 
 export function CoursesIndexContent({
@@ -19,8 +47,11 @@ export function CoursesIndexContent({
   activeGoal,
   invalidGoal,
   totalCourseCount,
+  groupedCourses,
 }: CoursesIndexContentProps) {
   const { heroHeading, heroDescription } = COURSE_CATALOG_META;
+  const showGrouped =
+    !activeGoal && groupedCourses && Object.keys(groupedCourses).length > 0;
 
   return (
     <>
@@ -87,15 +118,35 @@ export function CoursesIndexContent({
             <p className="mt-3 text-muted-foreground">
               {activeGoal
                 ? "Programs mapped to this learning goal from our commercial catalogue."
-                : "Choose a focused program in AI, web development, cloud or digital careers."}
+                : "Six core technology programs plus professional-skills training. Choose AI, web, cloud, digital careers, or business communication."}
             </p>
           </div>
 
-          <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-            {courses.map((course) => (
-              <CourseCard key={course.id} course={course} />
-            ))}
-          </div>
+          {showGrouped ? (
+            <div className="space-y-16">
+              {CATALOGUE_GROUPS.map((group) => (
+                <CourseGroupSection
+                  key={group.id}
+                  title={group.title}
+                  description={group.description}
+                  courses={groupedCourses[group.id] ?? []}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+              {courses.map((course) => (
+                <CourseCard key={course.id} course={course} />
+              ))}
+            </div>
+          )}
+
+          {!activeGoal && showGrouped ? (
+            <div className="mx-auto mt-12 max-w-2xl rounded-xl border border-border/60 bg-muted/20 px-5 py-4 text-center text-sm text-muted-foreground">
+              Looking for our core IT and AI programs? They remain the primary
+              focus of Pakish Institute&apos;s homepage and career pathways.
+            </div>
+          ) : null}
         </section>
       </div>
       <FooterSection />

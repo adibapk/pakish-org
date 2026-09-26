@@ -5,7 +5,7 @@ export const TechTrustSection = () => {
   return (
     <section
       id="tech-trust"
-      className="w-full border-y border-border/50 bg-muted/30 py-5 md:py-6"
+      className="w-full border-y border-border/55 bg-muted/25 py-4 md:py-5"
       aria-label={CURRICULUM_TICKER_HEADING}
     >
       <div className="container">

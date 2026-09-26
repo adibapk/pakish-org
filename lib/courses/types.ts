@@ -9,7 +9,43 @@ export type CourseSlug =
   | "full-stack-ai-development"
   | "wordpress-woocommerce"
   | "cloud-devops"
-  | "ai-freelancing";
+  | "ai-freelancing"
+  | "business-english-professional-communication";
+
+export type CourseCatalogueGroup =
+  | "technology-digital"
+  | "professional-skills";
+
+export type CourseDurationMode = "fixed" | "consultation-led";
+
+export interface CourseInstructor {
+  name: string;
+  role: string;
+  bio: string[];
+  image: {
+    src: string;
+    alt: string;
+    width: number;
+    height: number;
+  };
+}
+
+export interface CourseMedia {
+  hero?: {
+    src: string;
+    alt: string;
+    width: number;
+    height: number;
+    caption?: string;
+  };
+}
+
+export interface CourseCtaConfig {
+  primaryLabel: string;
+  secondaryLabel?: string;
+  /** Prefills admission message when secondary CTA is used */
+  secondaryPrefillMessage?: string;
+}
 
 export type CourseCategory =
   | "ai"
@@ -90,8 +126,18 @@ export interface Course {
   level: CourseLevel;
   /** Human-readable duration, e.g. "4–6 weeks" */
   duration: string;
-  /** ISO-8601 duration for Course schema, e.g. "P6W" */
-  isoDuration: string;
+  /** ISO-8601 duration for Course schema when a single duration is accurate */
+  isoDuration?: string;
+  durationMode?: CourseDurationMode;
+  /** Catalogue section on /courses — defaults to technology-digital */
+  catalogueGroup?: CourseCatalogueGroup;
+  /** Homepage featured grid visibility — defaults to true */
+  showOnHomepageFeatured?: boolean;
+  /** Section label for tools/skills list — defaults to Technologies & Tools */
+  toolsSectionLabel?: string;
+  instructor?: CourseInstructor;
+  media?: CourseMedia;
+  cta?: CourseCtaConfig;
   /** Card / listing summary (short description) */
   summary: string;
   /** Detail-page overview paragraphs (full overview) */

@@ -119,7 +119,7 @@ export const Navbar = () => {
       className="relative z-50 mx-auto top-5 sticky w-full max-w-screen-2xl rounded-2xl border border-secondary bg-card px-2 py-2 shadow-inner sm:w-[96%]"
     >
       <div className="flex min-h-14 items-center justify-between gap-2">
-        <BrandLogo href="/" className="shrink-0" imageClassName="h-8 sm:h-9" />
+        <BrandLogo href="/" className="shrink-0" imageClassName="h-10 sm:h-11" />
 
         <NavigationMenu
           className="hidden lg:flex mx-2 min-w-0 flex-1 justify-center static"

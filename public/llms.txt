@@ -5,7 +5,7 @@
 ## Primary pages
 
 - [Homepage](https://pakish.org/): commercial institute overview, course goals, catalogue, training options, and FAQs
-- [Courses](https://pakish.org/courses): six professional programs with fees or custom quotes
+- [Courses](https://pakish.org/courses): seven published programs — six core technology courses plus professional-skills training
 - [Admission](https://pakish.org/admission): paid course admission and counseling; Academy access is issued after enrollment confirmation
 - [Payment methods](https://pakish.org/payment-methods): course fee payment options
 - [Women's Empowerment](https://pakish.org/womens-empowerment): gatherings, mentorship, and limited need-based fee support for eligible women
@@ -22,6 +22,7 @@
 - Professional WordPress & WooCommerce Development
 - Cloud, Servers & DevOps Fundamentals
 - AI-Powered Freelancing Career
+- Business English & Professional Communication (professional skills; consultation-led)
 
 ## Learning modes
 

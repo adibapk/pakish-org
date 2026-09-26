@@ -1,6 +1,9 @@
 import { CoursesIndexContent } from "@/components/courses/courses-index-content";
 import { getCourseGoalById, isValidCourseGoalId } from "@/lib/course-goals";
-import { getAllCourses } from "@/lib/courses";
+import {
+  getAllCourses,
+  getCoursesByCatalogueGroup,
+} from "@/lib/courses";
 import { COURSE_CATALOG_META } from "@/lib/courses/data";
 import { createPageMetadata } from "@/lib/seo";
 
@@ -27,12 +30,20 @@ export default async function CoursesPage({ searchParams }: CoursesPageProps) {
     ? allCourses.filter((course) => activeGoal.courseSlugs.includes(course.slug))
     : allCourses;
 
+  const groupedCourses = activeGoal
+    ? undefined
+    : {
+        "technology-digital": getCoursesByCatalogueGroup("technology-digital"),
+        "professional-skills": getCoursesByCatalogueGroup("professional-skills"),
+      };
+
   return (
     <CoursesIndexContent
       courses={courses}
       activeGoal={activeGoal}
       invalidGoal={invalidGoal}
       totalCourseCount={allCourses.length}
+      groupedCourses={groupedCourses}
     />
   );
 }

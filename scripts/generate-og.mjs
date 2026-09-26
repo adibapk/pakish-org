@@ -23,6 +23,7 @@ const cards = {
   "courses-wordpress-woocommerce": ["WordPress professional track", "WordPress & WooCommerce Development", "Business sites · Stores · Client delivery", "#86efac"],
   "courses-cloud-devops": ["Cloud & operations", "Cloud, Servers & DevOps Fundamentals", "Linux · VPS · DNS · SSL · Deployment", "#84cc16"],
   "courses-ai-freelancing": ["Digital career track", "AI-Powered Freelancing Career", "Proposals · Portfolio · AI-assisted delivery", "#a7f3d0"],
+  "courses-business-english-professional-communication": ["Professional skills", "Business English & Professional Communication", "Speaking · Writing · Workplace Confidence", "#5eead4"],
 };
 
 const escapeXml = (value) =>

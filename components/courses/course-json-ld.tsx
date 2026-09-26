@@ -10,7 +10,7 @@ export function CourseJsonLd({ course }: CourseJsonLdProps) {
   const imageUrl = absoluteUrl(course.seo.ogImage ?? "/og/home.png");
   const logoUrl = absoluteUrl(SITE_LOGO);
 
-  const courseSchema = {
+  const courseSchema: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": "Course",
     name: course.title,
@@ -27,14 +27,8 @@ export function CourseJsonLd({ course }: CourseJsonLdProps) {
       },
     },
     educationalLevel: course.level,
-    timeRequired: course.isoDuration,
     teaches: course.learningOutcomes,
     about: course.tools,
-    hasCourseInstance: {
-      "@type": "CourseInstance",
-      courseMode: ["online", "onsite"],
-      courseWorkload: course.isoDuration,
-    },
     offers: course.pricing.startingAmount
       ? {
           "@type": "Offer",
@@ -54,6 +48,29 @@ export function CourseJsonLd({ course }: CourseJsonLdProps) {
             course.pricing.displayLabel ?? "Customized training quotation",
         },
   };
+
+  if (course.isoDuration) {
+    courseSchema.timeRequired = course.isoDuration;
+    courseSchema.hasCourseInstance = {
+      "@type": "CourseInstance",
+      courseMode: ["online", "onsite"],
+      courseWorkload: course.isoDuration,
+    };
+  } else {
+    courseSchema.hasCourseInstance = {
+      "@type": "CourseInstance",
+      courseMode: ["online", "onsite"],
+    };
+  }
+
+  if (course.instructor) {
+    courseSchema.instructor = {
+      "@type": "Person",
+      name: course.instructor.name,
+      jobTitle: course.instructor.role,
+      image: absoluteUrl(course.instructor.image.src),
+    };
+  }
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",

@@ -28,6 +28,8 @@ interface AdmissionPageProps {
     course?: string;
     source?: string;
     support?: string;
+    interest?: string;
+    prefill?: string;
   }>;
 }
 
@@ -75,7 +77,10 @@ export default async function AdmissionPage({ searchParams }: AdmissionPageProps
           initialCampus={params?.campus}
         />
       ) : (
-        <CourseAdmissionForm initialCourseSlug={courseSlug} />
+        <CourseAdmissionForm
+          initialCourseSlug={courseSlug}
+          initialMessage={params?.prefill}
+        />
       )}
       <FooterSection />
     </>

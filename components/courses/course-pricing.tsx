@@ -12,6 +12,7 @@ interface CoursePricingBlockProps {
   showCta?: boolean;
   /** Prefill admission with this course */
   enrollHref?: string;
+  ctaLabel?: string;
   className?: string;
 }
 
@@ -20,6 +21,7 @@ export function CoursePricingBlock({
   compact = false,
   showCta = false,
   enrollHref = "/admission",
+  ctaLabel = "Enroll Now",
   className,
 }: CoursePricingBlockProps) {
   return (
@@ -62,7 +64,7 @@ export function CoursePricingBlock({
           {showCta && (
             <div className="mt-6 flex flex-col gap-3 sm:flex-row">
               <Button asChild>
-                <Link href={enrollHref}>Enroll Now</Link>
+                <Link href={enrollHref}>{ctaLabel}</Link>
               </Button>
               <Button asChild variant="outline">
                 <Link href="/payment-methods">View Payment Methods</Link>

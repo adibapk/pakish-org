@@ -78,10 +78,12 @@ type CourseAdmissionFormValues = z.infer<typeof formSchema>;
 
 interface CourseAdmissionFormProps {
   initialCourseSlug?: string;
+  initialMessage?: string;
 }
 
 export function CourseAdmissionForm({
   initialCourseSlug,
+  initialMessage,
 }: CourseAdmissionFormProps) {
   const courses = useMemo(() => getAllCourses(), []);
   const validInitial = getCourseBySlug(initialCourseSlug ?? "")?.slug;
@@ -99,7 +101,7 @@ export function CourseAdmissionForm({
       whatsapp: "",
       email: "",
       courseSlug: validInitial,
-      message: "",
+      message: initialMessage ?? "",
       website: "",
     },
   });

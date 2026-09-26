@@ -15,14 +15,16 @@ function CurriculumToolItem({ name, icon }: TrustTool) {
 
   return (
     <div
-      className="flex shrink-0 items-center gap-2.5 text-muted-foreground opacity-70 transition-opacity duration-300 hover:opacity-100 sm:gap-3"
+      className="flex shrink-0 items-center gap-3 text-muted-foreground opacity-75 transition-opacity duration-300 hover:opacity-100 sm:gap-3.5"
     >
       <span
-        className="inline-flex size-8 shrink-0 items-center justify-center rounded-md bg-background/80 text-muted-foreground ring-1 ring-border/50"
+        className="inline-flex size-9 shrink-0 items-center justify-center rounded-lg bg-background/90 text-muted-foreground shadow-sm ring-1 ring-border/55"
       >
-        <IconComponent className="size-4" aria-hidden="true" />
+        <IconComponent className="size-[1.125rem]" aria-hidden="true" />
       </span>
-      <span className="whitespace-nowrap text-sm font-medium">{name}</span>
+      <span className="whitespace-nowrap text-sm font-medium tracking-tight sm:text-[0.9375rem]">
+        {name}
+      </span>
     </div>
   );
 }

@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { CourseCard } from "@/components/courses/course-card";
-import { getAllCourses } from "@/lib/courses";
+import { getFeaturedCourses } from "@/lib/courses";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 export const FeaturedCoursesSection = () => {
-  const courses = getAllCourses();
+  const courses = getFeaturedCourses();
 
   return (
     <section className="w-full bg-muted/30 py-16 sm:py-24">
