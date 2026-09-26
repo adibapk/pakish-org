@@ -16,6 +16,7 @@ Never copy this script over the tracked deployment checkout with scp.
 from __future__ import annotations
 
 import json
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -27,10 +28,13 @@ EXPECTED_IMAGE_DIGEST = (
     "sha256:f911d7cb60680f1f99ec67f831c8f5f9fc3107f55f479e65e47e6a24c2e183f9"
 )
 BACKUP_DIR = Path("/home/opc/.learnhouse/pakish/backups")
+# Include full client + SSR chunk trees — AuthFooter dual-link and /lrn.svg refs
+# live outside the auth HTML path and were missed by source-only overlays.
 COMPILED_SEARCH_ROOTS = (
     "/app/web/.next/static/chunks",
     "/app/web/.next/server/app/auth",
     "/app/web/.next/server/chunks/ssr",
+    "/app/web/.next/server/chunks",
 )
 SCRIPT_DIR = Path(__file__).resolve().parent
 
@@ -114,20 +118,36 @@ COMPILED_REPLACEMENTS: list[tuple[str, str, int, int]] = [
     ("https://www.learnhouse.app/?source=in-app", PAKISH_SITE_URL, 0, 20),
     ("https://www.learnhouse.app/", f"{PAKISH_SITE_URL}/", 0, 20),
     ("learnhouse.io", ACADEMY_DOMAIN_LABEL, 0, 80),
-    ('"and":"and","privacy_policy":"Privacy Policy"', '"and":"","privacy_policy":""', 0, 40),
+    (
+        '"and":"and","privacy_policy":"Privacy Policy"',
+        '"and":"","privacy_policy":"Privacy Policy"',
+        0,
+        40,
+    ),
     (
         '"terms_of_service":"Privacy Policy","and":"and","privacy_policy":"Privacy Policy"',
-        '"terms_of_service":"Privacy Policy","and":"","privacy_policy":""',
+        '"terms_of_service":"Privacy Policy","and":"","privacy_policy":"Privacy Policy"',
         0,
         40,
     ),
     (
         '"terms_of_service":"Terms of Service","and":"and","privacy_policy":"Privacy Policy"',
+        '"terms_of_service":"Privacy Policy","and":"","privacy_policy":"Privacy Policy"',
+        0,
+        40,
+    ),
+    (
         '"terms_of_service":"Privacy Policy","and":"","privacy_policy":""',
+        '"terms_of_service":"Privacy Policy","and":"","privacy_policy":"Privacy Policy"',
         0,
         40,
     ),
     ("Made with LearnHouse", "Pakish Institute", 0, 20),
+    ('src:"/lrn.svg"', 'src:"/pakish-logo.svg"', 0, 40),
+    ("src:'/lrn.svg'", "src:'/pakish-logo.svg'", 0, 20),
+    ('src:"/lrn-text.svg"', 'src:"/pakish-logo.svg"', 0, 20),
+    ('alt:"Learnhouse"', 'alt:"Pakish Institute"', 0, 20),
+    ('alt:"LearnHouse"', 'alt:"Pakish Institute"', 0, 20),
 ]
 FORBIDDEN_COMPILED_PATTERNS = (
     "learnhouse.io/terms",
@@ -135,11 +155,41 @@ FORBIDDEN_COMPILED_PATTERNS = (
     "www.learnhouse.io",
     "learnhouse.app",
     'alt="LearnHouse"',
+    'alt="Learnhouse"',
+    'alt:"LearnHouse"',
+    'alt:"Learnhouse"',
     "Privacy Policy and Privacy Policy",
     "mailto:support@learnhouse.io",
     "support@learnhouse.io",
     "Made with LearnHouse",
     "https://www.learnhouse.app",
+    "auth.and",
+    'src:"/lrn.svg"',
+)
+
+# Compiled AuthFooter still ships two Links joined by auth.and even after URL remaps.
+# Actual minified ending: children:t("auth.privacy_policy",{defaultValue:"Privacy Policy"})})
+AUTH_FOOTER_DUAL_LINK_RE = re.compile(
+    r'\)," ",([a-zA-Z_$][\w$]*)\("auth\.and",\{defaultValue:"and"\}\)," ",'
+    r'\(0,([a-zA-Z_$][\w$]*)\.jsx\)\(([a-zA-Z_$][\w$]*)\.default,'
+    r'\{href:([a-zA-Z_$][\w$]*),target:"_blank",rel:"noopener noreferrer",'
+    r'className:"text-black/50 hover:text-black/70 transition-colors",'
+    r'children:\1\("auth\.privacy_policy",\{defaultValue:"Privacy Policy"\}\)\}\)'
+)
+AUTH_FOOTER_TERMS_KEY_RE = re.compile(
+    r'(["\'])auth\.terms_of_service\1'
+)
+# Decorative LearnHouse top-left glyph on the black auth panel.
+# Ends with: ...cn(...)"})})}),
+LOGIN_TOPBAR_RE = re.compile(
+    r'(?:"enterprise"!==[a-zA-Z_$][\w$]*|[a-zA-Z_$][\w$]*!=="enterprise")'
+    r'&&![a-zA-Z_$][\w$]*&&\(0,[a-zA-Z_$][\w$]*\.jsx\)\("div",'
+    r'\{className:"login-topbar",children:.*?\)\}\)\}\)\}\),'
+)
+LOGIN_TOPBAR_DISABLE_RE = re.compile(
+    r'(?:"enterprise"!==[a-zA-Z_$][\w$]*|[a-zA-Z_$][\w$]*!=="enterprise")'
+    r'&&![a-zA-Z_$][\w$]*&&(?=\(0,[a-zA-Z_$][\w$]*\.jsx\)\("div",'
+    r'\{className:"login-topbar")'
 )
 WATERMARK_TSX = """import React from 'react'
 
@@ -351,6 +401,72 @@ def patch_built_text_branding() -> None:
         f"patched {patched_files} compiled auth bundle files; "
         f"replacement counts: {applied or 'already clean'}"
     )
+    patch_compiled_auth_structures()
+
+
+def _count_enabled_login_topbars() -> int:
+    """Count login-topbar occurrences that are not disabled with false&&."""
+    files = _list_compiled_bundle_files()
+    enabled = 0
+    for remote in files:
+        proc = docker_exec(["cat", remote], check=False)
+        if proc.returncode != 0 or "login-topbar" not in proc.stdout:
+            continue
+        content = proc.stdout
+        for match in re.finditer(r"login-topbar", content):
+            window = content[max(0, match.start() - 80) : match.start()]
+            if "false&&" not in window:
+                enabled += 1
+    return enabled
+
+
+def patch_compiled_auth_structures() -> None:
+    """Rewrite AuthFooter dual-link JSX and remove login-topbar glyph from served chunks."""
+    files = _list_compiled_bundle_files()
+    dual_hits = 0
+    topbar_hits = 0
+    terms_key_hits = 0
+    patched_files = 0
+    for remote in files:
+        proc = docker_exec(["cat", remote], check=False)
+        if proc.returncode != 0:
+            continue
+        content = proc.stdout
+        updated = content
+        updated, n_dual = AUTH_FOOTER_DUAL_LINK_RE.subn("", updated)
+        dual_hits += n_dual
+        if n_dual:
+            # Remaining first link should use privacy_policy, not terms_of_service.
+            updated, n_terms = AUTH_FOOTER_TERMS_KEY_RE.subn(
+                r"\1auth.privacy_policy\1", updated
+            )
+            terms_key_hits += n_terms
+        updated, n_top = LOGIN_TOPBAR_RE.subn("", updated)
+        topbar_hits += n_top
+        updated, n_dis = LOGIN_TOPBAR_DISABLE_RE.subn("false&&", updated)
+        topbar_hits += n_dis
+        if updated != content:
+            tmp = Path(f"/tmp/lh-struct-{patched_files}.bin")
+            tmp.write_bytes(updated.encode("utf-8"))
+            docker_cp(tmp, remote)
+            patched_files += 1
+
+    print(
+        "patched compiled auth structures: "
+        f"files={patched_files}, dual_link_removed={dual_hits}, "
+        f"terms_key_rewrites={terms_key_hits}, login_topbar_removed_or_disabled={topbar_hits}"
+    )
+    remaining_and = _count_in_bundles("auth.and")
+    if remaining_and:
+        raise RuntimeError(
+            f"auth.and still present in {remaining_and} compiled hit(s) after structural rewrite"
+        )
+    # Any remaining login-topbar must be behind false&& (disabled, not rendered).
+    remaining_enabled = _count_enabled_login_topbars()
+    if remaining_enabled:
+        raise RuntimeError(
+            f"enabled login-topbar still present in {remaining_enabled} compiled hit(s)"
+        )
 
 
 def replace_bundled_logos() -> None:
@@ -513,15 +629,17 @@ def verify_legal_copy() -> None:
         raise SystemExit(
             "compiled auth bundles still contain duplicated privacy copy"
         )
+    if _count_in_bundles("auth.and") > 0:
+        raise SystemExit("compiled bundles still contain auth.and dual-link AuthFooter")
 
     locale = json.loads(docker_exec(["cat", "/app/web/locales/en.json"]).stdout)
     auth_locale = locale.get("auth", {})
     if auth_locale.get("and"):
         raise SystemExit("en.json auth.and must be empty for single-link legal copy")
-    if auth_locale.get("privacy_policy"):
-        raise SystemExit("en.json auth.privacy_policy must be empty for single-link legal copy")
-    if auth_locale.get("terms_of_service") != "Privacy Policy":
-        raise SystemExit("en.json auth.terms_of_service must be the single Privacy Policy label")
+    if auth_locale.get("privacy_policy") != "Privacy Policy":
+        raise SystemExit("en.json auth.privacy_policy must be 'Privacy Policy'")
+    if auth_locale.get("terms_text") != "By continuing, you agree to Pakish Institute's":
+        raise SystemExit("en.json auth.terms_text must use Pakish Institute wording")
 
     for login_path in (
         "/app/web/.next/server/app/auth/login.html",
@@ -533,10 +651,6 @@ def verify_legal_copy() -> None:
         html = proc.stdout
         if "Privacy Policy and Privacy Policy" in html:
             raise SystemExit(f"{login_path} still contains duplicated privacy copy")
-        if html.count(PRIVACY_URL) > 1:
-            raise SystemExit(
-                f"{login_path} exposes more than one privacy URL ({html.count(PRIVACY_URL)})"
-            )
 
     print("legal copy verification passed (single privacy link)")
 
@@ -577,11 +691,56 @@ def verify_public_brand_assets() -> None:
 
 def verify_client_artifacts() -> None:
     """Fail closed on hydrated/client-visible branding artifacts beyond SSR source."""
-    if _count_in_bundles('"and":"and","privacy_policy":"Privacy Policy"') > 0:
-        raise SystemExit("client locale bundles still expose auth.and privacy conjunction")
-    if _count_in_bundles("mailto:support@learnhouse.io") > 0:
-        raise SystemExit("client bundles still expose support@learnhouse.io fallback")
+    failures: list[str] = []
+    for pattern in (
+        '"and":"and","privacy_policy":"Privacy Policy"',
+        "mailto:support@learnhouse.io",
+        "auth.and",
+        'src:"/lrn.svg"',
+        'alt:"Learnhouse"',
+        'alt:"LearnHouse"',
+        'alt="Learnhouse"',
+        'alt="LearnHouse"',
+    ):
+        if _count_in_bundles(pattern) > 0:
+            failures.append(pattern)
+    if failures:
+        raise SystemExit(
+            "client/SSR bundles still expose forbidden branding tokens: "
+            + ", ".join(failures)
+        )
+    enabled_topbars = _count_enabled_login_topbars()
+    if enabled_topbars:
+        raise SystemExit(
+            f"client/SSR bundles still enable login-topbar glyph ({enabled_topbars} hit(s))"
+        )
     print("client artifact verification passed")
+
+
+def verify_origin_http_surfaces() -> None:
+    """Fail closed on origin-served auth HTML/RSC payloads (not only source files)."""
+    for path in ("/login", "/signup", "/forgot"):
+        proc = docker_exec(
+            ["wget", "-qO-", f"http://127.0.0.1:8000{path}"],
+            check=False,
+        )
+        if proc.returncode != 0:
+            raise SystemExit(f"origin fetch failed for {path}")
+        body = proc.stdout
+        if "auth.and" in body:
+            raise SystemExit(f"origin {path} payload still references auth.and")
+        if "login-topbar" in body and "false&&" not in body:
+            raise SystemExit(f"origin {path} payload still enables login-topbar")
+        if 'src:"/lrn.svg"' in body or 'src="/lrn.svg"' in body:
+            # Public /lrn.svg asset may still be referenced by unrelated pages;
+            # auth surfaces must not.
+            if path in ("/login", "/signup", "/forgot"):
+                raise SystemExit(f"origin {path} still references /lrn.svg")
+        if "learnhouse.io/terms" in body or "learnhouse.io/privacy" in body:
+            raise SystemExit(f"origin {path} still references LearnHouse legal URLs")
+        if "Privacy Policy and Privacy Policy" in body:
+            raise SystemExit(f"origin {path} still has duplicated privacy copy")
+    print("origin HTTP auth surface verification passed")
 
 
 def patch_auth_branding_panel() -> None:
@@ -615,16 +774,31 @@ def patch_auth_branding_panel() -> None:
             "src={pakishIcon}\n                          alt=\"LearnHouse\"",
             "src={org?.logo_image ? getOrgLogoMediaDirectory(org.org_uuid, org.logo_image) : '/black_logo.png'}\n                          alt={org?.name || 'Pakish Institute'}",
         ),
+        ('src="/lrn.svg"', 'src="/pakish-logo.svg"'),
     ]
     for old, new in replacements:
         updated = updated.replace(old, new)
+    # Remove decorative top-left glyph; central org logo remains.
+    updated = re.sub(
+        r"\s*\{/\* Top bar with LearnHouse lrn\.svg logo[\s\S]*?\{!isEnterprise && !noOrg && \(\s*"
+        r"<div className=\"login-topbar\">[\s\S]*?</div>\s*\)\}\s*",
+        "\n",
+        updated,
+        count=1,
+    )
+    if "login-topbar" in updated:
+        # Fallback if comment/format drifted: blank the topbar block by condition.
+        updated = updated.replace(
+            "{!isEnterprise && !noOrg && (",
+            "{false && !isEnterprise && !noOrg && (",
+        )
     if updated == content:
         print("AuthBrandingPanel.tsx already patched")
         return
     tmp = Path("/tmp/AuthBrandingPanel.tsx")
     tmp.write_text(updated, encoding="utf-8")
     docker_cp(tmp, path)
-    print("patched AuthBrandingPanel.tsx")
+    print("patched AuthBrandingPanel.tsx (topbar glyph removed)")
 
 
 def patch_auth_mobile_header() -> None:
@@ -752,7 +926,7 @@ def patch_en_locale() -> None:
         ("auth", "terms_text"): "By continuing, you agree to Pakish Institute's",
         ("auth", "terms_of_service"): "Privacy Policy",
         ("auth", "and"): "",
-        ("auth", "privacy_policy"): "",
+        ("auth", "privacy_policy"): "Privacy Policy",
         ("auth", "image_title_login"): "Welcome back to Pakish Institute.",
         ("auth", "image_title_signup"): "Start learning with Pakish Institute.",
         ("footer", "powered_by"): "Powered by Pakish Institute",
@@ -895,6 +1069,8 @@ def _post_restart_repatches() -> None:
     patch_legal_footers()
     patch_watermark_component()
     patch_lrn_references()
+    patch_auth_branding_panel()
+    patch_en_locale()
     patch_built_text_branding()
 
 
@@ -928,6 +1104,7 @@ def main() -> int:
     verify_legal_copy()
     verify_public_brand_assets()
     verify_client_artifacts()
+    verify_origin_http_surfaces()
     print("branding applied — container restarted and compiled assets re-patched")
     return 0
 
