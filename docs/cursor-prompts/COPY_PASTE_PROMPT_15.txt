@@ -1,0 +1,5 @@
+Open and read the following authoritative prompt completely, then execute it in the current Pakish Institute workspace:
+
+C:\Users\pakis\My-Projects\pakish-org\docs\cursor-prompts\PROMPT_15_GOOGLE_OAUTH_ACADEMY_BRANDING_AND_CI.md
+
+The owner has authorized completion of Google sign-in in Google Cloud project `pakish-org` and the corresponding production LearnHouse configuration. Investigate first, preserve invite-only registration, use only `openid email profile`, configure the exact callback `https://academy.pakish.org/auth/callback/google`, and never expose or commit the OAuth secret. If Google requests passkey, MFA, CAPTCHA, password, or reauthentication, pause at that screen for the owner to complete it directly, then continue autonomously. Also apply the durable PNG organization-logo fix identified in the prompt, remove the remaining visible LearnHouse auth/error cosmetics, align signup UI with invite-only access, repair the false-red deployment workflow post-step, run all gates, commit exact paths, push, deploy/apply, and return separated provider, deployment, live-browser and end-to-end authentication evidence.

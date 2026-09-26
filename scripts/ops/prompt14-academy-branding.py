@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
 Apply Pakish branding to the LearnHouse Academy deployment on pakish-sg.
-Replaces LearnHouse logos in the app container and disables the footer watermark.
-Safe to re-run after container recreate (call from deploy hook or manually).
+Replaces LearnHouse logos, fixes org logo PNG references, invite-only UX copy,
+and disables the footer watermark. Safe to re-run after container recreate.
 """
 from __future__ import annotations
 
@@ -14,11 +14,29 @@ from pathlib import Path
 CONTAINER = "learnhouse-app-d1110885"
 DB = "learnhouse-db-d1110885"
 SCRIPT_DIR = Path(__file__).resolve().parent
-REPO_PUBLIC = SCRIPT_DIR.parents[1] / "public"
+
+
+def _resolve_public_dir() -> Path:
+    candidates = [
+        SCRIPT_DIR.parents[1] / "public",
+        SCRIPT_DIR / "public",
+        Path("/data/migrations/pakish/apps/pakish-org/public"),
+    ]
+    for candidate in candidates:
+        if (candidate / "logo.svg").exists():
+            return candidate
+    raise FileNotFoundError(
+        "Could not locate public/logo.svg; run from repo or place logo.svg beside the script."
+    )
+
+
+REPO_PUBLIC = _resolve_public_dir()
 PAKISH_LOGO_SVG = REPO_PUBLIC / "logo.svg"
 PAKISH_LOGO_PNG = SCRIPT_DIR / "pakish-logo.png"
 PAKISH_FAVICON = REPO_PUBLIC / "favicon-48x48.svg"
 ORG_UUID = "org_e3575732-8173-4b7b-bd4c-f80c0ccdb71e"
+PRIVACY_URL = "https://pakish.org/privacy"
+ADMISSION_URL = "https://pakish.org/admission"
 
 
 def run(cmd: list[str], check: bool = True) -> subprocess.CompletedProcess:
@@ -36,14 +54,29 @@ def docker_exec(cmd: list[str]) -> subprocess.CompletedProcess:
 def patch_built_text_branding() -> None:
     """Replace LearnHouse strings in pre-built Next.js output (no rebuild required)."""
     replacements = [
-        ("https://www.learnhouse.io/terms", "https://pakish.org/privacy"),
-        ("https://www.learnhouse.io/privacy", "https://pakish.org/privacy"),
+        ("https://www.learnhouse.io/terms", PRIVACY_URL),
+        ("https://www.learnhouse.io/privacy", PRIVACY_URL),
         ("https://learnhouse.app/", "https://pakish.org/"),
         ("https://learnhouse.app", "https://pakish.org"),
-        ("LearnHouse's", "Pakish Institute's"),
+        (
+            "By continuing, you agree to LearnHouse's",
+            "By continuing, you agree to Pakish Institute's",
+        ),
+        (
+            "By continuing, you agree to Pakish Institute's Terms of Service and Privacy Policy.",
+            "By continuing, you agree to Pakish Institute's Privacy Policy.",
+        ),
+        ("Terms of Service and Privacy Policy", "Privacy Policy"),
+        ("Terms of Service", "Privacy Policy"),
         ("LearnHouse, Inc.", "Pakish Institute"),
         ("Welcome back to LearnHouse.", "Welcome back to Pakish Institute."),
         ('alt="LearnHouse"', 'alt="Pakish Institute"'),
+        (
+            "Don't have an account? Sign up",
+            "Academy access is issued after admission and enrollment confirmation.",
+        ),
+        ("Don't have an account?", "Need Academy access?"),
+        ("Sign up", "Apply for admission"),
         ("LearnHouse", "Pakish Institute"),
     ]
     proc = docker_exec(
@@ -91,15 +124,16 @@ def copy_logos() -> None:
 
     docker_cp(PAKISH_LOGO_SVG, "/app/web/public/pakish-logo.svg")
     docker_cp(PAKISH_LOGO_PNG, "/app/web/public/black_logo.png")
-    docker_cp(PAKISH_LOGO_SVG, "/app/web/public/lrn.svg")
+    docker_cp(PAKISH_LOGO_PNG, "/app/web/public/lrn.png")
     docker_cp(PAKISH_LOGO_PNG, "/app/web/public/learnhouse_bigicon_1.png")
 
     if PAKISH_FAVICON.exists():
         docker_cp(PAKISH_FAVICON, "/app/web/public/favicon.ico")
 
     org_logo_dir = f"/app/api/content/orgs/{ORG_UUID}/logos"
-    docker_cp(PAKISH_LOGO_SVG, f"{org_logo_dir}/logo.svg")
     docker_cp(PAKISH_LOGO_PNG, f"{org_logo_dir}/logo.png")
+    # Keep SVG asset on disk for manual use, but DB must reference PNG.
+    docker_cp(PAKISH_LOGO_SVG, f"{org_logo_dir}/logo.svg")
 
     replace_bundled_logos()
     patch_built_text_branding()
@@ -111,7 +145,7 @@ def patch_not_found() -> None:
     content = docker_exec(["cat", path]).stdout
     updated = content.replace(
         "import learnhouseIcon from 'public/black_logo.png'",
-        "import pakishLogo from 'public/pakish-logo.svg'",
+        "import pakishLogo from 'public/black_logo.png'",
     ).replace("src={learnhouseIcon}", "src={pakishLogo}").replace(
         'alt="logo"', 'alt="Pakish Institute"'
     )
@@ -127,17 +161,26 @@ def patch_not_found() -> None:
 def patch_legal_footers() -> None:
     path = "/app/web/components/Footers/LegalFooters.tsx"
     content = docker_exec(["cat", path]).stdout
-    updated = (
-        content.replace(
-            "const TERMS_URL = getPlatformUrl('/terms') || 'https://www.learnhouse.io/terms'",
-            "const TERMS_URL = 'https://pakish.org/privacy'",
-        )
-        .replace(
-            "const PRIVACY_URL = getPlatformUrl('/privacy') || 'https://www.learnhouse.io/privacy'",
-            "const PRIVACY_URL = 'https://pakish.org/privacy'",
-        )
-        .replace("LearnHouse's", "Pakish Institute's")
-        .replace("LearnHouse, Inc.", "Pakish Institute")
+    updated = content
+    updated = updated.replace(
+        "const TERMS_URL = getPlatformUrl('/terms') || 'https://www.learnhouse.io/terms'",
+        f"const TERMS_URL = '{PRIVACY_URL}'",
+    )
+    updated = updated.replace(
+        "const PRIVACY_URL = getPlatformUrl('/privacy') || 'https://www.learnhouse.io/privacy'",
+        f"const PRIVACY_URL = '{PRIVACY_URL}'",
+    )
+    updated = updated.replace(
+        "{t('auth.terms_text', { defaultValue: \"By continuing, you agree to LearnHouse's\" })}{' '}",
+        "{t('auth.terms_text', { defaultValue: \"By continuing, you agree to Pakish Institute's\" })}{' '}",
+    )
+    updated = updated.replace(
+        "{t('auth.terms_of_service', { defaultValue: 'Terms of Service' })}",
+        "{t('auth.privacy_policy', { defaultValue: 'Privacy Policy' })}",
+    )
+    updated = updated.replace(
+        " {' '}\n        {t('auth.and', { defaultValue: 'and' })}{' '}\n        <Link href={PRIVACY_URL}",
+        " <Link href={PRIVACY_URL}",
     )
     if updated == content:
         print("LegalFooters.tsx already patched")
@@ -155,8 +198,11 @@ def patch_auth_branding_panel() -> None:
         "href=\"https://learnhouse.app\"",
         "href=\"https://pakish.org\"",
     ).replace(
+        "import learnhouseIcon from 'public/learnhouse_bigicon_1.png'",
+        "import pakishIcon from 'public/learnhouse_bigicon_1.png'",
+    ).replace(
         "src={learnhouseIcon}\n                          alt=\"LearnHouse\"",
-        "src={org?.logo_image ? getOrgLogoMediaDirectory(org.org_uuid, org.logo_image) : '/pakish-logo.svg'}\n                          alt={org?.name || 'Pakish Institute'}",
+        "src={org?.logo_image ? getOrgLogoMediaDirectory(org.org_uuid, org.logo_image) : '/black_logo.png'}\n                          alt={org?.name || 'Pakish Institute'}",
     ).replace(
         "<h1 className=\"font-black text-3xl tracking-tight\">{org?.name || 'LearnHouse'}</h1>",
         "<h1 className=\"font-black text-3xl tracking-tight\">{org?.name || 'Pakish Institute'}</h1>",
@@ -168,6 +214,36 @@ def patch_auth_branding_panel() -> None:
     tmp.write_text(updated, encoding="utf-8")
     docker_cp(tmp, path)
     print("patched AuthBrandingPanel.tsx")
+
+
+def patch_login_invite_only() -> None:
+    path = "/app/web/app/auth/login/login.tsx"
+    content = docker_exec(["cat", path]).stdout
+    invite_block = f"""              <p className="text-center text-sm text-black/60 mt-6">
+                Academy access is issued after admission and enrollment confirmation.{' '}
+                <a href="{ADMISSION_URL}" className="text-black font-semibold hover:underline">
+                  Apply for admission
+                </a>
+              </p>"""
+    updated = content
+    marker = "{/* Sign Up Link */}"
+    if marker in content and "Apply for admission" not in content:
+        import re
+
+        updated = re.sub(
+            r"\{/\* Sign Up Link \*/\}\s*<p className=\"text-center text-sm text-black/35 mt-6\">.*?</p>",
+            invite_block,
+            content,
+            count=1,
+            flags=re.DOTALL,
+        )
+    if updated == content:
+        print("login.tsx invite-only copy already patched or pattern not found")
+        return
+    tmp = Path("/tmp/login.tsx")
+    tmp.write_text(updated, encoding="utf-8")
+    docker_cp(tmp, path)
+    print("patched login.tsx invite-only UX")
 
 
 def patch_org_footer() -> None:
@@ -214,7 +290,7 @@ def update_org_config() -> None:
     customization = config.setdefault("customization", {}).setdefault("general", {})
     customization["watermark"] = False
     general["footer_text"] = "Pakish Institute — academy.pakish.org"
-    config["signup_mode"] = config.get("signup_mode", "inviteOnly")
+    config["signup_mode"] = "inviteOnly"
     payload = json.dumps(config).replace("'", "''")
     sql = f"UPDATE organizationconfig SET config = '{payload}'::jsonb WHERE org_id=1;"
     run(["docker", "exec", DB, "psql", "-U", "learnhouse", "-d", "learnhouse", "-c", sql])
@@ -229,10 +305,10 @@ def update_org_config() -> None:
             "-d",
             "learnhouse",
             "-c",
-            "UPDATE organization SET logo_image='logo.svg', thumbnail_image='logo.svg' WHERE id=1;",
+            "UPDATE organization SET logo_image='logo.png', thumbnail_image='logo.png' WHERE id=1;",
         ]
     )
-    print("updated organization config (watermark off, footer text)")
+    print("updated organization config (watermark off, logo.png references)")
 
 
 def main() -> int:
@@ -240,6 +316,7 @@ def main() -> int:
     patch_not_found()
     patch_legal_footers()
     patch_auth_branding_panel()
+    patch_login_invite_only()
     patch_org_footer()
     update_org_config()
     run(["docker", "restart", CONTAINER], check=False)

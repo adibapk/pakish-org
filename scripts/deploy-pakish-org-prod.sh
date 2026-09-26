@@ -23,4 +23,4 @@ sudo docker compose up -d pakish-org
 
 echo "=== Done ==="
 sudo docker ps --filter name=pakish-org-app
-git log -1 --oneline
+git -C "${APP_DIR}" log -1 --oneline
