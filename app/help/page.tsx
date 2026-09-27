@@ -9,7 +9,7 @@ export const metadata = createPageMetadata({
   description:
     "Student and teacher guides for Pakish Institute: apply without an invitation, understand admission review, pay after fee confirmation, and receive Academy access.",
   path: "/help",
-  image: ogImagePath("home"),
+  image: ogImagePath("help"),
   absoluteTitle: true,
   keywords: [
     "Pakish Institute help",

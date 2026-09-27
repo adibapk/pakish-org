@@ -1,8 +1,8 @@
 # Prompt 13 pilot acceptance report
 
-**Date:** 2026-09-26  
-**Pilot:** AI Productivity & Automation  
-**Academy course UUID:** `course_05275db9-cddf-4a68-825a-01e4e2714066`  
+**Date:** 2026-09-26
+**Pilot:** AI Productivity & Automation
+**Academy course UUID:** `course_05275db9-cddf-4a68-825a-01e4e2714066`
 **State:** `public=false`, `published=true` (enrolled-learner access; not in public catalogue)
 
 ## Backup (pre-mutation)

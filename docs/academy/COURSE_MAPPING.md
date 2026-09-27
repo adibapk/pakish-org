@@ -1,7 +1,7 @@
 # Academy course mapping (operations)
 
-**Last updated:** 2026-09-26 (Prompt 13)  
-**Source catalogue:** `lib/courses/data.ts`  
+**Last updated:** 2026-09-26 (Prompt 13)
+**Source catalogue:** `lib/courses/data.ts`
 **Machine-readable mapping:** `lib/academy/course-mapping.ts`
 
 ## Summary

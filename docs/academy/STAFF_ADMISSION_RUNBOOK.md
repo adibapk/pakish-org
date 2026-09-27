@@ -1,18 +1,18 @@
 # Staff admission & Academy provisioning runbook
 
-Audience: Pakish academic/admin operators.  
-Not linked from public `/help`, sitemap entries beyond internal use, or `public/llms.txt`.  
+Audience: Pakish academic/admin operators.
+Not linked from public `/help`, sitemap entries beyond internal use, or `public/llms.txt`.
 Last updated: 2026-09-27 (Prompt 22).
 
 ## State sequence (must match public Student Guide)
 
-1. Application lead saved (`/admission`) — no invitation required  
-2. Staff triage / counseling  
-3. Fee quote and payment instructions confirmed  
-4. Learner pays and shares proof  
-5. Staff verifies proof (proof ≠ verification)  
-6. Manual Academy provisioning + invitation  
-7. Enrollment and welcome ownership  
+1. Application lead saved (`/admission`) — no invitation required
+2. Staff triage / counseling
+3. Fee quote and payment instructions confirmed
+4. Learner pays and shares proof
+5. Staff verifies proof (proof ≠ verification)
+6. Manual Academy provisioning + invitation
+7. Enrollment and welcome ownership
 
 ## Lead triage
 

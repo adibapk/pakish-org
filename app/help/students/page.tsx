@@ -9,7 +9,7 @@ export const metadata = createPageMetadata({
   title: "Student Guide | Pakish Institute",
   description: STUDENT_GUIDE_META.description,
   path: "/help/students",
-  image: ogImagePath("admission"),
+  image: ogImagePath("help-students"),
   absoluteTitle: true,
   keywords: [
     "Pakish Institute student guide",

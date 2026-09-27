@@ -1,7 +1,7 @@
 # First cohort launch gate — AI Productivity & Automation
 
-**Status:** Website and private Academy pilot are production-ready; a **real public cohort is blocked** until the owner fields below are confirmed.  
-**Pilot course UUID:** `course_05275db9-cddf-4a68-825a-01e4e2714066` (private, `public=false`)  
+**Status:** Website and private Academy pilot are production-ready; a **real public cohort is blocked** until the owner fields below are confirmed.
+**Pilot course UUID:** `course_05275db9-cddf-4a68-825a-01e4e2714066` (private, `public=false`)
 **Last verified:** 2026-09-26 (Prompt 17)
 
 This gate lists only decisions and real-world facts that cannot be inferred from the repository or verified production platform state. Recommended defaults are suggestions, not asserted facts.

@@ -1,7 +1,7 @@
 # Video rights register
 
-Last evidence pass: 2026-09-27.  
-Default: **supplemental-embed or link only** until rehosting is explicitly allowed.  
+Last evidence pass: 2026-09-27.
+Default: **supplemental-embed or link only** until rehosting is explicitly allowed.
 Pakish is commercial; “free to watch” ≠ approved to rehost.
 
 Statuses: `unverified` | `supplemental-embed` | `approved-to-rehost` | `rejected`
@@ -30,9 +30,9 @@ Statuses: `unverified` | `supplemental-embed` | `approved-to-rehost` | `rejected
 
 ## Counts
 
-- unverified: 2  
-- supplemental-embed: 5  
-- approved-to-rehost: 0  
-- rejected: 1  
+- unverified: 2
+- supplemental-embed: 5
+- approved-to-rehost: 0
+- rejected: 1
 
 No YouTube downloads into Academy. No Git LFS video commits.

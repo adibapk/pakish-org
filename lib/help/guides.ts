@@ -1,9 +1,12 @@
 /**
  * Public help hub copy — canonical source for /help routes and llms.txt pointers.
- * Last UI-verified: 2026-09-27 (local Prompt 22 preview).
+ * Website journey copy verified against live pakish.org (2026-09-27, SHA 4a0ec47).
+ * Academy learner/instructor UI shells remain Not yet verified until Prompt 21E
+ * fresh-profile + previously-visited normal-cache role proof is accepted.
  */
 
 export const HELP_UI_VERIFIED_DATE = "2026-09-27";
+export const ACADEMY_UI_ROLE_PROOF = "not-yet-verified" as const;
 
 export const STUDENT_JOURNEY_STATES = [
   {
@@ -144,9 +147,9 @@ export const STUDENT_GUIDE_SECTIONS: HelpGuideSection[] = [
     body: [
       "Academy (https://academy.pakish.org) uses invite-only registration.",
       "After payment verification and enrollment, the academic team issues login access.",
-      "Google sign-in, password login, and email login-link options may be available once your account exists — exact options depend on your invitation.",
+      "Exact sign-in options shown after invitation (password, Google, or email link) are Not yet verified against the current Academy UI shell — ask staff if your invite differs from what you see.",
     ],
-    status: "verified",
+    status: "not-yet-verified",
     qa: [
       {
         question: "Why does Academy signup ask for an invite code?",

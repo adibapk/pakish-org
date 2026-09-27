@@ -9,7 +9,7 @@ export const metadata = createPageMetadata({
   title: "Teacher Guide | Pakish Institute",
   description: TEACHER_GUIDE_META.description,
   path: "/help/teachers",
-  image: ogImagePath("home"),
+  image: ogImagePath("help-teachers"),
   absoluteTitle: true,
 });
 

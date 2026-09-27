@@ -1,7 +1,7 @@
 # Live class standard operating procedure
 
-**Scope:** Pakish Institute Academy (`academy.pakish.org`)  
-**Timezone:** Asia/Karachi (PKT)  
+**Scope:** Pakish Institute Academy (`academy.pakish.org`)
+**Timezone:** Asia/Karachi (PKT)
 **Pilot course:** AI Productivity & Automation (private)
 
 ## Prerequisites

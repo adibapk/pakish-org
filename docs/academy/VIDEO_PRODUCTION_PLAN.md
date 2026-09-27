@@ -15,17 +15,17 @@ Do **not** buy subscriptions or start bulk AI-video jobs without owner approval.
 
 ## Lesson production checklist
 
-1. Instructor-approved script aligned to text lesson objectives  
-2. Screen demo storyboard (marked VIDEO NOT RECORDED until filmed)  
-3. Rights checklist (no uncleared third-party clips/music)  
-4. Quality rubric: audio clarity, readable UI, correct tool UI date, no secrets on screen  
-5. Captions + downloadable practice sheet  
-6. Storage decision: durable object storage + access control + backup — **not** Docker app volume by default  
+1. Instructor-approved script aligned to text lesson objectives
+2. Screen demo storyboard (marked VIDEO NOT RECORDED until filmed)
+3. Rights checklist (no uncleared third-party clips/music)
+4. Quality rubric: audio clarity, readable UI, correct tool UI date, no secrets on screen
+5. Captions + downloadable practice sheet
+6. Storage decision: durable object storage + access control + backup — **not** Docker app volume by default
 
 ## Small pilot budget options (illustrative — get quotes)
 
-- A: OBS + volunteer edit (lowest cash, higher instructor time)  
-- B: OBS + one-month editor seat for captions (mid)  
+- A: OBS + volunteer edit (lowest cash, higher instructor time)
+- B: OBS + one-month editor seat for captions (mid)
 - C: Scripted demos + approved AI narration without cloning a real teacher voice (only if consented policy allows)
 
 ## AI Productivity pilot shot list (example)
@@ -34,6 +34,6 @@ See `content/ai-productivity/README.md` Module 1 storyboard. Produce Module 1 fi
 
 ## Non-goals
 
-- AI avatar slide decks as “complete courses”  
-- Scraping or uploading others’ YouTube files  
-- Committing video binaries to Git  
+- AI avatar slide decks as “complete courses”
+- Scraping or uploading others’ YouTube files
+- Committing video binaries to Git

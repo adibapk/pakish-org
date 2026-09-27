@@ -36,6 +36,24 @@ export const OG_CARDS: Record<string, OgCard> = {
     description: "Bank · JazzCash · PayPal · Payoneer",
     accent: "#34d399",
   },
+  help: {
+    eyebrow: "Help & guides",
+    title: "Pakish Institute Help Hub",
+    description: "Apply · Fee confirmation · Academy access",
+    accent: "#5eead4",
+  },
+  "help-students": {
+    eyebrow: "Student guide",
+    title: "How to Apply and Join Academy",
+    description: "No invite to apply · Pay after confirmation",
+    accent: "#34d399",
+  },
+  "help-teachers": {
+    eyebrow: "Teacher guide",
+    title: "Instructor Access at Pakish Academy",
+    description: "Assigned courses · Lessons · Escalation",
+    accent: "#86efac",
+  },
   insights: {
     eyebrow: "Pakish.ORG Insights",
     title: "Women in Tech, AI & Freelancing in Pakistan",

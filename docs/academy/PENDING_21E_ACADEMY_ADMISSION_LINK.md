@@ -21,12 +21,16 @@ On Academy `/signup` (invite-required) and, where appropriate, `/login`, add a c
 
 ## Acceptance after 21E
 
-1. Fresh private DB backup (mode 600).  
-2. Overlay apply + fingerprint → new chunk URLs.  
-3. Hydrated browser proof on `/signup` and `/login` (desktop + 390px).  
-4. No React #418 / ChunkLoadError.  
+1. Fresh private DB backup (mode 600).
+2. Overlay apply + fingerprint → new chunk URLs.
+3. Hydrated browser proof on `/signup` and `/login` (desktop + 390px).
+4. No React #418 / ChunkLoadError.
 5. Independent verification that invite-only remains enforced.
 
 ## Offline prep status
 
 Website Student Guide and admission copy already explain the no-invite application path. This Academy UI link is the remaining production write.
+
+## Prompt 23 status (2026-09-27)
+
+**BLOCKED — do not apply.** Prompt 21E branch tip `287c930` is merged into `origin/master` (`4a0ec47`), but Prompt 23 did **not** receive independent fresh-profile + previously-visited normal-cache browser acceptance or role-shell proof. Academy production overlay writes remain owned by the 21E acceptance gate. No DB backup, overlay apply, or invitation changes were performed in Prompt 23.
