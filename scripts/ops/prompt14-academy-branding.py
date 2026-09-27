@@ -369,17 +369,205 @@ def _list_compiled_bundle_files() -> list[str]:
     return [line.strip() for line in proc.stdout.splitlines() if line.strip()]
 
 
-def _shell_quote(value: str) -> str:
-    return "'" + value.replace("'", "'\\''") + "'"
+def patch_built_text_branding() -> None:
+    """Patch allowlisted public auth/legal strings in compiled auth bundles only.
+
+    Runs entirely inside the container — host-side per-file docker cp loops are
+    too slow against thousands of Turbopack chunks and previously hung applies.
+    """
+    payload = {
+        "roots": list(COMPILED_SEARCH_ROOTS),
+        "replacements": [
+            [old, new, min_b, max_b]
+            for old, new, min_b, max_b in COMPILED_REPLACEMENTS
+        ],
+        "auth_footer_dual": AUTH_FOOTER_DUAL_LINK_RE.pattern,
+        "auth_footer_terms": AUTH_FOOTER_TERMS_KEY_RE.pattern,
+        "copyright_dual": COPYRIGHT_FOOTER_DUAL_PRIVACY_RE.pattern,
+        "login_topbar": LOGIN_TOPBAR_RE.pattern,
+        "login_topbar_disable": LOGIN_TOPBAR_DISABLE_RE.pattern,
+    }
+    helper = Path("/tmp/lh_patch_compiled_incontainer.py")
+    helper.write_text(_INCONTAINER_PATCH_PY, encoding="utf-8")
+    docker_cp(helper, "/tmp/lh_patch_compiled_incontainer.py")
+    proc = subprocess.run(
+        [
+            "docker",
+            "exec",
+            "-i",
+            CONTAINER,
+            "python3",
+            "/tmp/lh_patch_compiled_incontainer.py",
+        ],
+        input=json.dumps(payload),
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if proc.returncode != 0:
+        raise RuntimeError(
+            f"in-container compiled patch failed: {proc.stderr or proc.stdout}"
+        )
+    result = json.loads(proc.stdout)
+    for remote in result.get("patched_static_paths") or []:
+        _PATCHED_STATIC_PATHS.add(remote)
+    print(
+        "patched compiled bundles in-container: "
+        f"text_files={result.get('text_patched_files')}, "
+        f"struct_files={result.get('struct_patched_files')}, "
+        f"dual_link_removed={result.get('dual_link_removed')}, "
+        f"copyright_dual_removed={result.get('copyright_dual_removed')}, "
+        f"login_topbar_removed_or_disabled={result.get('login_topbar_hits')}"
+    )
+    if result.get("remaining_auth_and"):
+        raise RuntimeError(
+            f"auth.and still present in {result['remaining_auth_and']} compiled hit(s)"
+        )
+    if result.get("remaining_enabled_topbars"):
+        raise RuntimeError(
+            f"enabled login-topbar still present in {result['remaining_enabled_topbars']} hit(s)"
+        )
+    if result.get("remaining_copyright_dual"):
+        raise RuntimeError(
+            f"CopyrightFooter dual privacy still present in {result['remaining_copyright_dual']} hit(s)"
+        )
+
+
+_INCONTAINER_PATCH_PY = r'''
+import json, re, sys
+from pathlib import Path
+
+payload = json.loads(sys.stdin.read())
+roots = [Path(p) for p in payload["roots"]]
+replacements = payload["replacements"]
+auth_dual = re.compile(payload["auth_footer_dual"])
+auth_terms = re.compile(payload["auth_footer_terms"])
+copy_dual = re.compile(payload["copyright_dual"])
+topbar = re.compile(payload["login_topbar"])
+topbar_dis = re.compile(payload["login_topbar_disable"])
+
+files = []
+for root in roots:
+    if root.exists():
+        files.extend(sorted(root.rglob("*.js")))
+
+def count_pattern(pat: str) -> int:
+    total = 0
+    for path in files:
+        try:
+            total += path.read_text(encoding="utf-8", errors="ignore").count(pat)
+        except OSError:
+            pass
+    return total
+
+totals = {}
+for old, new, min_b, max_b in replacements:
+    c = count_pattern(old)
+    totals[old] = c
+    if c < min_b or c > max_b:
+        raise SystemExit(f"replacement source {old!r} hit count {c} outside [{min_b}, {max_b}]")
+
+text_patched = 0
+struct_patched = 0
+dual_hits = 0
+copy_hits = 0
+terms_hits = 0
+top_hits = 0
+patched_static = []
+
+for path in files:
+    try:
+        content = path.read_text(encoding="utf-8")
+    except OSError:
+        continue
+    updated = content
+    for old, new, *_ in replacements:
+        updated = updated.replace(old, new)
+    text_changed = updated != content
+    if text_changed:
+        text_patched += 1
+    updated2, n_dual = auth_dual.subn("", updated)
+    dual_hits += n_dual
+    if n_dual:
+        updated2, n_terms = auth_terms.subn(r"\1auth.privacy_policy\1", updated2)
+        terms_hits += n_terms
+    updated2, n_copy = copy_dual.subn(r"\1", updated2)
+    copy_hits += n_copy
+    updated2, n_top = topbar.subn("", updated2)
+    top_hits += n_top
+    updated2, n_dis = topbar_dis.subn("false&&", updated2)
+    top_hits += n_dis
+    if updated2 != content:
+        path.write_text(updated2, encoding="utf-8")
+        if str(path).startswith("/app/web/.next/static/"):
+            patched_static.append(str(path))
+        if updated2 != updated or n_dual or n_copy or n_top or n_dis:
+            struct_patched += 1
+
+def enabled_topbars() -> int:
+    enabled = 0
+    for path in files:
+        try:
+            content = path.read_text(encoding="utf-8", errors="ignore")
+        except OSError:
+            continue
+        if "login-topbar" not in content:
+            continue
+        for match in re.finditer(r"login-topbar", content):
+            window = content[max(0, match.start() - 80): match.start()]
+            if "false&&" not in window:
+                enabled += 1
+    return enabled
+
+def copyright_dual_remaining() -> int:
+    hits = 0
+    for path in files:
+        try:
+            content = path.read_text(encoding="utf-8", errors="ignore")
+        except OSError:
+            continue
+        if "common.copyright" not in content:
+            continue
+        hits += len(copy_dual.findall(content))
+    return hits
+
+print(json.dumps({
+    "text_patched_files": text_patched,
+    "struct_patched_files": struct_patched,
+    "dual_link_removed": dual_hits,
+    "copyright_dual_removed": copy_hits,
+    "terms_key_rewrites": terms_hits,
+    "login_topbar_hits": top_hits,
+    "remaining_auth_and": count_pattern("auth.and"),
+    "remaining_enabled_topbars": enabled_topbars(),
+    "remaining_copyright_dual": copyright_dual_remaining(),
+    "patched_static_paths": patched_static,
+}))
+'''
 
 
 def _count_in_bundles(pattern: str) -> int:
     roots = " ".join(COMPILED_SEARCH_ROOTS)
     proc = docker_exec(
         [
-            "sh",
+            "python3",
             "-c",
-            f"grep -rFo {_shell_quote(pattern)} {roots} 2>/dev/null | wc -l",
+            (
+                "from pathlib import Path\n"
+                f"roots={list(COMPILED_SEARCH_ROOTS)!r}\n"
+                f"pat={pattern!r}\n"
+                "n=0\n"
+                "for root in roots:\n"
+                " p=Path(root)\n"
+                " if not p.exists():\n"
+                "  continue\n"
+                " for f in p.rglob('*.js'):\n"
+                "  try:\n"
+                "   n+=f.read_text(encoding='utf-8',errors='ignore').count(pat)\n"
+                "  except OSError:\n"
+                "   pass\n"
+                "print(n)\n"
+            ),
         ],
         check=False,
     )
@@ -391,132 +579,77 @@ def _count_in_bundles(pattern: str) -> int:
         return 0
 
 
-def patch_built_text_branding() -> None:
-    """Patch allowlisted public auth/legal strings in compiled auth bundles only."""
-    files = _list_compiled_bundle_files()
-    if not files:
-        raise RuntimeError("no compiled auth bundle files found under allowlisted paths")
-
-    totals: dict[str, int] = {}
-    for old, _new, min_before, max_before in COMPILED_REPLACEMENTS:
-        count = _count_in_bundles(old)
-        totals[old] = count
-        if count < min_before or count > max_before:
-            raise RuntimeError(
-                f"replacement source {old!r} hit count {count} outside "
-                f"expected range [{min_before}, {max_before}] for {EXPECTED_IMAGE_DIGEST}"
-            )
-
-    patched_files = 0
-    for remote in files:
-        proc = docker_exec(["cat", remote], check=False)
-        if proc.returncode != 0:
-            continue
-        content = proc.stdout
-        updated = content
-        for old, new, _min_before, _max_before in COMPILED_REPLACEMENTS:
-            updated = updated.replace(old, new)
-        if updated != content:
-            tmp = Path(f"/tmp/lh-brand-{patched_files}.bin")
-            tmp.write_bytes(updated.encode("utf-8"))
-            docker_cp(tmp, remote)
-            patched_files += 1
-
-    applied = {
-        old: totals[old] - _count_in_bundles(old)
-        for old, _new, _min_before, _max_before in COMPILED_REPLACEMENTS
-        if totals[old] > 0
-    }
-    print(
-        f"patched {patched_files} compiled auth bundle files; "
-        f"replacement counts: {applied or 'already clean'}"
-    )
-    patch_compiled_auth_structures()
-
-
 def _count_enabled_login_topbars() -> int:
-    """Count login-topbar occurrences that are not disabled with false&&."""
-    files = _list_compiled_bundle_files()
-    enabled = 0
-    for remote in files:
-        proc = docker_exec(["cat", remote], check=False)
-        if proc.returncode != 0 or "login-topbar" not in proc.stdout:
-            continue
-        content = proc.stdout
-        for match in re.finditer(r"login-topbar", content):
-            window = content[max(0, match.start() - 80) : match.start()]
-            if "false&&" not in window:
-                enabled += 1
-    return enabled
-
-
-def patch_compiled_auth_structures() -> None:
-    """Rewrite AuthFooter/CopyrightFooter dual links and remove login-topbar glyph."""
-    files = _list_compiled_bundle_files()
-    dual_hits = 0
-    copyright_dual_hits = 0
-    topbar_hits = 0
-    terms_key_hits = 0
-    patched_files = 0
-    for remote in files:
-        proc = docker_exec(["cat", remote], check=False)
-        if proc.returncode != 0:
-            continue
-        content = proc.stdout
-        updated = content
-        updated, n_dual = AUTH_FOOTER_DUAL_LINK_RE.subn("", updated)
-        dual_hits += n_dual
-        if n_dual:
-            # Remaining first link should use privacy_policy, not terms_of_service.
-            updated, n_terms = AUTH_FOOTER_TERMS_KEY_RE.subn(
-                r"\1auth.privacy_policy\1", updated
-            )
-            terms_key_hits += n_terms
-        updated, n_copy = COPYRIGHT_FOOTER_DUAL_PRIVACY_RE.subn(r"\1", updated)
-        copyright_dual_hits += n_copy
-        updated, n_top = LOGIN_TOPBAR_RE.subn("", updated)
-        topbar_hits += n_top
-        updated, n_dis = LOGIN_TOPBAR_DISABLE_RE.subn("false&&", updated)
-        topbar_hits += n_dis
-        if updated != content:
-            tmp = Path(f"/tmp/lh-struct-{patched_files}.bin")
-            tmp.write_bytes(updated.encode("utf-8"))
-            docker_cp(tmp, remote)
-            patched_files += 1
-
-    print(
-        "patched compiled auth structures: "
-        f"files={patched_files}, dual_link_removed={dual_hits}, "
-        f"copyright_dual_removed={copyright_dual_hits}, "
-        f"terms_key_rewrites={terms_key_hits}, login_topbar_removed_or_disabled={topbar_hits}"
+    proc = docker_exec(
+        [
+            "python3",
+            "-c",
+            (
+                "import re\nfrom pathlib import Path\n"
+                f"roots={list(COMPILED_SEARCH_ROOTS)!r}\n"
+                "enabled=0\n"
+                "for root in roots:\n"
+                " p=Path(root)\n"
+                " if not p.exists():\n"
+                "  continue\n"
+                " for f in p.rglob('*.js'):\n"
+                "  try:\n"
+                "   content=f.read_text(encoding='utf-8',errors='ignore')\n"
+                "  except OSError:\n"
+                "   continue\n"
+                "  if 'login-topbar' not in content:\n"
+                "   continue\n"
+                "  for m in re.finditer('login-topbar', content):\n"
+                "   window=content[max(0,m.start()-80):m.start()]\n"
+                "   if 'false&&' not in window:\n"
+                "    enabled+=1\n"
+                "print(enabled)\n"
+            ),
+        ],
+        check=False,
     )
-    remaining_and = _count_in_bundles("auth.and")
-    if remaining_and:
-        raise RuntimeError(
-            f"auth.and still present in {remaining_and} compiled hit(s) after structural rewrite"
-        )
-    # Any remaining login-topbar must be behind false&& (disabled, not rendered).
-    remaining_enabled = _count_enabled_login_topbars()
-    if remaining_enabled:
-        raise RuntimeError(
-            f"enabled login-topbar still present in {remaining_enabled} compiled hit(s)"
-        )
-    remaining_copy_dual = _count_copyright_dual_privacy()
-    if remaining_copy_dual:
-        raise RuntimeError(
-            f"CopyrightFooter dual privacy links still present in {remaining_copy_dual} compiled hit(s)"
-        )
+    try:
+        return int(proc.stdout.strip() or "0")
+    except ValueError:
+        return 0
 
 
 def _count_copyright_dual_privacy() -> int:
-    files = _list_compiled_bundle_files()
-    hits = 0
-    for remote in files:
-        proc = docker_exec(["cat", remote], check=False)
-        if proc.returncode != 0 or "common.copyright" not in proc.stdout:
-            continue
-        hits += len(COPYRIGHT_FOOTER_DUAL_PRIVACY_RE.findall(proc.stdout))
-    return hits
+    proc = docker_exec(
+        [
+            "python3",
+            "-c",
+            (
+                "import re\nfrom pathlib import Path\n"
+                f"roots={list(COMPILED_SEARCH_ROOTS)!r}\n"
+                f"rx=re.compile({COPYRIGHT_FOOTER_DUAL_PRIVACY_RE.pattern!r})\n"
+                "hits=0\n"
+                "for root in roots:\n"
+                " p=Path(root)\n"
+                " if not p.exists():\n"
+                "  continue\n"
+                " for f in p.rglob('*.js'):\n"
+                "  try:\n"
+                "   content=f.read_text(encoding='utf-8',errors='ignore')\n"
+                "  except OSError:\n"
+                "   continue\n"
+                "  if 'common.copyright' not in content:\n"
+                "   continue\n"
+                "  hits+=len(rx.findall(content))\n"
+                "print(hits)\n"
+            ),
+        ],
+        check=False,
+    )
+    try:
+        return int(proc.stdout.strip() or "0")
+    except ValueError:
+        return 0
+
+
+def patch_compiled_auth_structures() -> None:
+    """Structural auth rewrites now run inside patch_built_text_branding()."""
+    return
 
 
 def fingerprint_static_assets() -> dict:
