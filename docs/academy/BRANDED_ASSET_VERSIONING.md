@@ -18,9 +18,10 @@ HTML/RSC for auth routes is `private, no-cache, no-store`. Static chunks are imm
 
 After every content patch to `/app/web/.next/static/{chunks,media}/*`, the overlay:
 
-1. Writes a content-addressed sibling `*-pk<sha8>.*`
-2. Rewrites references across `/app/web/.next`
-3. Bumps `BUILD_ID` from `learnhouse-production` to `learnhouse-production-pk<stamp>` and renames `static/<BUILD_ID>/`
+1. Patches compiled JS **inside the container** (host-side per-file `docker cp` loops are too slow and previously hung applies)
+2. Writes a content-addressed sibling `*-pk<sha8>.*`
+3. Rewrites references across `/app/web/.next`
+4. Bumps `BUILD_ID` from `learnhouse-production` to `learnhouse-production-pk<stamp>` and renames `static/<BUILD_ID>/`
 
 Old basenames are left on disk as orphans so mid-flight tabs do not 404 harder than they already would; fresh HTML never points at them.
 
