@@ -36,6 +36,18 @@ export const OG_CARDS: Record<string, OgCard> = {
     description: "Bank · JazzCash · PayPal · Payoneer",
     accent: "#34d399",
   },
+  terms: {
+    eyebrow: "Terms of training",
+    title: "Pakish Institute Terms of Training",
+    description: "Offers · Enrollment · Academy access",
+    accent: "#5eead4",
+  },
+  "refund-policy": {
+    eyebrow: "Payment & cancellation",
+    title: "Fees, Cancellation & Remedies",
+    description: "No change-of-mind refund · Statutory rights preserved",
+    accent: "#34d399",
+  },
   help: {
     eyebrow: "Help & guides",
     title: "Pakish Institute Help Hub",

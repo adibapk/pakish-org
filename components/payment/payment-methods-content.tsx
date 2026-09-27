@@ -9,6 +9,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import {
+  NO_CHANGE_OF_MIND_CORE,
+  POLICY_VERSION,
+  REFUND_POLICY_PATH,
+  TERMS_PATH,
+} from "@/lib/legal/policy-meta";
+import {
   PAYONEER,
   PAYMENT_CONFIRMATION,
   QR_PAYMENT_METHODS,
@@ -230,6 +236,48 @@ export function PaymentMethodsContent() {
             <strong className="text-primary">For students:</strong> Use any
             verified method below for course fees. After paying, share your
             screenshot so the team can verify and confirm your admission.
+            Uploading proof is not payment verification.
+          </p>
+        </div>
+      </section>
+
+      {/* Prepayment policy disclosure — must appear before bank/QR details */}
+      <section
+        id="payment-policy-notice"
+        className="container py-10 sm:py-12"
+        aria-labelledby="payment-policy-heading"
+        data-payment-section="policy-notice"
+      >
+        <div className="mx-auto max-w-3xl rounded-2xl border border-primary/30 bg-card p-5 sm:p-6">
+          <h2
+            id="payment-policy-heading"
+            className="text-xl font-bold text-foreground sm:text-2xl"
+          >
+            Read before you pay
+          </h2>
+          <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
+            Pay only after you have a dated written fee offer from Pakish staff
+            that states your exact amount, course or session details, and policy
+            version <strong className="text-foreground">{POLICY_VERSION}</strong>.
+            Public QR codes and account details below are informational channels—not
+            an invoice by themselves.
+          </p>
+          <p className="mt-4 text-sm leading-relaxed text-foreground sm:text-base">
+            {NO_CHANGE_OF_MIND_CORE}
+          </p>
+          <p className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-sm font-semibold">
+            <Link href={TERMS_PATH} className="text-primary hover:underline">
+              Terms of Training
+            </Link>
+            <Link
+              href={REFUND_POLICY_PATH}
+              className="text-primary hover:underline"
+            >
+              Payment &amp; Cancellation Policy
+            </Link>
+            <Link href="/help/students" className="text-primary hover:underline">
+              Student Guide
+            </Link>
           </p>
         </div>
       </section>

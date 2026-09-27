@@ -182,7 +182,7 @@ export const STUDENT_GUIDE_SECTIONS: HelpGuideSection[] = [
     body: [
       "Support: admin@pakish.org, WhatsApp +92 300 8222456, billing@pakish.org for receipts.",
       "Privacy: https://pakish.org/privacy explains how admission and contact data is handled.",
-      "Refund or cancellation terms are not published as a fixed public policy; ask staff for the current policy that applies to your offer.",
+      "Terms: https://pakish.org/terms · Payment & Cancellation: https://pakish.org/refund-policy (version 2026-09-27). Course fees are not refunded for a learner's change of mind after payment; this does not remove remedies if Pakish fails to provide the agreed training or provides a faulty service.",
       "Common failures: paying before fee confirmation; expecting instant Academy signup; assuming proof upload equals verification.",
     ],
   },
@@ -283,5 +283,15 @@ export const HELP_INDEX = [
     href: "/privacy",
     title: "Privacy notice",
     summary: "How contact and admission information is handled.",
+  },
+  {
+    href: "/terms",
+    title: "Terms of Training",
+    summary: "Offers, enrollment, Academy access, and learner responsibilities.",
+  },
+  {
+    href: "/refund-policy",
+    title: "Payment & Cancellation",
+    summary: "No change-of-mind refund after payment; statutory remedies preserved.",
   },
 ] as const;

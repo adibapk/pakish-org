@@ -30,13 +30,13 @@ export const ADMISSION_NEXT_STEPS = [
     step: "2",
     title: "Fee and payment instructions are confirmed by staff.",
     detail:
-      "Public payment-method pages are informational until we confirm the amount for your offer.",
+      "You receive a dated written offer with amount, course details, and policy version 2026-09-27 before any payment request. Public payment pages stay informational until then.",
   },
   {
     step: "3",
-    title: "Pay using the confirmed channel, then share proof.",
+    title: "Accept the offer, pay using the confirmed channel, then share proof.",
     detail:
-      "A screenshot or receipt helps review. Proof upload is not verification or enrollment.",
+      "Read Terms and Payment & Cancellation before paying. A screenshot helps review; proof upload is not verification or enrollment.",
   },
   {
     step: "4",
@@ -57,7 +57,7 @@ export const ADMISSION_PAGE_COPY = {
   academyAccessNote:
     "Pakish Academy (academy.pakish.org) uses invite-only registration. Approved and enrolled learners receive login access from our academic team.",
   policyRequestNote:
-    "Refund, cancellation, or terms questions: ask admin@pakish.org for the current policy that applies to your offer. We do not publish a fixed public Terms of Service page.",
+    "Before you pay, read the Terms of Training and Payment & Cancellation Policy (version 2026-09-27). Course fees are not refunded for a change of mind after payment; statutory remedies still apply if Pakish does not provide the agreed training.",
 } as const;
 
 export function getAdmissionPath(courseSlug?: string): string {

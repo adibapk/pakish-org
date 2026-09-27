@@ -222,6 +222,25 @@ export function CourseAdmissionForm({
                 Student Guide
               </Link>
             </p>
+            <p className="mt-3 text-sm text-muted-foreground">
+              Applying is free and is not a purchase. Before any payment, staff
+              send a dated written fee offer with policy version{" "}
+              <strong className="text-foreground">2026-09-27</strong>. Read the{" "}
+              <Link
+                href="/terms"
+                className="text-primary underline-offset-4 hover:underline"
+              >
+                Terms of Training
+              </Link>{" "}
+              and{" "}
+              <Link
+                href="/refund-policy"
+                className="text-primary underline-offset-4 hover:underline"
+              >
+                Payment &amp; Cancellation Policy
+              </Link>
+              .
+            </p>
           </div>
 
           <div className="space-y-3 rounded-xl border border-secondary bg-card p-5">

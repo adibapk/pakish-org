@@ -1,53 +1,39 @@
-# Policy decision record — public legal gaps
+# Policy decision record — Terms and payment/cancellation
 
 Date: 2026-09-27
-Status: open — owner/legal input required
-Public stance until decided: ask staff for the current policy that applies to the offer; do not invent Terms of Service or refund rules on the website.
+Status: **owner-approved public publication** (Prompt 24) — Pakistan-qualified counsel review still required; not a claim of legal sign-off.
+Public pages: https://pakish.org/terms · https://pakish.org/refund-policy · version `2026-09-27`
 
-## Open questions
+## Owner decision recorded
 
-1. What refund or cancellation terms apply to paid commercial cohorts vs customized team training?
-2. Should Pakish publish a Terms of Service page, or keep policy by written offer only?
-3. Who owns final approval of Business English materials attributed to Irfan Velmi?
-4. What consent language is required before recording live classes with learners present?
-5. When durable video storage is chosen, what retention and access-control rules apply?
+- No discretionary change-of-mind refund after payment (including before the first class), for learner cancellation, schedule conflict, or missed sessions.
+- Do **not** publish absolute “no refunds under any circumstances” or any waiver of statutory rights.
+- Savings clause required: remedies under applicable law remain where Pakish does not provide the agreed training, materially misrepresents it, or provides a faulty service (aligned with Sindh CPA 2014 §17 on non-excludable faulty-service liability; §20 disclosure before transaction via payment-page notice + written offer).
 
-## Decision-ready options (not selected)
+## What was published
 
-### Refund / cancellation
+| Surface | Change |
+|---------|--------|
+| `/terms` | Terms of Training |
+| `/refund-policy` | Payment & Cancellation Policy |
+| `/payment-methods` | Prepayment disclosure **before** bank/QR details |
+| Admission next steps + constants | Links to published policy; removed “no fixed public Terms” stance |
+| Student Guide / help hub / footer / llms.txt / sitemap | Policy links |
 
-| Option | Summary | Public copy implication |
-|--------|---------|-------------------------|
-| A | Written offer only: each fee confirmation email states the cancellation window | Keep current interim: “ask staff for the policy that applies to your offer” |
-| B | Publish a short Refund & Cancellation page with cohort vs team-training differences | Requires legal review before any website publish |
-| C | No refunds after session 1 / materials access, with documented exceptions | Requires legal review; do not claim on site until approved |
+## Identity / registration gaps (do not invent on public pages)
 
-### Terms of Service
+- Pakish Group FBR registration (owner-reported software category): document, legal form, NTN, and invoice name **not inspected** in this prompt.
+- SBTE registration: **in process, not granted** — public copy must not claim affiliation/accreditation.
+- Use existing brand/contact: Pakish Institute / Pakish Group, admin@pakish.org, billing@pakish.org, Gulshan-e-Iqbal campus wording already on site.
 
-| Option | Summary |
-|--------|---------|
-| A | No public ToS page; binding terms live in the written fee confirmation / enrollment email |
-| B | Publish `/terms` with commercial training scope, payment, IP, and conduct clauses |
-| C | Hybrid: short public summary + full terms attached to enrollment confirmation |
+## Still open (owner / counsel)
 
-### Live-class recording consent
+1. Inspect FBR document; confirm contracting/invoice name and address for offers.
+2. Counsel review of exact savings clause, §20 “seller” applicability to training, and B2B SOW enforceability.
+3. Recording consent language and durable video storage (unchanged from prior gates).
+4. Irfan Velmi editorial approval for Business English materials.
+5. Prompt 21E Academy handoff (separate from this main-site policy publish).
 
-| Option | Summary |
-|--------|---------|
-| A | Opt-in written consent before any recording that includes learner likeness or voice |
-| B | Cohort default: sessions may be recorded for enrolled classmates only; learners may request camera-off / name-only |
-| C | No learner-facing recordings; instructor demos only (simplest rights path) |
+## Internal research note
 
-### Durable video storage
-
-| Option | Cost / retention trade-off |
-|--------|----------------------------|
-| A | Private object storage (e.g. R2/S3) + signed URLs + 12–24 month cohort retention |
-| B | Academy platform media only (simpler ops; weaker long-term backup unless platform backup is proven) |
-| C | Hold production until storage + access-control decision is recorded |
-
-## Interim public copy (live today)
-
-- Student Guide and admission confirmation: “Refund, cancellation, or terms questions: ask admin@pakish.org for the current policy that applies to your offer.”
-- Do not claim accreditation, job guarantees, or fixed certificates unless separately verified.
-- Do not publish legal terms, guarantee refunds, or decide the policy without owner/legal approval.
+See `docs/legal/PAKISH_TERMS_AND_REFUND_REVIEW_DRAFT_2026-09-27.md` (updated in Prompt 24 branch). Do not expose that research note on public routes.

@@ -25,6 +25,31 @@ Last updated: 2026-09-27 (Prompt 22).
 - Do not ask learners to treat public QR pages as an invoice before confirmation.
 - Record agreed amount and channel in the lead notes/audit trail.
 
+### Written offer acceptance template (required before payment)
+
+Copy into lead notes / email / WhatsApp and keep the learner’s reply:
+
+```
+Offer ID: ________
+Offer date (Asia/Karachi): ________
+Lead reference: ________
+Learner name / WhatsApp / email: ________
+Course title + website slug: ________
+Format (live online / in-center / team): ________
+Session count or schedule summary: ________
+Final fee + currency + taxes if any: ________
+Payment channel named in offer: ________
+Policy version: 2026-09-27
+Terms URL: https://pakish.org/terms
+Payment & Cancellation URL: https://pakish.org/refund-policy
+Core rule shown to learner: no change-of-mind refund after payment; statutory remedies preserved if Pakish fails to deliver agreed training.
+Learner acceptance (channel + timestamp + quote of reply): ________
+Staff issuer: ________
+```
+
+- Binding commercial step = dated written offer + explicit learner acceptance (email/WhatsApp). Admission form submission alone is not purchase acceptance.
+- Do not add a deceptive “I purchased” checkbox on `/admission`.
+
 ## Proof vs verification
 
 - Accept screenshots via WhatsApp, billing email, or the optional on-site proof form.
@@ -70,6 +95,6 @@ Last updated: 2026-09-27 (Prompt 22).
 
 ## Owner inputs still required
 
-- Refund/cancellation policy wording for public request path (see `POLICY_DECISION_RECORD.md`).
+- Pakistan-qualified counsel review of published Terms / Payment & Cancellation wording (`POLICY_DECISION_RECORD.md`).
 - Instructor assignment and publish approval per course (`FIRST_COHORT_LAUNCH_GATE.md`).
 - Prompt 21E acceptance before Academy write automation.

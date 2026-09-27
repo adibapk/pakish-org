@@ -8,6 +8,8 @@ const cards = {
   privacy: ["Trust & transparency", "How Pakish Institute Handles Application Information", "Clear choices for admission and fee-support review", "#a7f3d0"],
   "womens-empowerment": ["Pakish Institute initiative", "Women's Empowerment Through Digital Skills", "Gatherings · Mentorship · Limited fee support", "#86efac"],
   "payment-methods": ["Course fee payment", "Pay Your Pakish.ORG Course Fees", "Bank · JazzCash · PayPal · Payoneer", "#34d399"],
+  terms: ["Terms of training", "Pakish Institute Terms of Training", "Offers · Enrollment · Academy access", "#5eead4"],
+  "refund-policy": ["Payment & cancellation", "Fees, Cancellation & Remedies", "No change-of-mind refund · Statutory rights preserved", "#34d399"],
   help: ["Help & guides", "Pakish Institute Help Hub", "Apply · Fee confirmation · Academy access", "#5eead4"],
   "help-students": ["Student guide", "How to Apply and Join Academy", "No invite to apply · Pay after confirmation", "#34d399"],
   "help-teachers": ["Teacher guide", "Instructor Access at Pakish Academy", "Assigned courses · Lessons · Escalation", "#86efac"],

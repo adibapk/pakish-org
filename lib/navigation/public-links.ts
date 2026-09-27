@@ -71,6 +71,8 @@ export function collectPublicNavHrefs(): NavHrefSource[] {
     { href: ACADEMY_LOGIN_URL, label: "Academy Login" },
     { href: "/insights", label: "Insights" },
     { href: "/privacy", label: "Privacy" },
+    { href: "/terms", label: "Terms" },
+    { href: "/refund-policy", label: "Payment & Cancellation" },
     { href: "/#contact", label: "Contact" },
     { href: "/#faq", label: "FAQ" },
   ];

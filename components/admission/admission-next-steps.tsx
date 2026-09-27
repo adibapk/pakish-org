@@ -117,6 +117,22 @@ export function AdmissionNextSteps({ request }: AdmissionNextStepsProps) {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
+            <p className="text-sm leading-relaxed text-muted-foreground">
+              {ADMISSION_PAGE_COPY.policyRequestNote}{" "}
+              <Link
+                href="/terms"
+                className="font-medium text-primary hover:underline"
+              >
+                Terms
+              </Link>
+              {" · "}
+              <Link
+                href="/refund-policy"
+                className="font-medium text-primary hover:underline"
+              >
+                Payment &amp; Cancellation
+              </Link>
+            </p>
             <Button asChild variant="outline">
               <Link
                 href="/payment-methods"

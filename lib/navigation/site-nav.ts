@@ -40,6 +40,8 @@ export const MOBILE_SUPPORT_LINKS: NavLink[] = [
   { href: "/admission", label: "Apply for Admission" },
   { href: "/help", label: "Help" },
   { href: "/payment-methods", label: "Payment Methods" },
+  { href: "/terms", label: "Terms" },
+  { href: "/refund-policy", label: "Payment & Cancellation" },
   { href: "/#faq", label: "FAQ" },
 ];
 

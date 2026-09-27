@@ -11,6 +11,8 @@
 - [Student Guide](https://pakish.org/help/students): application, fee confirmation, payment proof, and Academy access sequence
 - [Teacher Guide](https://pakish.org/help/teachers): instructor access notes (partially verified)
 - [Payment methods](https://pakish.org/payment-methods): informational fee channels used after staff confirms amount
+- [Terms of Training](https://pakish.org/terms): admission vs enrollment, written offers, conduct, and statutory rights (version 2026-09-27)
+- [Payment & Cancellation Policy](https://pakish.org/refund-policy): no change-of-mind refund after payment; remedies preserved if Pakish fails to deliver agreed training
 - [Women's Empowerment](https://pakish.org/womens-empowerment): gatherings, mentorship, and limited need-based fee support for eligible women
 - [Gulshan-e-Iqbal campus](https://pakish.org/campus/gulshan-e-iqbal): IT and AI courses in Karachi
 - [Insights](https://pakish.org/insights): practical guides about AI, careers, web, cloud, and freelancing in Pakistan
@@ -20,8 +22,9 @@
 ## Student journey (short answers)
 
 - Q: Do I need an invitation to apply? A: No. Apply at https://pakish.org/admission without an invitation code.
-- Q: Does submitting the form enroll me? A: No. Application → staff review → fee confirmation → payment proof → verification → Academy invitation → enrollment.
-- Q: When should I pay? A: Only after staff confirms the fee and payment instructions.
+- Q: Does submitting the form enroll me? A: No. Application → staff review → dated fee offer → payment proof → verification → Academy invitation → enrollment.
+- Q: When should I pay? A: Only after a dated written fee offer that states the amount, course details, and policy version 2026-09-27.
+- Q: Are fees refunded if I change my mind after paying? A: No discretionary change-of-mind refund after payment (including before the first class). Remedies under applicable law still apply if Pakish does not provide the agreed training, materially misrepresents it, or provides a faulty service. See https://pakish.org/refund-policy
 - Q: Why does Academy ask for an invite code? A: Account creation is invite-only; access is issued after admission approval and enrollment.
 
 ## Canonical courses
