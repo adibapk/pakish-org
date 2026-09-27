@@ -1,22 +1,49 @@
 #!/usr/bin/env python3
 """
 Apply Pakish branding to the LearnHouse Academy deployment on pakish-sg.
+
+This is a version-pinned compatibility overlay for LearnHouse 1.3.6 — not an
+upstream-supported theme system. Revalidate every replacement count and auth
+surface before upgrading the LearnHouse image or digest.
+
 Replaces LearnHouse logos, fixes org logo PNG references, invite-only UX copy,
-and disables the footer watermark. Safe to re-run after container recreate.
+and disables the footer watermark on public auth/nav surfaces only.
+After compiled patches, renames immutable static assets (`*-pk<hash>`) and bumps
+BUILD_ID so returning browsers cannot keep one-year-cached stale chunks.
+Safe to re-run after container recreate.
 
 Run only from the checked-out repository on pakish-sg after `git pull`.
 Never copy this script over the tracked deployment checkout with scp.
+See docs/academy/BRANDED_ASSET_VERSIONING.md.
 """
 from __future__ import annotations
 
 import json
+import os
+import re
 import subprocess
 import sys
 from pathlib import Path
 
 CONTAINER = "learnhouse-app-d1110885"
 DB = "learnhouse-db-d1110885"
+EXPECTED_IMAGE = "ghcr.io/learnhouse/app:1.3.6"
+EXPECTED_IMAGE_DIGEST = (
+    "sha256:f911d7cb60680f1f99ec67f831c8f5f9fc3107f55f479e65e47e6a24c2e183f9"
+)
+BACKUP_DIR = Path("/home/opc/.learnhouse/pakish/backups")
+# Include full client + SSR chunk trees — AuthFooter dual-link and /lrn.svg refs
+# live outside the auth HTML path and were missed by source-only overlays.
+COMPILED_SEARCH_ROOTS = (
+    "/app/web/.next/static/chunks",
+    "/app/web/.next/server/app/auth",
+    "/app/web/.next/server/chunks/ssr",
+    "/app/web/.next/server/chunks",
+)
 SCRIPT_DIR = Path(__file__).resolve().parent
+FINGERPRINT_HELPER = SCRIPT_DIR / "academy_asset_fingerprint.py"
+# Paths under /_next/static written during this apply — must receive new URLs.
+_PATCHED_STATIC_PATHS: set[str] = set()
 
 
 def _resolve_public_dir() -> Path:
@@ -40,6 +67,221 @@ PAKISH_FAVICON = REPO_PUBLIC / "favicon-48x48.svg"
 ORG_UUID = "org_e3575732-8173-4b7b-bd4c-f80c0ccdb71e"
 PRIVACY_URL = "https://pakish.org/privacy"
 ADMISSION_URL = "https://pakish.org/admission"
+CONTACT_URL = "https://pakish.org/#contact"
+PAKISH_SITE_URL = "https://pakish.org"
+ACADEMY_DOMAIN_LABEL = "academy.pakish.org"
+MIN_PAKISH_LOGO_BYTES = 5000
+PUBLIC_BRAND_ASSETS = (
+    "/app/web/public/lrn.svg",
+    "/app/web/public/lrn-text.svg",
+    "/app/web/public/lrn-dash.svg",
+)
+LRN_REFERENCE_FILES = (
+    "/app/web/components/Auth/AuthBrandingPanel.tsx",
+    "/app/web/components/Dashboard/Boards/BoardToolbar.tsx",
+    "/app/web/components/Dashboard/Boards/BoardTopBar.tsx",
+    "/app/web/components/Dashboard/Pages/Org/OrgEditBranding/AuthBrandingTab.tsx",
+    "/app/web/components/Objects/Editor/Editor.tsx",
+    "/app/web/components/Playground/PlaygroundEditor.tsx",
+    "/app/web/app/(hub)/new/page.tsx",
+    "/app/web/app/embed/[orgslug]/course/[courseuuid]/activity/[activityid]/EmbedActivityClient.tsx",
+    "/app/web/app/home/home.tsx",
+    "/app/web/app/orgs/[orgslug]/(withmenu)/layout.tsx",
+    "/app/web/components/Objects/Menus/OrgMenu.tsx",
+)
+
+# (old, new, min_hits_before, max_hits_before) — public auth/legal/watermark only.
+COMPILED_REPLACEMENTS: list[tuple[str, str, int, int]] = [
+    ("https://www.learnhouse.io/terms", PRIVACY_URL, 0, 40),
+    ("https://www.learnhouse.io/privacy", PRIVACY_URL, 0, 40),
+    ("https://learnhouse.io/terms", PRIVACY_URL, 0, 20),
+    ("https://learnhouse.io/privacy", PRIVACY_URL, 0, 20),
+    ("https://learnhouse.app/", "https://pakish.org/", 0, 30),
+    ("https://learnhouse.app", "https://pakish.org", 0, 30),
+    (
+        "By continuing, you agree to LearnHouse's",
+        "By continuing, you agree to Pakish Institute's",
+        0,
+        20,
+    ),
+    ('alt="LearnHouse"', 'alt="Pakish Institute"', 0, 50),
+    ('alt="Learnhouse"', 'alt="Pakish Institute"', 0, 10),
+    (
+        "Welcome back to LearnHouse.",
+        "Welcome back to Pakish Institute.",
+        0,
+        10,
+    ),
+    ("LearnHouse, Inc.", "Pakish Institute", 0, 10),
+    (
+        "?utm_source=LearnHouse&utm_medium=referral",
+        "?utm_source=PakishInstitute&utm_medium=referral",
+        0,
+        20,
+    ),
+    ("Privacy Policy and Privacy Policy", "Privacy Policy", 0, 30),
+    ("mailto:support@learnhouse.io", CONTACT_URL, 0, 20),
+    ("support@learnhouse.io", "billing@pakish.org", 0, 20),
+    ("https://www.learnhouse.app/?source=in-app", PAKISH_SITE_URL, 0, 20),
+    ("https://www.learnhouse.app/", f"{PAKISH_SITE_URL}/", 0, 20),
+    ("learnhouse.io", ACADEMY_DOMAIN_LABEL, 0, 80),
+    (
+        '"and":"and","privacy_policy":"Privacy Policy"',
+        '"and":"","privacy_policy":"Privacy Policy"',
+        0,
+        40,
+    ),
+    (
+        '"terms_of_service":"Privacy Policy","and":"and","privacy_policy":"Privacy Policy"',
+        '"terms_of_service":"Privacy Policy","and":"","privacy_policy":"Privacy Policy"',
+        0,
+        40,
+    ),
+    (
+        '"terms_of_service":"Terms of Service","and":"and","privacy_policy":"Privacy Policy"',
+        '"terms_of_service":"Privacy Policy","and":"","privacy_policy":"Privacy Policy"',
+        0,
+        40,
+    ),
+    (
+        '"terms_of_service":"Privacy Policy","and":"","privacy_policy":""',
+        '"terms_of_service":"Privacy Policy","and":"","privacy_policy":"Privacy Policy"',
+        0,
+        40,
+    ),
+    ("Made with LearnHouse", "Pakish Institute", 0, 20),
+    ('src:"/lrn.svg"', 'src:"/pakish-logo.svg"', 0, 40),
+    ("src:'/lrn.svg'", "src:'/pakish-logo.svg'", 0, 20),
+    ('src:"/lrn-text.svg"', 'src:"/pakish-logo.svg"', 0, 20),
+    ('alt:"Learnhouse"', 'alt:"Pakish Institute"', 0, 20),
+    ('alt:"LearnHouse"', 'alt:"Pakish Institute"', 0, 20),
+]
+FORBIDDEN_COMPILED_PATTERNS = (
+    "learnhouse.io/terms",
+    "learnhouse.io/privacy",
+    "www.learnhouse.io",
+    "learnhouse.app",
+    'alt="LearnHouse"',
+    'alt="Learnhouse"',
+    'alt:"LearnHouse"',
+    'alt:"Learnhouse"',
+    "Privacy Policy and Privacy Policy",
+    "mailto:support@learnhouse.io",
+    "support@learnhouse.io",
+    "Made with LearnHouse",
+    "https://www.learnhouse.app",
+    "auth.and",
+    'src:"/lrn.svg"',
+)
+
+# Compiled AuthFooter still ships two Links joined by auth.and even after URL remaps.
+# Actual minified ending: children:t("auth.privacy_policy",{defaultValue:"Privacy Policy"})})
+# Remove ," ",auth.and," ",Link2 — keep Link1's closing paren intact.
+AUTH_FOOTER_DUAL_LINK_RE = re.compile(
+    r'," ",([a-zA-Z_$][\w$]*)\("auth\.and",\{defaultValue:"and"\}\)," ",'
+    r'\(0,([a-zA-Z_$][\w$]*)\.jsx\)\(([a-zA-Z_$][\w$]*)\.default,'
+    r'\{href:([a-zA-Z_$][\w$]*),target:"_blank",rel:"noopener noreferrer",'
+    r'className:"text-black/50 hover:text-black/70 transition-colors",'
+    r'children:\1\("auth\.privacy_policy",\{defaultValue:"Privacy Policy"\}\)\}\)'
+)
+AUTH_FOOTER_TERMS_KEY_RE = re.compile(
+    r'(["\'])auth\.terms_of_service\1'
+)
+# Compiled CopyrightFooter still ships two privacy Links (terms URL remapped to privacy).
+# Keep the first Link; drop the immediate duplicate sibling.
+COPYRIGHT_FOOTER_DUAL_PRIVACY_RE = re.compile(
+    r'(\(0,([a-zA-Z_$][\w$]*)\.jsx\)\(([a-zA-Z_$][\w$]*)\.default,'
+    r'\{href:[a-zA-Z_$][\w$]*,target:"_blank",rel:"noopener noreferrer",'
+    r'className:`\$\{[a-zA-Z_$][\w$]*\} transition-colors`,'
+    r'children:([a-zA-Z_$][\w$]*)\("auth\.privacy_policy",'
+    r'\{defaultValue:"Privacy Policy"\}\)\}\))'
+    r',\(0,\2\.jsx\)\(\3\.default,'
+    r'\{href:[a-zA-Z_$][\w$]*,target:"_blank",rel:"noopener noreferrer",'
+    r'className:`\$\{[a-zA-Z_$][\w$]*\} transition-colors`,'
+    r'children:\4\("auth\.privacy_policy",\{defaultValue:"Privacy Policy"\}\)\}\)'
+)
+# Decorative LearnHouse top-left glyph on the black auth panel.
+# Ends with: ...cn(...)"})})}),
+LOGIN_TOPBAR_RE = re.compile(
+    r'(?:"enterprise"!==[a-zA-Z_$][\w$]*|[a-zA-Z_$][\w$]*!=="enterprise")'
+    r'&&![a-zA-Z_$][\w$]*&&\(0,[a-zA-Z_$][\w$]*\.jsx\)\("div",'
+    r'\{className:"login-topbar",children:.*?\)\}\)\}\)\}\),'
+)
+LOGIN_TOPBAR_DISABLE_RE = re.compile(
+    r'(?:"enterprise"!==[a-zA-Z_$][\w$]*|[a-zA-Z_$][\w$]*!=="enterprise")'
+    r'&&![a-zA-Z_$][\w$]*&&(?=\(0,[a-zA-Z_$][\w$]*\.jsx\)\("div",'
+    r'\{className:"login-topbar")'
+)
+WATERMARK_TSX = """import React from 'react'
+
+// Pakish Institute overlay: public watermark removed (LearnHouse 1.3.6 compatibility).
+function Watermark() {
+  return null
+}
+
+export default Watermark
+"""
+LEGAL_FOOTERS_TSX = f"""'use client'
+// Pakish Institute auth/legal footer overlay (LearnHouse 1.3.6 compatibility).
+import React from 'react'
+import Link from 'next/link'
+import {{ useTranslation }} from 'react-i18next'
+
+const PRIVACY_URL = '{PRIVACY_URL}'
+
+export function AuthFooter({{ className = '' }}: {{ className?: string }}) {{
+  const {{ t }} = useTranslation()
+  return (
+    <div className={{`pb-8 pt-6 text-center px-6 ${{className}}`}}>
+      <p className="text-[13px] text-black/30 font-medium">
+        {{t('auth.terms_text', {{ defaultValue: "By continuing, you agree to Pakish Institute's" }})}}{{' '}}
+        <Link
+          href={{PRIVACY_URL}}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-black/50 hover:text-black/70 transition-colors"
+        >
+          {{t('auth.privacy_policy', {{ defaultValue: 'Privacy Policy' }})}}
+        </Link>
+        .
+      </p>
+    </div>
+  )
+}}
+
+export function CopyrightFooter({{
+  year,
+  className = '',
+  tone = 'light',
+}}: {{
+  year: number
+  className?: string
+  tone?: 'light' | 'dark'
+}}) {{
+  const {{ t }} = useTranslation()
+  const base = tone === 'dark' ? 'text-white/40' : 'text-black/35'
+  const link = tone === 'dark' ? 'text-white/60 hover:text-white/80' : 'text-black/55 hover:text-black/75'
+  return (
+    <footer className={{`w-full py-6 px-6 ${{className}}`}}>
+      <div className="flex flex-col sm:flex-row items-center justify-center gap-x-5 gap-y-2 text-[13px] font-medium">
+        <p className={{base}}>
+          {{t('common.copyright', {{ defaultValue: '© {{{{year}}}} Pakish Institute', year }})}}
+        </p>
+        <nav className="flex items-center gap-x-5">
+          <Link
+            href={{PRIVACY_URL}}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={{`${{link}} transition-colors`}}
+          >
+            {{t('auth.privacy_policy', {{ defaultValue: 'Privacy Policy' }})}}
+          </Link>
+        </nav>
+      </div>
+    </footer>
+  )
+}}
+"""
 
 
 def run(cmd: list[str], check: bool = True) -> subprocess.CompletedProcess:
@@ -48,74 +290,522 @@ def run(cmd: list[str], check: bool = True) -> subprocess.CompletedProcess:
 
 def docker_cp(local: Path, remote: str) -> None:
     run(["docker", "cp", str(local), f"{CONTAINER}:{remote}"])
+    if remote.startswith("/app/web/.next/static/"):
+        _PATCHED_STATIC_PATHS.add(remote)
 
 
-def docker_exec(cmd: list[str]) -> subprocess.CompletedProcess:
-    return run(["docker", "exec", CONTAINER, *cmd])
+def docker_exec(cmd: list[str], check: bool = True) -> subprocess.CompletedProcess:
+    return run(["docker", "exec", CONTAINER, *cmd], check=check)
 
 
-def patch_built_text_branding() -> None:
-    """Replace LearnHouse strings in pre-built Next.js output (no rebuild required)."""
-    replacements = [
-        ("https://www.learnhouse.io/terms", PRIVACY_URL),
-        ("https://www.learnhouse.io/privacy", PRIVACY_URL),
-        ("https://learnhouse.app/", "https://pakish.org/"),
-        ("https://learnhouse.app", "https://pakish.org"),
-        (
-            "By continuing, you agree to LearnHouse's",
-            "By continuing, you agree to Pakish Institute's",
-        ),
-        (
-            "By continuing, you agree to Pakish Institute's Terms of Service and Privacy Policy.",
-            "By continuing, you agree to Pakish Institute's Privacy Policy.",
-        ),
-        ("Terms of Service and Privacy Policy", "Privacy Policy"),
-        ("Terms of Service", "Privacy Policy"),
-        ("LearnHouse, Inc.", "Pakish Institute"),
-        ("Welcome back to LearnHouse.", "Welcome back to Pakish Institute."),
-        ('alt="LearnHouse"', 'alt="Pakish Institute"'),
-        ('alt="Learnhouse"', 'alt="Pakish Institute"'),
-        (
-            "Don't have an account? Sign up",
-            "Academy access is issued after admission and enrollment confirmation.",
-        ),
-        ("Don't have an account?", "Need Academy access?"),
-        ("Sign up", "Apply for admission"),
-        ("LearnHouse", "Pakish Institute"),
-    ]
+def verify_container_image() -> None:
+    proc = run(
+        ["docker", "inspect", CONTAINER, "--format", "{{.Config.Image}}"],
+        check=False,
+    )
+    image = proc.stdout.strip()
+    if image != EXPECTED_IMAGE:
+        raise RuntimeError(
+            f"Unexpected Academy image {image!r}; expected {EXPECTED_IMAGE!r}"
+        )
+    digest_proc = run(
+        ["docker", "image", "inspect", image, "--format", "{{index .RepoDigests 0}}"],
+        check=False,
+    )
+    digest_ref = digest_proc.stdout.strip()
+    if EXPECTED_IMAGE_DIGEST not in digest_ref:
+        raise RuntimeError(
+            f"Unexpected Academy image digest {digest_ref!r}; "
+            f"expected {EXPECTED_IMAGE_DIGEST!r}. "
+            "Revalidate overlay replacements before upgrading LearnHouse."
+        )
+    print(f"verified container image {image} ({EXPECTED_IMAGE_DIGEST})")
+
+
+def backup_database() -> Path:
+    from datetime import datetime, timezone
+
+    BACKUP_DIR.mkdir(parents=True, exist_ok=True)
+    # New branding backups are private by default (no broad chmod -R).
+    previous_umask = os.umask(0o077)
+    try:
+        stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+        out = BACKUP_DIR / f"learnhouse-db-prompt21-branding-{stamp}.dump"
+        run(
+            [
+                "docker",
+                "exec",
+                DB,
+                "pg_dump",
+                "-U",
+                "learnhouse",
+                "-d",
+                "learnhouse",
+                "-Fc",
+                "-f",
+                f"/tmp/{out.name}",
+            ]
+        )
+        run(["docker", "cp", f"{DB}:/tmp/{out.name}", str(out)])
+        run(["docker", "exec", DB, "rm", "-f", f"/tmp/{out.name}"], check=False)
+        os.chmod(out, 0o600)
+    finally:
+        os.umask(previous_umask)
+    mode = oct(out.stat().st_mode & 0o777)
+    print(f"database backup written to {out} mode={mode}")
+    return out
+
+
+def _list_compiled_bundle_files() -> list[str]:
+    roots = " ".join(COMPILED_SEARCH_ROOTS)
     proc = docker_exec(
         [
             "sh",
             "-c",
-            "find /app/web/.next -type f \\( -name '*.js' -o -name '*.html' -o -name '*.json' \\) 2>/dev/null",
-        ]
+            f"find {roots} -type f -name '*.js' 2>/dev/null",
+        ],
+        check=False,
     )
-    files = [line.strip() for line in proc.stdout.splitlines() if line.strip()]
-    patched = 0
-    for remote in files:
-        content = docker_exec(["cat", remote]).stdout
-        updated = content
-        for old, new in replacements:
-            updated = updated.replace(old, new)
-        if updated != content:
-            tmp = Path(f"/tmp/lh-brand-{patched}.bin")
-            tmp.write_bytes(updated.encode("utf-8"))
-            docker_cp(tmp, remote)
-            patched += 1
-    print(f"patched LearnHouse strings in {patched} built asset files")
+    return [line.strip() for line in proc.stdout.splitlines() if line.strip()]
+
+
+def patch_built_text_branding() -> None:
+    """Patch allowlisted public auth/legal strings in compiled auth bundles only.
+
+    Runs entirely inside the container — host-side per-file docker cp loops are
+    too slow against thousands of Turbopack chunks and previously hung applies.
+    """
+    payload = {
+        "roots": list(COMPILED_SEARCH_ROOTS),
+        "replacements": [
+            [old, new, min_b, max_b]
+            for old, new, min_b, max_b in COMPILED_REPLACEMENTS
+        ],
+        "auth_footer_dual": AUTH_FOOTER_DUAL_LINK_RE.pattern,
+        "auth_footer_terms": AUTH_FOOTER_TERMS_KEY_RE.pattern,
+        "copyright_dual": COPYRIGHT_FOOTER_DUAL_PRIVACY_RE.pattern,
+        "login_topbar": LOGIN_TOPBAR_RE.pattern,
+        "login_topbar_disable": LOGIN_TOPBAR_DISABLE_RE.pattern,
+    }
+    helper = Path("/tmp/lh_patch_compiled_incontainer.py")
+    helper.write_text(_INCONTAINER_PATCH_PY, encoding="utf-8")
+    docker_cp(helper, "/tmp/lh_patch_compiled_incontainer.py")
+    proc = subprocess.run(
+        [
+            "docker",
+            "exec",
+            "-i",
+            CONTAINER,
+            "python3",
+            "/tmp/lh_patch_compiled_incontainer.py",
+        ],
+        input=json.dumps(payload),
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if proc.returncode != 0:
+        raise RuntimeError(
+            f"in-container compiled patch failed: {proc.stderr or proc.stdout}"
+        )
+    result = json.loads(proc.stdout)
+    for remote in result.get("patched_static_paths") or []:
+        _PATCHED_STATIC_PATHS.add(remote)
+    print(
+        "patched compiled bundles in-container: "
+        f"text_files={result.get('text_patched_files')}, "
+        f"struct_files={result.get('struct_patched_files')}, "
+        f"dual_link_removed={result.get('dual_link_removed')}, "
+        f"copyright_dual_removed={result.get('copyright_dual_removed')}, "
+        f"login_topbar_removed_or_disabled={result.get('login_topbar_hits')}"
+    )
+    if result.get("remaining_auth_and"):
+        raise RuntimeError(
+            f"auth.and still present in {result['remaining_auth_and']} compiled hit(s)"
+        )
+    if result.get("remaining_enabled_topbars"):
+        raise RuntimeError(
+            f"enabled login-topbar still present in {result['remaining_enabled_topbars']} hit(s)"
+        )
+    if result.get("remaining_copyright_dual"):
+        raise RuntimeError(
+            f"CopyrightFooter dual privacy still present in {result['remaining_copyright_dual']} hit(s)"
+        )
+
+
+_INCONTAINER_PATCH_PY = r'''
+import json, re, sys
+from pathlib import Path
+
+payload = json.loads(sys.stdin.read())
+roots = [Path(p) for p in payload["roots"]]
+replacements = payload["replacements"]
+auth_dual = re.compile(payload["auth_footer_dual"])
+auth_terms = re.compile(payload["auth_footer_terms"])
+copy_dual = re.compile(payload["copyright_dual"])
+topbar = re.compile(payload["login_topbar"])
+topbar_dis = re.compile(payload["login_topbar_disable"])
+
+files = []
+for root in roots:
+    if root.exists():
+        files.extend(sorted(root.rglob("*.js")))
+
+def count_pattern(pat: str) -> int:
+    total = 0
+    for path in files:
+        try:
+            total += path.read_text(encoding="utf-8", errors="ignore").count(pat)
+        except OSError:
+            pass
+    return total
+
+totals = {}
+for old, new, min_b, max_b in replacements:
+    c = count_pattern(old)
+    totals[old] = c
+    if c < min_b or c > max_b:
+        raise SystemExit(f"replacement source {old!r} hit count {c} outside [{min_b}, {max_b}]")
+
+text_patched = 0
+struct_patched = 0
+dual_hits = 0
+copy_hits = 0
+terms_hits = 0
+top_hits = 0
+patched_static = []
+
+for path in files:
+    try:
+        content = path.read_text(encoding="utf-8")
+    except OSError:
+        continue
+    updated = content
+    for old, new, *_ in replacements:
+        updated = updated.replace(old, new)
+    text_changed = updated != content
+    if text_changed:
+        text_patched += 1
+    updated2, n_dual = auth_dual.subn("", updated)
+    dual_hits += n_dual
+    if n_dual:
+        updated2, n_terms = auth_terms.subn(r"\1auth.privacy_policy\1", updated2)
+        terms_hits += n_terms
+    updated2, n_copy = copy_dual.subn(r"\1", updated2)
+    copy_hits += n_copy
+    updated2, n_top = topbar.subn("", updated2)
+    top_hits += n_top
+    updated2, n_dis = topbar_dis.subn("false&&", updated2)
+    top_hits += n_dis
+    if updated2 != content:
+        path.write_text(updated2, encoding="utf-8")
+        if str(path).startswith("/app/web/.next/static/"):
+            patched_static.append(str(path))
+        if updated2 != updated or n_dual or n_copy or n_top or n_dis:
+            struct_patched += 1
+
+def enabled_topbars() -> int:
+    enabled = 0
+    for path in files:
+        try:
+            content = path.read_text(encoding="utf-8", errors="ignore")
+        except OSError:
+            continue
+        if "login-topbar" not in content:
+            continue
+        for match in re.finditer(r"login-topbar", content):
+            window = content[max(0, match.start() - 80): match.start()]
+            if "false&&" not in window:
+                enabled += 1
+    return enabled
+
+def copyright_dual_remaining() -> int:
+    hits = 0
+    for path in files:
+        try:
+            content = path.read_text(encoding="utf-8", errors="ignore")
+        except OSError:
+            continue
+        if "common.copyright" not in content:
+            continue
+        hits += len(copy_dual.findall(content))
+    return hits
+
+print(json.dumps({
+    "text_patched_files": text_patched,
+    "struct_patched_files": struct_patched,
+    "dual_link_removed": dual_hits,
+    "copyright_dual_removed": copy_hits,
+    "terms_key_rewrites": terms_hits,
+    "login_topbar_hits": top_hits,
+    "remaining_auth_and": count_pattern("auth.and"),
+    "remaining_enabled_topbars": enabled_topbars(),
+    "remaining_copyright_dual": copyright_dual_remaining(),
+    "patched_static_paths": patched_static,
+}))
+'''
+
+
+def _count_in_bundles(pattern: str) -> int:
+    roots = " ".join(COMPILED_SEARCH_ROOTS)
+    proc = docker_exec(
+        [
+            "python3",
+            "-c",
+            (
+                "from pathlib import Path\n"
+                f"roots={list(COMPILED_SEARCH_ROOTS)!r}\n"
+                f"pat={pattern!r}\n"
+                "n=0\n"
+                "for root in roots:\n"
+                " p=Path(root)\n"
+                " if not p.exists():\n"
+                "  continue\n"
+                " for f in p.rglob('*.js'):\n"
+                "  try:\n"
+                "   n+=f.read_text(encoding='utf-8',errors='ignore').count(pat)\n"
+                "  except OSError:\n"
+                "   pass\n"
+                "print(n)\n"
+            ),
+        ],
+        check=False,
+    )
+    if proc.returncode != 0 and not proc.stdout.strip():
+        return 0
+    try:
+        return int(proc.stdout.strip() or "0")
+    except ValueError:
+        return 0
+
+
+def _count_enabled_login_topbars() -> int:
+    proc = docker_exec(
+        [
+            "python3",
+            "-c",
+            (
+                "import re\nfrom pathlib import Path\n"
+                f"roots={list(COMPILED_SEARCH_ROOTS)!r}\n"
+                "enabled=0\n"
+                "for root in roots:\n"
+                " p=Path(root)\n"
+                " if not p.exists():\n"
+                "  continue\n"
+                " for f in p.rglob('*.js'):\n"
+                "  try:\n"
+                "   content=f.read_text(encoding='utf-8',errors='ignore')\n"
+                "  except OSError:\n"
+                "   continue\n"
+                "  if 'login-topbar' not in content:\n"
+                "   continue\n"
+                "  for m in re.finditer('login-topbar', content):\n"
+                "   window=content[max(0,m.start()-80):m.start()]\n"
+                "   if 'false&&' not in window:\n"
+                "    enabled+=1\n"
+                "print(enabled)\n"
+            ),
+        ],
+        check=False,
+    )
+    try:
+        return int(proc.stdout.strip() or "0")
+    except ValueError:
+        return 0
+
+
+def _count_copyright_dual_privacy() -> int:
+    proc = docker_exec(
+        [
+            "python3",
+            "-c",
+            (
+                "import re\nfrom pathlib import Path\n"
+                f"roots={list(COMPILED_SEARCH_ROOTS)!r}\n"
+                f"rx=re.compile({COPYRIGHT_FOOTER_DUAL_PRIVACY_RE.pattern!r})\n"
+                "hits=0\n"
+                "for root in roots:\n"
+                " p=Path(root)\n"
+                " if not p.exists():\n"
+                "  continue\n"
+                " for f in p.rglob('*.js'):\n"
+                "  try:\n"
+                "   content=f.read_text(encoding='utf-8',errors='ignore')\n"
+                "  except OSError:\n"
+                "   continue\n"
+                "  if 'common.copyright' not in content:\n"
+                "   continue\n"
+                "  hits+=len(rx.findall(content))\n"
+                "print(hits)\n"
+            ),
+        ],
+        check=False,
+    )
+    try:
+        return int(proc.stdout.strip() or "0")
+    except ValueError:
+        return 0
+
+
+def patch_compiled_auth_structures() -> None:
+    """Structural auth rewrites now run inside patch_built_text_branding()."""
+    return
+
+
+def fingerprint_static_assets() -> dict:
+    """Rename patched immutable static assets so returning browsers fetch new URLs."""
+    if not FINGERPRINT_HELPER.exists():
+        raise FileNotFoundError(f"Missing fingerprint helper {FINGERPRINT_HELPER}")
+    from datetime import datetime, timezone
+
+    stamp = datetime.now(timezone.utc).strftime("%Y%m%d%H%M%S")
+    paths = sorted(_PATCHED_STATIC_PATHS)
+    if not paths:
+        print("no patched static paths tracked; bumping BUILD_ID only")
+    payload = json.dumps({"paths": paths, "stamp": stamp})
+    docker_cp(FINGERPRINT_HELPER, "/tmp/academy_asset_fingerprint.py")
+    proc = subprocess.run(
+        [
+            "docker",
+            "exec",
+            "-i",
+            CONTAINER,
+            "python3",
+            "/tmp/academy_asset_fingerprint.py",
+        ],
+        input=payload,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if proc.returncode != 0:
+        raise RuntimeError(
+            f"asset fingerprint failed: {proc.stderr or proc.stdout}"
+        )
+    result = json.loads(proc.stdout)
+    print(
+        "fingerprinted static assets: "
+        f"renamed={result.get('renamed')}, "
+        f"rewritten_files={result.get('rewritten_files')}, "
+        f"build_id={result.get('build_id')}"
+    )
+    sample = list((result.get("renames") or {}).items())[:5]
+    for old, new in sample:
+        print(f"  asset URL {old} -> {new}")
+    if paths and not result.get("renames"):
+        raise RuntimeError(
+            "patched static paths were tracked but no asset URLs were renamed — "
+            "refusing to leave immutable URLs mutated in place"
+        )
+    return result
+
+
+def verify_asset_fingerprint(result: dict) -> None:
+    """Fail closed if login HTML still points at pre-fingerprint chunk basenames."""
+    renames = result.get("renames") or {}
+    build_id = result.get("build_id") or ""
+    if not build_id.startswith("learnhouse-production-pk"):
+        raise SystemExit(f"BUILD_ID was not versioned: {build_id!r}")
+    proc = docker_exec(
+        ["wget", "-qO-", "http://127.0.0.1:8000/login"],
+        check=False,
+    )
+    if proc.returncode != 0:
+        raise SystemExit("origin /login fetch failed during fingerprint verification")
+    html = proc.stdout
+    for old, new in renames.items():
+        if not old.endswith(".js"):
+            continue
+        if old in html and new not in html:
+            raise SystemExit(
+                f"origin /login still references stale chunk {old} without {new}"
+            )
+    if "https://pakish.org/privacy" not in html:
+        raise SystemExit("origin /login missing https://pakish.org/privacy")
+    print("asset fingerprint verification passed")
 
 
 def replace_bundled_logos() -> None:
     """Overwrite hashed Next.js media assets that still reference LearnHouse."""
     proc = docker_exec(
-        ["sh", "-c", "find /app/web/.next/static/media -name 'black_logo*.png' 2>/dev/null || true"]
+        [
+            "sh",
+            "-c",
+            "find /app/web/.next/static/media "
+            "-name 'black_logo*.png' -o -name 'lrn-text*.svg' 2>/dev/null || true",
+        ]
     )
     targets = [line.strip() for line in proc.stdout.splitlines() if line.strip()]
     if not targets:
-        print("no bundled black_logo assets found (may be ok after rebuild)")
+        print("no bundled brand media assets found (may be ok after rebuild)")
     for remote in targets:
-        docker_cp(PAKISH_LOGO_PNG, remote)
+        local = PAKISH_LOGO_SVG if remote.endswith(".svg") else PAKISH_LOGO_PNG
+        docker_cp(local, remote)
         print(f"replaced bundled asset {remote}")
+
+
+def replace_public_brand_assets() -> None:
+    """Overwrite LearnHouse public logo/wordmark files with Pakish artwork."""
+    for remote in PUBLIC_BRAND_ASSETS:
+        docker_cp(PAKISH_LOGO_SVG, remote)
+        print(f"replaced public brand asset {remote}")
+
+
+def _patch_file_replacements(path: str, replacements: list[tuple[str, str]], label: str) -> None:
+    content = docker_exec(["cat", path]).stdout
+    updated = content
+    for old, new in replacements:
+        updated = updated.replace(old, new)
+    if updated == content:
+        print(f"{label} already patched")
+        return
+    tmp = Path(f"/tmp/{label.replace('/', '_')}")
+    tmp.write_text(updated, encoding="utf-8")
+    docker_cp(tmp, path)
+    print(f"patched {label}")
+
+
+def patch_lrn_references() -> None:
+    """Point allowlisted UI surfaces at Pakish logo assets instead of LearnHouse marks."""
+    replacements = [
+        ('src="/lrn.svg"', 'src="/pakish-logo.svg"'),
+        ("src='/lrn.svg'", "src='/pakish-logo.svg'"),
+        ('src="/lrn-text.svg"', 'src="/pakish-logo.svg"'),
+        ("src='/lrn-text.svg'", "src='/pakish-logo.svg'"),
+        ('url(/lrn.svg)', 'url(/pakish-logo.svg)'),
+        ('alt="LearnHouse"', 'alt="Pakish Institute"'),
+        ('alt="Learnhouse"', 'alt="Pakish Institute"'),
+        (">LearnHouse<", ">Pakish Institute<"),
+    ]
+    for path in LRN_REFERENCE_FILES:
+        proc = docker_exec(["test", "-f", path], check=False)
+        if proc.returncode != 0:
+            continue
+        _patch_file_replacements(path, replacements, path)
+
+
+def patch_watermark_component() -> None:
+    path = "/app/web/components/Objects/Watermark.tsx"
+    content = docker_exec(["cat", path]).stdout
+    if content == WATERMARK_TSX:
+        print("Watermark.tsx already patched")
+        return
+    tmp = Path("/tmp/Watermark.tsx")
+    tmp.write_text(WATERMARK_TSX, encoding="utf-8")
+    docker_cp(tmp, path)
+    print("patched Watermark.tsx (public watermark removed)")
+
+
+def patch_error_actions() -> None:
+    path = "/app/web/components/Objects/StyledElements/Error/ErrorActions.tsx"
+    replacements = [
+        (
+            "const supportHref = getPlatformUrl('/contact') || 'mailto:support@learnhouse.io'",
+            f"const supportHref = '{CONTACT_URL}'",
+        ),
+        ("mailto:support@learnhouse.io", CONTACT_URL),
+    ]
+    _patch_file_replacements(path, replacements, "ErrorActions.tsx")
 
 
 def copy_logos() -> None:
@@ -130,6 +820,7 @@ def copy_logos() -> None:
     docker_cp(PAKISH_LOGO_PNG, "/app/web/public/black_logo.png")
     docker_cp(PAKISH_LOGO_PNG, "/app/web/public/lrn.png")
     docker_cp(PAKISH_LOGO_PNG, "/app/web/public/learnhouse_bigicon_1.png")
+    replace_public_brand_assets()
 
     if PAKISH_FAVICON.exists():
         docker_cp(PAKISH_FAVICON, "/app/web/public/favicon.ico")
@@ -140,7 +831,6 @@ def copy_logos() -> None:
     docker_cp(PAKISH_LOGO_SVG, f"{org_logo_dir}/logo.svg")
 
     replace_bundled_logos()
-    patch_built_text_branding()
     print("copied Pakish logos into container")
 
 
@@ -163,65 +853,270 @@ def patch_not_found() -> None:
 
 
 def patch_legal_footers() -> None:
+    """Replace auth/legal footer with a single approved Pakish privacy link."""
     path = "/app/web/components/Footers/LegalFooters.tsx"
     content = docker_exec(["cat", path]).stdout
-    updated = content
-    updated = updated.replace(
-        "const TERMS_URL = getPlatformUrl('/terms') || 'https://www.learnhouse.io/terms'",
-        f"const TERMS_URL = '{PRIVACY_URL}'",
-    )
-    updated = updated.replace(
-        "const PRIVACY_URL = getPlatformUrl('/privacy') || 'https://www.learnhouse.io/privacy'",
-        f"const PRIVACY_URL = '{PRIVACY_URL}'",
-    )
-    updated = updated.replace(
-        "{t('auth.terms_text', { defaultValue: \"By continuing, you agree to LearnHouse's\" })}{' '}",
-        "{t('auth.terms_text', { defaultValue: \"By continuing, you agree to Pakish Institute's\" })}{' '}",
-    )
-    updated = updated.replace(
-        "{t('auth.terms_of_service', { defaultValue: 'Terms of Service' })}",
-        "{t('auth.privacy_policy', { defaultValue: 'Privacy Policy' })}",
-    )
-    updated = updated.replace(
-        " {' '}\n        {t('auth.and', { defaultValue: 'and' })}{' '}\n        <Link href={PRIVACY_URL}",
-        " <Link href={PRIVACY_URL}",
-    )
-    updated = updated.replace(
-        "{t('common.copyright', { defaultValue: '© {{year}} LearnHouse, Inc.', year })}",
-        "{t('common.copyright', { defaultValue: '© {{year}} Pakish Institute', year })}",
-    )
-    if updated == content:
+    if content == LEGAL_FOOTERS_TSX:
         print("LegalFooters.tsx already patched")
         return
     tmp = Path("/tmp/LegalFooters.tsx")
-    tmp.write_text(updated, encoding="utf-8")
+    tmp.write_text(LEGAL_FOOTERS_TSX, encoding="utf-8")
     docker_cp(tmp, path)
-    print("patched LegalFooters.tsx")
+    print("patched LegalFooters.tsx (single privacy link)")
+
+
+def verify_legal_copy() -> None:
+    """Fail closed if auth legal copy still duplicates the privacy link."""
+    path = "/app/web/components/Footers/LegalFooters.tsx"
+    content = docker_exec(["cat", path]).stdout
+    auth_section = content.split("export function CopyrightFooter", 1)[0]
+
+    if "Privacy Policy and Privacy Policy" in content:
+        raise SystemExit("LegalFooters.tsx still contains duplicated privacy copy")
+    if "auth.and" in auth_section:
+        raise SystemExit("AuthFooter still contains auth.and conjunction")
+    if "TERMS_URL" in content:
+        raise SystemExit("LegalFooters.tsx still references TERMS_URL")
+    if auth_section.count("<Link") != 1:
+        raise SystemExit(
+            f"AuthFooter must contain exactly one privacy link (found {auth_section.count('<Link')})"
+        )
+    if _count_in_bundles("Privacy Policy and Privacy Policy") > 0:
+        raise SystemExit(
+            "compiled auth bundles still contain duplicated privacy copy"
+        )
+    if _count_in_bundles("auth.and") > 0:
+        raise SystemExit("compiled bundles still contain auth.and dual-link AuthFooter")
+    if _count_copyright_dual_privacy() > 0:
+        raise SystemExit("compiled bundles still contain dual CopyrightFooter privacy links")
+
+    locale = json.loads(docker_exec(["cat", "/app/web/locales/en.json"]).stdout)
+    auth_locale = locale.get("auth", {})
+    if auth_locale.get("and"):
+        raise SystemExit("en.json auth.and must be empty for single-link legal copy")
+    if auth_locale.get("privacy_policy") != "Privacy Policy":
+        raise SystemExit("en.json auth.privacy_policy must be 'Privacy Policy'")
+    if auth_locale.get("terms_text") != "By continuing, you agree to Pakish Institute's":
+        raise SystemExit("en.json auth.terms_text must use Pakish Institute wording")
+
+    for login_path in (
+        "/app/web/.next/server/app/auth/login.html",
+        "/app/web/.next/server/app/auth/signup.html",
+    ):
+        proc = docker_exec(["cat", login_path], check=False)
+        if proc.returncode != 0:
+            continue
+        html = proc.stdout
+        if "Privacy Policy and Privacy Policy" in html:
+            raise SystemExit(f"{login_path} still contains duplicated privacy copy")
+
+    print("legal copy verification passed (single privacy link)")
+
+
+def verify_public_brand_assets() -> None:
+    """Fail closed if public LearnHouse artwork remains or Pakish assets are broken."""
+    for remote in PUBLIC_BRAND_ASSETS:
+        proc = docker_exec(["wc", "-c", remote], check=False)
+        if proc.returncode != 0:
+            raise SystemExit(f"missing public brand asset {remote}")
+        try:
+            size = int(proc.stdout.strip().split()[0])
+        except (IndexError, ValueError):
+            raise SystemExit(f"unable to read size for {remote}")
+        if size < MIN_PAKISH_LOGO_BYTES:
+            raise SystemExit(
+                f"{remote} is too small ({size} bytes) — expected Pakish artwork overlay"
+            )
+
+    proc = docker_exec(
+        [
+            "sh",
+            "-c",
+            "find /app/web/.next/static/media -name 'lrn-text*.svg' -size -5k 2>/dev/null",
+        ],
+        check=False,
+    )
+    broken = [line.strip() for line in proc.stdout.splitlines() if line.strip()]
+    if broken:
+        raise SystemExit(f"broken bundled lrn-text assets remain: {broken[:3]}")
+
+    watermark = docker_exec(["cat", "/app/web/components/Objects/Watermark.tsx"]).stdout
+    if "learnhouse.app" in watermark or "lrnTextLogo" in watermark:
+        raise SystemExit("Watermark.tsx still references LearnHouse branding")
+
+    print("public brand asset verification passed")
+
+
+def verify_client_artifacts() -> None:
+    """Fail closed on hydrated/client-visible branding artifacts beyond SSR source."""
+    failures: list[str] = []
+    for pattern in (
+        '"and":"and","privacy_policy":"Privacy Policy"',
+        "mailto:support@learnhouse.io",
+        "auth.and",
+        'src:"/lrn.svg"',
+        'alt:"Learnhouse"',
+        'alt:"LearnHouse"',
+        'alt="Learnhouse"',
+        'alt="LearnHouse"',
+    ):
+        if _count_in_bundles(pattern) > 0:
+            failures.append(pattern)
+    if failures:
+        raise SystemExit(
+            "client/SSR bundles still expose forbidden branding tokens: "
+            + ", ".join(failures)
+        )
+    enabled_topbars = _count_enabled_login_topbars()
+    if enabled_topbars:
+        raise SystemExit(
+            f"client/SSR bundles still enable login-topbar glyph ({enabled_topbars} hit(s))"
+        )
+    print("client artifact verification passed")
+
+
+def verify_origin_http_surfaces() -> None:
+    """Fail closed on origin-served auth HTML/RSC payloads (not only source files)."""
+    for path in ("/login", "/signup", "/forgot"):
+        proc = docker_exec(
+            ["wget", "-qO-", f"http://127.0.0.1:8000{path}"],
+            check=False,
+        )
+        if proc.returncode != 0:
+            raise SystemExit(f"origin fetch failed for {path}")
+        body = proc.stdout
+        if "auth.and" in body:
+            raise SystemExit(f"origin {path} payload still references auth.and")
+        if "login-topbar" in body and "false&&" not in body:
+            raise SystemExit(f"origin {path} payload still enables login-topbar")
+        if 'src:"/lrn.svg"' in body or 'src="/lrn.svg"' in body:
+            # Public /lrn.svg asset may still be referenced by unrelated pages;
+            # auth surfaces must not.
+            if path in ("/login", "/signup", "/forgot"):
+                raise SystemExit(f"origin {path} still references /lrn.svg")
+        if "learnhouse.io/terms" in body or "learnhouse.io/privacy" in body:
+            raise SystemExit(f"origin {path} still references LearnHouse legal URLs")
+        if "Privacy Policy and Privacy Policy" in body:
+            raise SystemExit(f"origin {path} still has duplicated privacy copy")
+    print("origin HTTP auth surface verification passed")
 
 
 def patch_auth_branding_panel() -> None:
     path = "/app/web/components/Auth/AuthBrandingPanel.tsx"
     content = docker_exec(["cat", path]).stdout
-    updated = content.replace(
-        "href=\"https://learnhouse.app\"",
-        "href=\"https://pakish.org\"",
-    ).replace(
-        "import learnhouseIcon from 'public/learnhouse_bigicon_1.png'",
-        "import pakishIcon from 'public/learnhouse_bigicon_1.png'",
-    ).replace(
-        "src={learnhouseIcon}\n                          alt=\"LearnHouse\"",
-        "src={org?.logo_image ? getOrgLogoMediaDirectory(org.org_uuid, org.logo_image) : '/black_logo.png'}\n                          alt={org?.name || 'Pakish Institute'}",
-    ).replace(
-        "<h1 className=\"font-black text-3xl tracking-tight\">{org?.name || 'LearnHouse'}</h1>",
-        "<h1 className=\"font-black text-3xl tracking-tight\">{org?.name || 'Pakish Institute'}</h1>",
+    updated = content
+    replacements = [
+        ('href="https://learnhouse.app"', 'href="https://pakish.org"'),
+        (
+            "import learnhouseIcon from 'public/learnhouse_bigicon_1.png'",
+            "import pakishIcon from 'public/learnhouse_bigicon_1.png'",
+        ),
+        (
+            "?utm_source=LearnHouse&utm_medium=referral",
+            "?utm_source=PakishInstitute&utm_medium=referral",
+        ),
+        (
+            "const noOrgTitle = title || 'Welcome back to LearnHouse.'",
+            "const noOrgTitle = title || 'Welcome back to Pakish Institute.'",
+        ),
+        ('alt="LearnHouse"', 'alt="Pakish Institute"'),
+        (
+            "<h1 className=\"font-black text-3xl tracking-tight\">{org?.name || 'LearnHouse'}</h1>",
+            "<h1 className=\"font-black text-3xl tracking-tight\">{org?.name || 'Pakish Institute'}</h1>",
+        ),
+        (
+            "src={learnhouseIcon}\n                          alt=\"LearnHouse\"",
+            "src={org?.logo_image ? getOrgLogoMediaDirectory(org.org_uuid, org.logo_image) : '/black_logo.png'}\n                          alt={org?.name || 'Pakish Institute'}",
+        ),
+        (
+            "src={pakishIcon}\n                          alt=\"LearnHouse\"",
+            "src={org?.logo_image ? getOrgLogoMediaDirectory(org.org_uuid, org.logo_image) : '/black_logo.png'}\n                          alt={org?.name || 'Pakish Institute'}",
+        ),
+        ('src="/lrn.svg"', 'src="/pakish-logo.svg"'),
+    ]
+    for old, new in replacements:
+        updated = updated.replace(old, new)
+    # Remove decorative top-left glyph; central org logo remains.
+    updated = re.sub(
+        r"\s*\{/\* Top bar with LearnHouse lrn\.svg logo[\s\S]*?\{!isEnterprise && !noOrg && \(\s*"
+        r"<div className=\"login-topbar\">[\s\S]*?</div>\s*\)\}\s*",
+        "\n",
+        updated,
+        count=1,
     )
+    if "login-topbar" in updated:
+        # Fallback if comment/format drifted: blank the topbar block by condition.
+        updated = updated.replace(
+            "{!isEnterprise && !noOrg && (",
+            "{false && !isEnterprise && !noOrg && (",
+        )
     if updated == content:
         print("AuthBrandingPanel.tsx already patched")
         return
     tmp = Path("/tmp/AuthBrandingPanel.tsx")
     tmp.write_text(updated, encoding="utf-8")
     docker_cp(tmp, path)
-    print("patched AuthBrandingPanel.tsx")
+    print("patched AuthBrandingPanel.tsx (topbar glyph removed)")
+
+
+def patch_auth_mobile_header() -> None:
+    path = "/app/web/components/Auth/AuthMobileHeader.tsx"
+    content = docker_exec(["cat", path]).stdout
+    updated = content
+    replacements = [
+        (
+            "import learnhouseIcon from 'public/learnhouse_bigicon_1.png'",
+            "import pakishIcon from 'public/learnhouse_bigicon_1.png'",
+        ),
+        ("src={learnhouseIcon}", "src={pakishIcon}"),
+        ('alt="LearnHouse"', 'alt="Pakish Institute"'),
+        ("{org?.name || 'LearnHouse'}", "{org?.name || 'Pakish Institute'}"),
+        (
+            "?utm_source=LearnHouse&utm_medium=referral",
+            "?utm_source=PakishInstitute&utm_medium=referral",
+        ),
+    ]
+    for old, new in replacements:
+        updated = updated.replace(old, new)
+    if updated == content:
+        print("AuthMobileHeader.tsx already patched")
+        return
+    tmp = Path("/tmp/AuthMobileHeader.tsx")
+    tmp.write_text(updated, encoding="utf-8")
+    docker_cp(tmp, path)
+    print("patched AuthMobileHeader.tsx")
+
+
+def patch_dash_left_menu() -> None:
+    path = "/app/web/components/Dashboard/Menus/DashLeftMenu.tsx"
+    content = docker_exec(["cat", path]).stdout
+    updated = content.replace('alt="LearnHouse"', 'alt="Pakish Institute"').replace(
+        'alt="Learnhouse"', 'alt="Pakish Institute"'
+    )
+    if updated == content:
+        print("DashLeftMenu.tsx already patched")
+        return
+    tmp = Path("/tmp/DashLeftMenu.tsx")
+    tmp.write_text(updated, encoding="utf-8")
+    docker_cp(tmp, path)
+    print("patched DashLeftMenu.tsx")
+
+
+def verify_branding() -> None:
+    """Fail if allowlisted auth bundles still expose public LearnHouse branding."""
+    hits: list[str] = []
+    for pattern in FORBIDDEN_COMPILED_PATTERNS:
+        if _count_in_bundles(pattern) > 0:
+            hits.append(pattern)
+    if hits:
+        print(
+            "branding verification found forbidden public LearnHouse tokens:",
+            file=sys.stderr,
+        )
+        for pattern in hits:
+            print(f"  - {pattern}", file=sys.stderr)
+        raise SystemExit(1)
+    print("branding verification passed (allowlisted auth bundle surfaces)")
 
 
 def patch_login_invite_only() -> None:
@@ -254,13 +1149,42 @@ def patch_login_invite_only() -> None:
     print("patched login.tsx invite-only UX")
 
 
+def _replace_visible_strings(value: object, mapping: dict[str, str]) -> tuple[object, bool]:
+    changed = False
+    if isinstance(value, dict):
+        updated: dict[str, object] = {}
+        for key, item in value.items():
+            new_item, item_changed = _replace_visible_strings(item, mapping)
+            updated[key] = new_item
+            changed = changed or item_changed
+        return updated, changed
+    if isinstance(value, list):
+        updated_list: list[object] = []
+        for item in value:
+            new_item, item_changed = _replace_visible_strings(item, mapping)
+            updated_list.append(new_item)
+            changed = changed or item_changed
+        return updated_list, changed
+    if isinstance(value, str):
+        updated = value
+        for old, new in mapping.items():
+            if old in updated:
+                updated = updated.replace(old, new)
+        return updated, updated != value
+    return value, False
+
+
 def patch_en_locale() -> None:
     path = "/app/web/locales/en.json"
     raw = docker_exec(["cat", path]).stdout
     locale = json.loads(raw)
     replacements = {
         ("common", "copyright"): "© {{year}} Pakish Institute",
+        ("common", "made_with"): "",
         ("auth", "terms_text"): "By continuing, you agree to Pakish Institute's",
+        ("auth", "terms_of_service"): "Privacy Policy",
+        ("auth", "and"): "",
+        ("auth", "privacy_policy"): "Privacy Policy",
         ("auth", "image_title_login"): "Welcome back to Pakish Institute.",
         ("auth", "image_title_signup"): "Start learning with Pakish Institute.",
         ("footer", "powered_by"): "Powered by Pakish Institute",
@@ -270,13 +1194,24 @@ def patch_en_locale() -> None:
         if locale.get(section, {}).get(key) != value:
             locale.setdefault(section, {})[key] = value
             changed = True
+    visible_mapping = {
+        "LearnHouse": "Pakish Institute",
+        "Learnhouse": "Pakish Institute",
+        "learnhouse.io": ACADEMY_DOMAIN_LABEL,
+        "learnhouse.app": ACADEMY_DOMAIN_LABEL,
+        "Made with LearnHouse": "Pakish Institute",
+        "Powered by LearnHouse": "Powered by Pakish Institute",
+        "support@learnhouse.io": "billing@pakish.org",
+    }
+    locale, mapping_changed = _replace_visible_strings(locale, visible_mapping)
+    changed = changed or mapping_changed
     if not changed:
         print("en.json locale already patched")
         return
     tmp = Path("/tmp/en.json")
     tmp.write_text(json.dumps(locale, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     docker_cp(tmp, path)
-    print("patched en.json auth/footer locale strings")
+    print("patched en.json public branding locale strings")
 
 
 def patch_org_menu() -> None:
@@ -330,7 +1265,7 @@ def patch_org_footer() -> None:
     ).replace(
         "href=\"https://learnhouse.app\"",
         "href=\"https://pakish.org\"",
-    ).replace("LearnHouse", "Pakish Institute")
+    )
     if updated == content:
         print("org footer already patched")
         return
@@ -386,19 +1321,55 @@ def update_org_config() -> None:
     print("updated organization config (watermark off, logo.png references)")
 
 
+def _post_restart_repatches() -> None:
+    global _PATCHED_STATIC_PATHS
+    _PATCHED_STATIC_PATHS = set()
+    replace_public_brand_assets()
+    replace_bundled_logos()
+    patch_legal_footers()
+    patch_watermark_component()
+    patch_lrn_references()
+    patch_auth_branding_panel()
+    patch_en_locale()
+    patch_built_text_branding()
+
+
 def main() -> int:
+    global _PATCHED_STATIC_PATHS
+    _PATCHED_STATIC_PATHS = set()
+    verify_container_image()
+    backup_database()
     copy_logos()
     patch_not_found()
     patch_legal_footers()
     patch_en_locale()
+    patch_watermark_component()
+    patch_error_actions()
+    patch_lrn_references()
     patch_auth_branding_panel()
+    patch_auth_mobile_header()
     patch_login_invite_only()
     patch_org_menu()
+    patch_dash_left_menu()
     patch_dash_mobile_menu()
     patch_org_footer()
     update_org_config()
+    patch_built_text_branding()
+    verify_branding()
+    verify_legal_copy()
+    verify_public_brand_assets()
+    verify_client_artifacts()
     run(["docker", "restart", CONTAINER], check=False)
-    print("branding applied — container restarted")
+    print("container restarted — re-patching compiled assets after boot")
+    _post_restart_repatches()
+    fingerprint_result = fingerprint_static_assets()
+    verify_branding()
+    verify_legal_copy()
+    verify_public_brand_assets()
+    verify_client_artifacts()
+    verify_origin_http_surfaces()
+    verify_asset_fingerprint(fingerprint_result)
+    print("branding applied — container restarted, assets fingerprinted, surfaces verified")
     return 0
 
 

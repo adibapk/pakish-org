@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "test": "tsx --test lib/admission/**/*.test.ts lib/academy/**/*.test.ts lib/navigation/**/*.test.ts lib/curriculum-ticker.test.ts lib/courses/business-english.test.ts",
+    "test": "tsx --test lib/admission/**/*.test.ts lib/academy/**/*.test.ts lib/navigation/**/*.test.ts lib/curriculum-ticker.test.ts lib/courses/business-english.test.ts lib/ops/**/*.test.ts",
     "test:public-links": "tsx --test lib/navigation/public-links.test.ts",
     "test:nav-geometry": "node scripts/test-navbar-geometry.mjs",
     "og:generate": "node scripts/generate-og.mjs"
