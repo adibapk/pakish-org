@@ -1,18 +1,28 @@
 # Pakish Institute (pakish.org)
 
-> Pakish Institute is a commercial, career-focused technology training institute backed by Pakish Group (Est. 1999). It offers practical IT, AI, web development, cloud, WordPress, and freelancing courses for students, professionals, freelancers, teams, and businesses in Pakistan.
+> Pakish Institute is a commercial, career-focused technology training institute backed by Pakish Group (Est. 1999). It offers practical IT, AI, web development, cloud, WordPress, freelancing, and professional communication courses for students, professionals, freelancers, teams, and businesses in Pakistan.
 
 ## Primary pages
 
 - [Homepage](https://pakish.org/): commercial institute overview, course goals, catalogue, training options, and FAQs
 - [Courses](https://pakish.org/courses): seven published programs — six core technology courses plus professional-skills training
-- [Admission](https://pakish.org/admission): paid course admission and counseling; Academy access is issued after enrollment confirmation
-- [Payment methods](https://pakish.org/payment-methods): course fee payment options
+- [Admission](https://pakish.org/admission): paid course admission; apply without an invitation; Academy access is issued after approval and enrollment
+- [Help](https://pakish.org/help): public help hub
+- [Student Guide](https://pakish.org/help/students): application, fee confirmation, payment proof, and Academy access sequence
+- [Teacher Guide](https://pakish.org/help/teachers): instructor access notes (partially verified)
+- [Payment methods](https://pakish.org/payment-methods): informational fee channels used after staff confirms amount
 - [Women's Empowerment](https://pakish.org/womens-empowerment): gatherings, mentorship, and limited need-based fee support for eligible women
 - [Gulshan-e-Iqbal campus](https://pakish.org/campus/gulshan-e-iqbal): IT and AI courses in Karachi
 - [Insights](https://pakish.org/insights): practical guides about AI, careers, web, cloud, and freelancing in Pakistan
 - [Privacy notice](https://pakish.org/privacy): how admission and contact information is handled
 - [Academy](https://academy.pakish.org): authenticated learning platform (login required; invite-only registration)
+
+## Student journey (short answers)
+
+- Q: Do I need an invitation to apply? A: No. Apply at https://pakish.org/admission without an invitation code.
+- Q: Does submitting the form enroll me? A: No. Application → staff review → fee confirmation → payment proof → verification → Academy invitation → enrollment.
+- Q: When should I pay? A: Only after staff confirms the fee and payment instructions.
+- Q: Why does Academy ask for an invite code? A: Account creation is invite-only; access is issued after admission approval and enrollment.
 
 ## Canonical courses
 
@@ -38,6 +48,7 @@ Pakish Institute is assessing a future digital-skills campus at Chak No. 319, Du
 
 - Email: admin@pakish.org
 - Phone and WhatsApp: +92 300 8222456
+- Billing receipts: billing@pakish.org
 - Facebook: https://www.facebook.com/pakishinstitute/
 
-Content is published in English for a Pakistani audience. Treat income, employment, and client outcomes as variable; Pakish Institute provides training and mentorship but does not guarantee jobs or earnings.
+Content is published in English for a Pakistani audience. Treat income, employment, and client outcomes as variable; Pakish Institute provides training and mentorship but does not guarantee jobs or earnings. Staff/internal runbooks are not listed here.

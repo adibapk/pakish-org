@@ -13,8 +13,11 @@ export const DEFAULT_OG_IMAGE = "/og/home.png";
 
 export const STATIC_ROUTES = [
   { path: "/", updatedAt: "2026-08-08", changeFrequency: "weekly" as const, priority: 1 },
-  { path: "/admission", updatedAt: "2026-09-25", changeFrequency: "monthly" as const, priority: 0.95 },
-  { path: "/payment-methods", updatedAt: "2026-09-25", changeFrequency: "monthly" as const, priority: 0.9 },
+  { path: "/admission", updatedAt: "2026-09-27", changeFrequency: "monthly" as const, priority: 0.95 },
+  { path: "/payment-methods", updatedAt: "2026-09-27", changeFrequency: "monthly" as const, priority: 0.9 },
+  { path: "/help", updatedAt: "2026-09-27", changeFrequency: "monthly" as const, priority: 0.85 },
+  { path: "/help/students", updatedAt: "2026-09-27", changeFrequency: "monthly" as const, priority: 0.85 },
+  { path: "/help/teachers", updatedAt: "2026-09-27", changeFrequency: "monthly" as const, priority: 0.6 },
   { path: "/courses", updatedAt: "2026-09-25", changeFrequency: "weekly" as const, priority: 0.95 },
   { path: "/insights", updatedAt: "2026-08-08", changeFrequency: "weekly" as const, priority: 0.9 },
   { path: "/campus/gulshan-e-iqbal", updatedAt: "2026-09-26", changeFrequency: "monthly" as const, priority: 0.85 },

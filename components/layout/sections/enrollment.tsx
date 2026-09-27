@@ -12,21 +12,21 @@ import Link from "next/link";
 const steps = [
   {
     icon: MessageSquare,
-    title: "Choose & counsel",
+    title: "Apply & review",
     description:
-      "Select a course, share your goals, and receive schedule and fee guidance from admissions.",
+      "Apply without an invitation. Staff confirms course, fee, and format before you pay.",
   },
   {
     icon: CreditCard,
-    title: "Pay & confirm",
+    title: "Pay after confirmation",
     description:
-      "Complete your course fee using available payment methods and share payment proof for verification.",
+      "Use listed payment methods only after fee instructions are confirmed, then share proof for review.",
   },
   {
     icon: UserCheck,
-    title: "Start learning",
+    title: "Enrollment & Academy access",
     description:
-      "Receive admission confirmation, Academy access instructions, and your class schedule.",
+      "After verification, receive enrollment confirmation and invite-only Academy login access.",
   },
 ];
 
@@ -67,8 +67,9 @@ export const EnrollmentSection = () => {
       <div className="mt-12 rounded-2xl border border-secondary bg-card p-8 text-center">
         <h3 className="text-2xl font-bold">Ready to apply?</h3>
         <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">
-          Submit an admission request and our team will contact you with course
-          details, schedule options, and next steps.
+          Apply without an invitation. Our team will contact you with course
+          details, confirmed fees, and next steps. Academy access is issued after
+          admission approval and enrollment.
         </p>
         <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <Button asChild size="lg">

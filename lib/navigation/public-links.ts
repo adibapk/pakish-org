@@ -64,6 +64,8 @@ export function collectPublicNavHrefs(): NavHrefSource[] {
   const footerLinks = [
     { href: "/courses", label: "Courses" },
     { href: "/admission", label: "Admission" },
+    { href: "/help", label: "Help" },
+    { href: "/help/students", label: "Student Guide" },
     { href: "/payment-methods", label: "Payment Methods" },
     { href: "/womens-empowerment", label: "Women's Empowerment" },
     { href: ACADEMY_LOGIN_URL, label: "Academy Login" },

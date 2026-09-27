@@ -112,23 +112,23 @@ export const PAYONEER = {
 export const STUDENT_PAYMENT_STEPS = [
   {
     step: "1",
-    title: "Pay your course fee",
-    body: "Pay your course fee using any available payment method.",
+    title: "Wait for fee confirmation",
+    body: "Pay only after Pakish staff confirms your course fee and payment instructions.",
   },
   {
     step: "2",
-    title: "Share payment proof",
-    body: "Send your payment screenshot/receipt on WhatsApp or email.",
+    title: "Pay your confirmed course fee",
+    body: "Use one of the listed payment methods for the confirmed amount.",
   },
   {
     step: "3",
-    title: "Verification",
-    body: "Our team will verify your payment and confirm your admission.",
+    title: "Share payment proof",
+    body: "Send your payment screenshot or receipt on WhatsApp or email. Proof is not automatic verification.",
   },
   {
     step: "4",
-    title: "Next steps",
-    body: "You will receive your class schedule and next steps.",
+    title: "Verification and next steps",
+    body: "Our team verifies payment, then confirms enrollment and Academy access when ready.",
   },
 ] as const;
 

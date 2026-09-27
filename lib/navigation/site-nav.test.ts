@@ -36,11 +36,13 @@ describe("site navigation information architecture", () => {
     assert.equal(TRAINING_LINKS[2].href, "/admission?training=office-team");
   });
 
-  it("keeps payment methods and FAQ in mobile support only", () => {
+  it("keeps payment methods, FAQ, help, and apply in mobile support only", () => {
     const labels = MOBILE_SUPPORT_LINKS.map((link) => link.label);
     assert.ok(labels.includes("Payment Methods"));
     assert.ok(labels.includes("FAQ"));
+    assert.ok(labels.includes("Help"));
     assert.ok(labels.includes("Apply for Admission"));
+    assert.ok(!DESKTOP_PRIMARY_LINKS.some((link) => link.label === "Help"));
   });
 
   it("resolves hash links from non-home routes", () => {
