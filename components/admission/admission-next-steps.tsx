@@ -36,29 +36,33 @@ export function AdmissionNextSteps({ request }: AdmissionNextStepsProps) {
             <CheckCircle2 className="size-8" />
           </div>
           <p className="mb-2 text-lg tracking-wider text-primary">
-            Request Received
+            Application received
           </p>
           <h1 className="text-3xl font-bold md:text-4xl">
-            Next Steps for Enrollment
+            What happens next
           </h1>
           <p className="mt-3 text-muted-foreground">
             Thank you, {request.fullName}. Your admission request for{" "}
             <span className="font-medium text-foreground">
               {request.courseTitle}
             </span>{" "}
-            is saved (status: {request.leadStatus}). Follow these steps to
-            complete enrollment.
+            is saved (status: {request.leadStatus}). This is not yet an accepted
+            seat, fee invoice, verified payment, or Academy enrollment.
           </p>
-          <p className="mt-2 text-xs text-muted-foreground">
-            Reference: {request.clientRequestId}
+          <p className="mt-3 rounded-lg border border-secondary bg-muted/40 px-4 py-3 text-sm font-medium text-foreground">
+            Lead reference: {request.clientRequestId}
+          </p>
+          <p className="mt-3 text-sm text-muted-foreground">
+            {ADMISSION_PAGE_COPY.noInviteNote}
           </p>
         </div>
 
         <Card className="border-secondary">
           <CardHeader>
-            <CardTitle>Enrollment Journey</CardTitle>
+            <CardTitle>Review before payment</CardTitle>
             <CardDescription>
-              From admission request to class schedule confirmation.
+              Our team contacts you first. Pay only after the fee and
+              instructions are confirmed.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -70,7 +74,14 @@ export function AdmissionNextSteps({ request }: AdmissionNextStepsProps) {
                 <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
                   {item.step}
                 </div>
-                <p className="pt-1 text-foreground">{item.title}</p>
+                <div className="pt-1">
+                  <p className="font-medium text-foreground">{item.title}</p>
+                  {"detail" in item && item.detail ? (
+                    <p className="mt-1 text-sm text-muted-foreground">
+                      {item.detail}
+                    </p>
+                  ) : null}
+                </div>
               </div>
             ))}
           </CardContent>
@@ -78,19 +89,6 @@ export function AdmissionNextSteps({ request }: AdmissionNextStepsProps) {
 
         <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
           <Button asChild size="lg">
-            <Link
-              href="/payment-methods"
-              onClick={() =>
-                trackEvent("payment_page_visited", {
-                  request_id: request.clientRequestId,
-                  source: "admission_next_steps",
-                })
-              }
-            >
-              View Payment Methods
-            </Link>
-          </Button>
-          <Button asChild variant="outline" size="lg">
             <a
               href={whatsappHref}
               target="_blank"
@@ -103,19 +101,35 @@ export function AdmissionNextSteps({ request }: AdmissionNextStepsProps) {
               }
             >
               <MessageCircle className="mr-2 size-4" />
-              Continue on WhatsApp
+              Message us on WhatsApp
             </a>
+          </Button>
+          <Button asChild variant="outline" size="lg">
+            <Link href="/help/students">Read the Student Guide</Link>
           </Button>
         </div>
 
-        <Card className="border-primary/20 bg-primary/5">
+        <Card className="border-secondary">
           <CardHeader>
-            <CardTitle className="text-xl">Payment Confirmation</CardTitle>
+            <CardTitle className="text-xl">Payment methods (informational)</CardTitle>
             <CardDescription>
               {ADMISSION_PAGE_COPY.paymentConfirmNote}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
+            <Button asChild variant="outline">
+              <Link
+                href="/payment-methods"
+                onClick={() =>
+                  trackEvent("payment_page_visited", {
+                    request_id: request.clientRequestId,
+                    source: "admission_next_steps",
+                  })
+                }
+              >
+                View payment methods
+              </Link>
+            </Button>
             <div className="flex flex-col gap-3 sm:flex-row">
               <Button asChild variant="outline" className="justify-start">
                 <a
@@ -135,21 +149,38 @@ export function AdmissionNextSteps({ request }: AdmissionNextStepsProps) {
               </Button>
             </div>
             <p className="text-sm text-muted-foreground">
-              Include your name, course, amount, transaction reference, and
-              request ID ({request.clientRequestId}) with the screenshot.
+              After staff confirms your fee, include your name, course, amount,
+              transaction reference, and request ID ({request.clientRequestId})
+              with any screenshot.
             </p>
           </CardContent>
         </Card>
 
-        <PaymentProofForm
-          requestId={request.clientRequestId}
-          courseTitle={request.courseTitle}
-        />
+        <Card className="border-dashed border-secondary">
+          <CardHeader>
+            <CardTitle className="text-lg">
+              Optional: payment proof after fee confirmation
+            </CardTitle>
+            <CardDescription>
+              Use this only when our team has confirmed your amount and asked
+              you to pay. Uploading proof does not verify payment or enroll you.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <PaymentProofForm
+              requestId={request.clientRequestId}
+              courseTitle={request.courseTitle}
+            />
+          </CardContent>
+        </Card>
 
-        <div className="text-center">
+        <div className="text-center space-y-2">
           <Button asChild variant="ghost">
             <Link href="/courses">Browse more courses</Link>
           </Button>
+          <p className="text-xs text-muted-foreground">
+            {ADMISSION_PAGE_COPY.academyAccessNote}
+          </p>
         </div>
       </div>
     </section>

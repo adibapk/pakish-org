@@ -38,6 +38,7 @@ export const DESKTOP_PRIMARY_LINKS: NavLink[] = [
 
 export const MOBILE_SUPPORT_LINKS: NavLink[] = [
   { href: "/admission", label: "Apply for Admission" },
+  { href: "/help", label: "Help" },
   { href: "/payment-methods", label: "Payment Methods" },
   { href: "/#faq", label: "FAQ" },
 ];

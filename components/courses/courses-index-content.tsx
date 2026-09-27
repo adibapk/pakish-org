@@ -69,7 +69,7 @@ export function CoursesIndexContent({
             </p>
             <div className="flex flex-col items-center gap-3 pt-2 sm:flex-row">
               <Button asChild>
-                <Link href={getAdmissionPath()}>Enroll Now</Link>
+                <Link href={getAdmissionPath()}>Apply for Admission</Link>
               </Button>
               <Button asChild variant="outline">
                 <Link href="/#contact">Ask About Custom Training</Link>

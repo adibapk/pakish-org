@@ -53,7 +53,7 @@ export function CourseDetailPage({ course }: CourseDetailPageProps) {
   const enrollHref = getAdmissionPath(course.slug);
   const secondaryHref = buildSecondaryAdmissionHref(course);
   const whatsappHref = buildCourseInfoWhatsAppUrl(course.title);
-  const primaryCtaLabel = course.cta?.primaryLabel ?? "Enroll Now";
+  const primaryCtaLabel = course.cta?.primaryLabel ?? "Apply for Admission";
   const secondaryCtaLabel = course.cta?.secondaryLabel;
   const toolsLabel = course.toolsSectionLabel ?? "Technologies & Tools";
   const heroImage = course.media?.hero;

@@ -21,7 +21,7 @@ export function CoursePricingBlock({
   compact = false,
   showCta = false,
   enrollHref = "/admission",
-  ctaLabel = "Enroll Now",
+  ctaLabel = "Apply for Admission",
   className,
 }: CoursePricingBlockProps) {
   return (

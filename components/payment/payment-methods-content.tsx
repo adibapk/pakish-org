@@ -406,7 +406,8 @@ export function PaymentMethodsContent() {
               Student Payment Instructions
             </h2>
             <p className="mt-3 text-muted-foreground">
-              Four simple steps from fee payment to class schedule.
+              Pay only after staff confirms your fee. Proof upload is not
+              automatic verification.
             </p>
           </div>
           <ol className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">

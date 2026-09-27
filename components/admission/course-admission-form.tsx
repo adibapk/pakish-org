@@ -213,8 +213,14 @@ export function CourseAdmissionForm({
             <p className="mt-4 text-lg text-muted-foreground">
               {ADMISSION_PAGE_COPY.heroDescription}
             </p>
-            <p className="mt-3 text-sm text-muted-foreground">
-              {ADMISSION_PAGE_COPY.academyAccessNote}
+            <p className="mt-3 text-sm font-medium text-foreground">
+              {ADMISSION_PAGE_COPY.noInviteNote}
+            </p>
+            <p className="mt-2 text-sm text-muted-foreground">
+              {ADMISSION_PAGE_COPY.academyAccessNote}{" "}
+              <Link href="/help/students" className="text-primary underline-offset-4 hover:underline">
+                Student Guide
+              </Link>
             </p>
           </div>
 
