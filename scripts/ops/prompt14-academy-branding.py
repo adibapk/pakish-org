@@ -8,14 +8,18 @@ surface before upgrading the LearnHouse image or digest.
 
 Replaces LearnHouse logos, fixes org logo PNG references, invite-only UX copy,
 and disables the footer watermark on public auth/nav surfaces only.
+After compiled patches, renames immutable static assets (`*-pk<hash>`) and bumps
+BUILD_ID so returning browsers cannot keep one-year-cached stale chunks.
 Safe to re-run after container recreate.
 
 Run only from the checked-out repository on pakish-sg after `git pull`.
 Never copy this script over the tracked deployment checkout with scp.
+See docs/academy/BRANDED_ASSET_VERSIONING.md.
 """
 from __future__ import annotations
 
 import json
+import os
 import re
 import subprocess
 import sys
@@ -37,6 +41,9 @@ COMPILED_SEARCH_ROOTS = (
     "/app/web/.next/server/chunks",
 )
 SCRIPT_DIR = Path(__file__).resolve().parent
+FINGERPRINT_HELPER = SCRIPT_DIR / "academy_asset_fingerprint.py"
+# Paths under /_next/static written during this apply — must receive new URLs.
+_PATCHED_STATIC_PATHS: set[str] = set()
 
 
 def _resolve_public_dir() -> Path:
@@ -180,6 +187,19 @@ AUTH_FOOTER_DUAL_LINK_RE = re.compile(
 AUTH_FOOTER_TERMS_KEY_RE = re.compile(
     r'(["\'])auth\.terms_of_service\1'
 )
+# Compiled CopyrightFooter still ships two privacy Links (terms URL remapped to privacy).
+# Keep the first Link; drop the immediate duplicate sibling.
+COPYRIGHT_FOOTER_DUAL_PRIVACY_RE = re.compile(
+    r'(\(0,([a-zA-Z_$][\w$]*)\.jsx\)\(([a-zA-Z_$][\w$]*)\.default,'
+    r'\{href:[a-zA-Z_$][\w$]*,target:"_blank",rel:"noopener noreferrer",'
+    r'className:`\$\{[a-zA-Z_$][\w$]*\} transition-colors`,'
+    r'children:([a-zA-Z_$][\w$]*)\("auth\.privacy_policy",'
+    r'\{defaultValue:"Privacy Policy"\}\)\}\))'
+    r',\(0,\2\.jsx\)\(\3\.default,'
+    r'\{href:[a-zA-Z_$][\w$]*,target:"_blank",rel:"noopener noreferrer",'
+    r'className:`\$\{[a-zA-Z_$][\w$]*\} transition-colors`,'
+    r'children:\4\("auth\.privacy_policy",\{defaultValue:"Privacy Policy"\}\)\}\)'
+)
 # Decorative LearnHouse top-left glyph on the black auth panel.
 # Ends with: ...cn(...)"})})}),
 LOGIN_TOPBAR_RE = re.compile(
@@ -270,6 +290,8 @@ def run(cmd: list[str], check: bool = True) -> subprocess.CompletedProcess:
 
 def docker_cp(local: Path, remote: str) -> None:
     run(["docker", "cp", str(local), f"{CONTAINER}:{remote}"])
+    if remote.startswith("/app/web/.next/static/"):
+        _PATCHED_STATIC_PATHS.add(remote)
 
 
 def docker_exec(cmd: list[str], check: bool = True) -> subprocess.CompletedProcess:
@@ -304,26 +326,33 @@ def backup_database() -> Path:
     from datetime import datetime, timezone
 
     BACKUP_DIR.mkdir(parents=True, exist_ok=True)
-    stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
-    out = BACKUP_DIR / f"learnhouse-db-prompt21-branding-{stamp}.dump"
-    run(
-        [
-            "docker",
-            "exec",
-            DB,
-            "pg_dump",
-            "-U",
-            "learnhouse",
-            "-d",
-            "learnhouse",
-            "-Fc",
-            "-f",
-            f"/tmp/{out.name}",
-        ]
-    )
-    run(["docker", "cp", f"{DB}:/tmp/{out.name}", str(out)])
-    run(["docker", "exec", DB, "rm", "-f", f"/tmp/{out.name}"], check=False)
-    print(f"database backup written to {out}")
+    # New branding backups are private by default (no broad chmod -R).
+    previous_umask = os.umask(0o077)
+    try:
+        stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+        out = BACKUP_DIR / f"learnhouse-db-prompt21-branding-{stamp}.dump"
+        run(
+            [
+                "docker",
+                "exec",
+                DB,
+                "pg_dump",
+                "-U",
+                "learnhouse",
+                "-d",
+                "learnhouse",
+                "-Fc",
+                "-f",
+                f"/tmp/{out.name}",
+            ]
+        )
+        run(["docker", "cp", f"{DB}:/tmp/{out.name}", str(out)])
+        run(["docker", "exec", DB, "rm", "-f", f"/tmp/{out.name}"], check=False)
+        os.chmod(out, 0o600)
+    finally:
+        os.umask(previous_umask)
+    mode = oct(out.stat().st_mode & 0o777)
+    print(f"database backup written to {out} mode={mode}")
     return out
 
 
@@ -422,9 +451,10 @@ def _count_enabled_login_topbars() -> int:
 
 
 def patch_compiled_auth_structures() -> None:
-    """Rewrite AuthFooter dual-link JSX and remove login-topbar glyph from served chunks."""
+    """Rewrite AuthFooter/CopyrightFooter dual links and remove login-topbar glyph."""
     files = _list_compiled_bundle_files()
     dual_hits = 0
+    copyright_dual_hits = 0
     topbar_hits = 0
     terms_key_hits = 0
     patched_files = 0
@@ -442,6 +472,8 @@ def patch_compiled_auth_structures() -> None:
                 r"\1auth.privacy_policy\1", updated
             )
             terms_key_hits += n_terms
+        updated, n_copy = COPYRIGHT_FOOTER_DUAL_PRIVACY_RE.subn(r"\1", updated)
+        copyright_dual_hits += n_copy
         updated, n_top = LOGIN_TOPBAR_RE.subn("", updated)
         topbar_hits += n_top
         updated, n_dis = LOGIN_TOPBAR_DISABLE_RE.subn("false&&", updated)
@@ -455,6 +487,7 @@ def patch_compiled_auth_structures() -> None:
     print(
         "patched compiled auth structures: "
         f"files={patched_files}, dual_link_removed={dual_hits}, "
+        f"copyright_dual_removed={copyright_dual_hits}, "
         f"terms_key_rewrites={terms_key_hits}, login_topbar_removed_or_disabled={topbar_hits}"
     )
     remaining_and = _count_in_bundles("auth.and")
@@ -468,6 +501,95 @@ def patch_compiled_auth_structures() -> None:
         raise RuntimeError(
             f"enabled login-topbar still present in {remaining_enabled} compiled hit(s)"
         )
+    remaining_copy_dual = _count_copyright_dual_privacy()
+    if remaining_copy_dual:
+        raise RuntimeError(
+            f"CopyrightFooter dual privacy links still present in {remaining_copy_dual} compiled hit(s)"
+        )
+
+
+def _count_copyright_dual_privacy() -> int:
+    files = _list_compiled_bundle_files()
+    hits = 0
+    for remote in files:
+        proc = docker_exec(["cat", remote], check=False)
+        if proc.returncode != 0 or "common.copyright" not in proc.stdout:
+            continue
+        hits += len(COPYRIGHT_FOOTER_DUAL_PRIVACY_RE.findall(proc.stdout))
+    return hits
+
+
+def fingerprint_static_assets() -> dict:
+    """Rename patched immutable static assets so returning browsers fetch new URLs."""
+    if not FINGERPRINT_HELPER.exists():
+        raise FileNotFoundError(f"Missing fingerprint helper {FINGERPRINT_HELPER}")
+    from datetime import datetime, timezone
+
+    stamp = datetime.now(timezone.utc).strftime("%Y%m%d%H%M%S")
+    paths = sorted(_PATCHED_STATIC_PATHS)
+    if not paths:
+        print("no patched static paths tracked; bumping BUILD_ID only")
+    payload = json.dumps({"paths": paths, "stamp": stamp})
+    docker_cp(FINGERPRINT_HELPER, "/tmp/academy_asset_fingerprint.py")
+    proc = subprocess.run(
+        [
+            "docker",
+            "exec",
+            "-i",
+            CONTAINER,
+            "python3",
+            "/tmp/academy_asset_fingerprint.py",
+        ],
+        input=payload,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if proc.returncode != 0:
+        raise RuntimeError(
+            f"asset fingerprint failed: {proc.stderr or proc.stdout}"
+        )
+    result = json.loads(proc.stdout)
+    print(
+        "fingerprinted static assets: "
+        f"renamed={result.get('renamed')}, "
+        f"rewritten_files={result.get('rewritten_files')}, "
+        f"build_id={result.get('build_id')}"
+    )
+    sample = list((result.get("renames") or {}).items())[:5]
+    for old, new in sample:
+        print(f"  asset URL {old} -> {new}")
+    if paths and not result.get("renames"):
+        raise RuntimeError(
+            "patched static paths were tracked but no asset URLs were renamed — "
+            "refusing to leave immutable URLs mutated in place"
+        )
+    return result
+
+
+def verify_asset_fingerprint(result: dict) -> None:
+    """Fail closed if login HTML still points at pre-fingerprint chunk basenames."""
+    renames = result.get("renames") or {}
+    build_id = result.get("build_id") or ""
+    if not build_id.startswith("learnhouse-production-pk"):
+        raise SystemExit(f"BUILD_ID was not versioned: {build_id!r}")
+    proc = docker_exec(
+        ["wget", "-qO-", "http://127.0.0.1:8000/login"],
+        check=False,
+    )
+    if proc.returncode != 0:
+        raise SystemExit("origin /login fetch failed during fingerprint verification")
+    html = proc.stdout
+    for old, new in renames.items():
+        if not old.endswith(".js"):
+            continue
+        if old in html and new not in html:
+            raise SystemExit(
+                f"origin /login still references stale chunk {old} without {new}"
+            )
+    if "https://pakish.org/privacy" not in html:
+        raise SystemExit("origin /login missing https://pakish.org/privacy")
+    print("asset fingerprint verification passed")
 
 
 def replace_bundled_logos() -> None:
@@ -632,6 +754,8 @@ def verify_legal_copy() -> None:
         )
     if _count_in_bundles("auth.and") > 0:
         raise SystemExit("compiled bundles still contain auth.and dual-link AuthFooter")
+    if _count_copyright_dual_privacy() > 0:
+        raise SystemExit("compiled bundles still contain dual CopyrightFooter privacy links")
 
     locale = json.loads(docker_exec(["cat", "/app/web/locales/en.json"]).stdout)
     auth_locale = locale.get("auth", {})
@@ -1065,6 +1189,8 @@ def update_org_config() -> None:
 
 
 def _post_restart_repatches() -> None:
+    global _PATCHED_STATIC_PATHS
+    _PATCHED_STATIC_PATHS = set()
     replace_public_brand_assets()
     replace_bundled_logos()
     patch_legal_footers()
@@ -1076,6 +1202,8 @@ def _post_restart_repatches() -> None:
 
 
 def main() -> int:
+    global _PATCHED_STATIC_PATHS
+    _PATCHED_STATIC_PATHS = set()
     verify_container_image()
     backup_database()
     copy_logos()
@@ -1101,12 +1229,14 @@ def main() -> int:
     run(["docker", "restart", CONTAINER], check=False)
     print("container restarted — re-patching compiled assets after boot")
     _post_restart_repatches()
+    fingerprint_result = fingerprint_static_assets()
     verify_branding()
     verify_legal_copy()
     verify_public_brand_assets()
     verify_client_artifacts()
     verify_origin_http_surfaces()
-    print("branding applied — container restarted and compiled assets re-patched")
+    verify_asset_fingerprint(fingerprint_result)
+    print("branding applied — container restarted, assets fingerprinted, surfaces verified")
     return 0
 
 
