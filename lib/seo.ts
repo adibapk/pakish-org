@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { SITE_LOGO } from "@/lib/site-icons";
+import { WORKSHOP_PATH } from "@/lib/workshops";
 
 export const SITE_URL = "https://pakish.org";
 export const SITE_NAME = "Pakish.ORG";
@@ -14,6 +15,7 @@ export const DEFAULT_OG_IMAGE = "/og/home.png";
 export const STATIC_ROUTES = [
   { path: "/", updatedAt: "2026-08-08", changeFrequency: "weekly" as const, priority: 1 },
   { path: "/admission", updatedAt: "2026-09-27", changeFrequency: "monthly" as const, priority: 0.95 },
+  { path: WORKSHOP_PATH, updatedAt: "2026-11-18", changeFrequency: "weekly" as const, priority: 0.85 },
   { path: "/payment-methods", updatedAt: "2026-09-27", changeFrequency: "monthly" as const, priority: 0.9 },
   { path: "/terms", updatedAt: "2026-09-27", changeFrequency: "yearly" as const, priority: 0.55 },
   { path: "/refund-policy", updatedAt: "2026-09-27", changeFrequency: "yearly" as const, priority: 0.55 },
@@ -23,7 +25,7 @@ export const STATIC_ROUTES = [
   { path: "/courses", updatedAt: "2026-09-25", changeFrequency: "weekly" as const, priority: 0.95 },
   { path: "/insights", updatedAt: "2026-08-08", changeFrequency: "weekly" as const, priority: 0.9 },
   { path: "/campus/gulshan-e-iqbal", updatedAt: "2026-09-26", changeFrequency: "monthly" as const, priority: 0.85 },
-  { path: "/privacy", updatedAt: "2026-09-26", changeFrequency: "yearly" as const, priority: 0.3 },
+  { path: "/privacy", updatedAt: "2026-11-18", changeFrequency: "yearly" as const, priority: 0.3 },
   {
     path: "/womens-empowerment",
     updatedAt: "2026-09-26",
