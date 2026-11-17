@@ -1,5 +1,6 @@
 import { ACADEMY_LOGIN_URL } from "@/lib/academy";
 import { getAllCourses } from "@/lib/courses";
+import { WORKSHOP_PATH } from "@/lib/workshops";
 
 export interface NavLink {
   href: string;
@@ -23,6 +24,11 @@ export const TRAINING_LINKS: NavLink[] = [
     href: "/admission?training=office-team",
     label: "Team Training",
     description: "Customized workplace and team upskilling programs.",
+  },
+  {
+    href: WORKSHOP_PATH,
+    label: "Free Workshops",
+    description: "Free introductory workshops on weekends at our Karachi campus.",
   },
 ];
 

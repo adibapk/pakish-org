@@ -26,14 +26,15 @@ describe("site navigation information architecture", () => {
     );
   });
 
-  it("places Karachi, live online and team training in the training group", () => {
+  it("includes campus, online, team training and workshops in the training group", () => {
     assert.deepEqual(
       TRAINING_LINKS.map((link) => link.label),
-      ["Karachi Campus", "Live Online", "Team Training"]
+      ["Karachi Campus", "Live Online", "Team Training", "Free Workshops"]
     );
     assert.equal(TRAINING_LINKS[0].href, "/campus/gulshan-e-iqbal");
     assert.equal(TRAINING_LINKS[1].href, "/#learning-options");
     assert.equal(TRAINING_LINKS[2].href, "/admission?training=office-team");
+    assert.equal(TRAINING_LINKS[3].href, "/workshops");
   });
 
   it("keeps payment methods, FAQ, help, and apply in mobile support only", () => {

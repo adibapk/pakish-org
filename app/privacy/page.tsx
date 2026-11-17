@@ -6,7 +6,7 @@ import Link from "next/link";
 export const metadata = createPageMetadata({
   title: "Privacy Notice",
   description:
-    "How Pakish Institute handles admission, contact, and Women's Empowerment fee-support review information sent through WhatsApp or email.",
+    "How Pakish Institute handles contact, admission, workshop registration, and Women's Empowerment fee-support information.",
   path: "/privacy",
   image: ogImagePath("privacy"),
 });
@@ -37,8 +37,8 @@ export default function PrivacyPage() {
           <p className="mb-2 text-lg tracking-wider text-primary">Trust &amp; Privacy</p>
           <h1 className="text-3xl font-bold md:text-5xl">Pakish Institute Privacy Notice</h1>
           <p className="mt-5 text-lg text-muted-foreground">
-            This notice explains what happens when you use the contact or
-            admission forms on pakish.org. Last updated: 26 September 2026.
+            This notice explains how Pakish Institute handles information you
+            share through its website forms. Last updated 18 November 2026.
           </p>
 
           <div className="mt-10 space-y-9 text-base leading-7 text-muted-foreground">
@@ -73,6 +73,19 @@ export default function PrivacyPage() {
                 financial-account details, identity-document images, or other
                 sensitive records unless an authorized team member later
                 explains why they are needed and how they will be handled.
+              </p>
+            </section>
+
+            <section>
+              <h2 className="text-2xl font-bold text-foreground">Workshop registration</h2>
+              <p className="mt-3">
+                The workshop form asks for your contact details, preferred
+                date, session choices, experience and device. You can also
+                share your age, organisation and learning goals. We send this
+                information to our workshop team through our email delivery
+                provider. The team uses it to coordinate your preferred
+                sessions, timing changes, seat confirmation and the related
+                learning opportunities described on the form.
               </p>
             </section>
 
