@@ -126,6 +126,7 @@ export interface Course {
   slug: CourseSlug;
   title: string;
   shortTitle: string;
+  pageHeading?: string;
   category: CourseCategory;
   level: CourseLevel;
   /** Human-readable duration, e.g. "4–6 weeks" */

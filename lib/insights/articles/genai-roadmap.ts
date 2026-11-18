@@ -14,7 +14,7 @@ export const genAiRoadmapArticle: InsightArticle = {
     "Pakistani women can build generative AI skills in four stages: (1) master ChatGPT and daily productivity workflows, (2) learn prompt engineering for marketing and content, (3) integrate AI into real projects like websites and automations, and (4) monetize through freelancing or tech roles — ideally with mentor-led training and portfolio proof.",
   author: "Pakish.ORG Editorial",
   publishedAt: "2026-01-10",
-  updatedAt: "2026-03-01",
+  updatedAt: "2026-11-19",
   category: "generative-ai",
   tags: ["generative-ai", "women-in-tech", "pakistan", "freelancing"],
   sections: [
@@ -204,7 +204,7 @@ export const genAiRoadmapArticle: InsightArticle = {
     {
       type: "p",
       content:
-        "Generative AI is a career accelerant, not a replacement for skill and integrity. Explore [Pakish.ORG courses](/#courses), review our [mission](/#benefits), or [contact us](/#contact) to enroll. The roadmap is clear — the next move is yours.",
+        "If your goal is to use AI for research and office tasks, explore the [AI Productivity and Automation course](/courses/ai-productivity). For a team working on shared processes, compare the [AI for Business program](/courses/ai-business).",
     },
   ],
   faq: [

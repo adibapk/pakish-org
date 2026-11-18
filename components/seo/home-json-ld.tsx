@@ -11,9 +11,9 @@ export function HomeJsonLd() {
       "@type": "WebPage",
       "@id": `${SITE_URL}/#webpage`,
       url: SITE_URL,
-      name: "Professional IT & AI Courses in Pakistan | Pakish Institute",
+      name: "Pakish Institute | IT & AI Courses in Karachi and Online",
       description:
-        "Build practical skills in AI, web development, WordPress, cloud and freelancing through live online, campus and team training at Pakish Institute.",
+        "Compare course fees, durations and projects at Pakish Institute. Study live online across Pakistan or ask about scheduled classes in Gulshan-e-Iqbal, Karachi.",
       isPartOf: { "@id": `${SITE_URL}/#website` },
       about: { "@id": `${SITE_URL}/#organization` },
       inLanguage: "en-PK",

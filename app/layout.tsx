@@ -96,7 +96,8 @@ export default function RootLayout({
                 {
                   "@type": "EducationalOrganization",
                   "@id": `${SITE_URL}/#organization`,
-                  name: SITE_NAME,
+                  name: "Pakish Institute",
+                  alternateName: SITE_NAME,
                   url: SITE_URL,
                   description: DEFAULT_DESCRIPTION,
                   logo: absoluteUrl(SITE_LOGO),

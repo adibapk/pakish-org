@@ -10,6 +10,7 @@ import {
 import { FooterSection } from "@/components/layout/sections/footer";
 import { CampusJsonLd } from "@/components/seo/campus-json-ld";
 import { FuturePlanCampusContent } from "@/components/campus/future-plan-campus-content";
+import { getAllCourses, getCoursePath } from "@/lib/courses";
 import type { CampusData } from "@/lib/campus-data";
 import { Check, Gift, MapPin } from "lucide-react";
 import Link from "next/link";
@@ -68,28 +69,27 @@ export function CampusPageContent({ campus }: CampusPageContentProps) {
 
       <section className="border-t border-border py-12 md:py-20">
         <div className="mx-auto max-w-4xl">
-          <p className="mb-2 text-center text-lg tracking-wider text-primary">
-            What You Can Learn
-          </p>
-          <h2 className="text-center text-3xl font-bold md:text-4xl">
-            Practical Skills for Modern Remote Work
+          <h2 className="text-3xl font-bold md:text-4xl">
+            Which course can I study in Gulshan-e-Iqbal?
           </h2>
-          <div className="mt-10 grid gap-5 md:grid-cols-3">
-            {[
-              ["AI-assisted digital work", "Use Generative AI responsibly for research, content, marketing, and practical workflows."],
-              ["Web and marketing skills", "Build with WordPress or Next.js and learn the client communication behind successful delivery."],
-              ["Portfolio and freelancing", "Create visible work, document your process, and practice safer proposals, pricing, and payments."],
-            ].map(([title, description]) => (
-              <Card key={title} className="bg-muted/30">
-                <CardHeader>
-                  <CardTitle className="text-xl">{title}</CardTitle>
-                </CardHeader>
-                <CardContent className="text-muted-foreground">
-                  {description}
-                </CardContent>
-              </Card>
+          <p className="mt-4 text-muted-foreground">
+            Ask admissions to confirm the campus schedule for your chosen program.
+            Each outline lists the projects, format and fee.
+          </p>
+          <ul className="mt-5 grid gap-3 sm:grid-cols-2">
+            {getAllCourses().map((course) => (
+              <li key={course.slug}>
+                <Link href={getCoursePath(course.slug)} className="font-medium text-primary underline underline-offset-4">
+                  {course.title}
+                </Link>
+              </li>
             ))}
-          </div>
+          </ul>
+          <p className="mt-6">
+            <Link href="/course-fees" className="underline underline-offset-4">Compare course fees and duration</Link>
+            {" or "}
+            <Link href="/workshops" className="underline underline-offset-4">explore free weekend workshops</Link>.
+          </p>
         </div>
       </section>
 

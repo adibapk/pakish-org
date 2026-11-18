@@ -39,11 +39,11 @@ export const karachiCampus: CampusData = {
   addressRegion: "Sindh",
   heroTitle: "IT & AI Courses in Gulshan-e-Iqbal, Karachi",
   heroSubtitle:
-    "Professional technology training at our Gulshan-e-Iqbal campus on Main University Road — live cohorts when scheduled.",
+    "Pakish Institute offers instructor-led IT training on Main University Road. Compare courses below, then ask admissions about the next Karachi cohort.",
   aboutTitle: "About the Karachi Campus",
   aboutParagraphs: [
     "Our Gulshan-e-Iqbal campus on Main University Road serves learners across Karachi with professional IT, AI, web development, cloud, and digital freelancing programs. Training is fee-based with transparent quotes; cohort schedules are confirmed during admission counseling.",
-    "Backed by Pakish Group since 1999, this campus offers equipped workspaces, mentor support, and the same six-course catalogue available through live online and team training formats.",
+    "Backed by Pakish Group since 1999, this campus offers equipped workspaces, mentor support, and live online and team training options for learners who need a different format.",
   ],
   needs: [
     { item: "Laptops", quantity: "20" },

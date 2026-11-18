@@ -14,7 +14,7 @@ export const freelancingGuideArticle: InsightArticle = {
     "Pakistani women can start a work-from-home IT freelancing career by choosing a focused skill (e.g., WordPress, SMM, Canva, or web development), building a small portfolio, creating profiles on vetted platforms, pricing competitively for first clients, and using secure payment methods — often after 1–3 months of structured training.",
   author: "Pakish.ORG Editorial",
   publishedAt: "2026-01-20",
-  updatedAt: "2026-03-01",
+  updatedAt: "2026-11-19",
   category: "freelancing",
   tags: ["freelancing", "women-in-tech", "pakistan"],
   sections: [
@@ -200,7 +200,7 @@ export const freelancingGuideArticle: InsightArticle = {
     {
       type: "p",
       content:
-        "Browse [training programs](/courses), read achievement stories for motivation ([Dr. Saira Osama's AI health-tech journey](/insights/saira-osama-ai-stroke-care-cerebrocure)), or [apply for admission](/admission) to discuss enrollment and schedule. Your first client is closer than you think — but only after your first committed week of learning.",
+        "Build a proposal and portfolio in the [AI freelancing course](/courses/ai-freelancing), or practise delivering an online shop in the [WordPress and WooCommerce course](/courses/wordpress-woocommerce). You can [compare course fees](/course-fees) before asking admissions about a cohort.",
     },
   ],
   faq: [

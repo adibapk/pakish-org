@@ -15,9 +15,9 @@ import { WomensEmpowermentPreviewSection } from "@/components/layout/sections/wo
 import { createPageMetadata } from "@/lib/seo";
 
 export const metadata = createPageMetadata({
-  title: "Professional IT & AI Courses in Pakistan | Pakish Institute",
+  title: "Pakish Institute | IT & AI Courses in Karachi and Online",
   description:
-    "Build practical skills in AI, web development, WordPress, cloud and freelancing through live online, campus and team training at Pakish Institute.",
+    "Compare course fees, durations and projects at Pakish Institute. Study live online across Pakistan or ask about scheduled classes in Gulshan-e-Iqbal, Karachi.",
   path: "/",
   image: "/og/home.png",
   absoluteTitle: true,
