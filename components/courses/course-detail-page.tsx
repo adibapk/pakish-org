@@ -77,10 +77,17 @@ export function CourseDetailPage({ course }: CourseDetailPageProps) {
               </Badge>
             </div>
             <h1 className="text-3xl font-bold leading-tight sm:text-4xl md:text-5xl">
-              {course.title}
+              {course.pageHeading ?? course.title}
             </h1>
             <p className="max-w-3xl text-lg text-muted-foreground md:text-xl">
               {course.summary}
+            </p>
+
+            <p className="text-sm text-muted-foreground">
+              {course.pricing.displayLabel}.{" "}
+              <Link className="underline underline-offset-4" href="/course-fees">
+                Compare fees and training formats
+              </Link>
             </p>
 
             {heroImage ? (

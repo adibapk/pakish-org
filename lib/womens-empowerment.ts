@@ -6,12 +6,12 @@ export const FEE_SUPPORT_ADMISSION_PATH =
   "/admission?source=womens-empowerment&support=fee-support";
 
 export const WOMENS_EMPOWERMENT_CONTENT = {
-  metaTitle: "Women's Empowerment Through Digital Skills | Pakish Institute",
+  metaTitle: "Women's Digital Skills and Empowerment Program in Karachi | Pakish Institute",
   metaDescription:
     "Gatherings, skills workshops, mentorship, and limited need-based fee support for eligible women pursuing digital careers at Pakish Institute.",
-  h1: "Women's Empowerment Through Digital Skills",
+  h1: "Women's Digital Skills and Empowerment Program in Karachi",
   heroDescription:
-    "A dedicated Pakish Institute initiative helping women build confidence, practical skills, professional networks, and pathways into digital work.",
+    "Explore digital skills workshops, mentorship and career guidance through Pakish Institute in Gulshan-e-Iqbal. Register your interest to ask about the next gathering.",
   purpose:
     "Women's Empowerment brings together community gatherings, orientation sessions, skills workshops, mentorship, and career guidance — alongside a limited, eligibility-reviewed fee-support pathway for women who need financial assistance to join commercial courses.",
   activities: [

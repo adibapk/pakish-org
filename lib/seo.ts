@@ -13,7 +13,7 @@ export const DEFAULT_DESCRIPTION =
 export const DEFAULT_OG_IMAGE = "/og/home.png";
 
 export const STATIC_ROUTES = [
-  { path: "/", updatedAt: "2026-08-08", changeFrequency: "weekly" as const, priority: 1 },
+  { path: "/", updatedAt: "2026-11-19", changeFrequency: "weekly" as const, priority: 1 },
   { path: "/admission", updatedAt: "2026-09-27", changeFrequency: "monthly" as const, priority: 0.95 },
   { path: WORKSHOP_PATH, updatedAt: "2026-11-18", changeFrequency: "weekly" as const, priority: 0.85 },
   { path: "/payment-methods", updatedAt: "2026-09-27", changeFrequency: "monthly" as const, priority: 0.9 },
@@ -22,13 +22,15 @@ export const STATIC_ROUTES = [
   { path: "/help", updatedAt: "2026-09-27", changeFrequency: "monthly" as const, priority: 0.85 },
   { path: "/help/students", updatedAt: "2026-09-27", changeFrequency: "monthly" as const, priority: 0.85 },
   { path: "/help/teachers", updatedAt: "2026-09-27", changeFrequency: "monthly" as const, priority: 0.6 },
-  { path: "/courses", updatedAt: "2026-09-25", changeFrequency: "weekly" as const, priority: 0.95 },
+  { path: "/course-fees", updatedAt: "2026-11-19", changeFrequency: "monthly" as const, priority: 0.8 },
+  { path: "/ur/course-fees", updatedAt: "2026-11-19", changeFrequency: "monthly" as const, priority: 0.75 },
+  { path: "/courses", updatedAt: "2026-11-19", changeFrequency: "weekly" as const, priority: 0.95 },
   { path: "/insights", updatedAt: "2026-08-08", changeFrequency: "weekly" as const, priority: 0.9 },
-  { path: "/campus/gulshan-e-iqbal", updatedAt: "2026-09-26", changeFrequency: "monthly" as const, priority: 0.85 },
+  { path: "/campus/gulshan-e-iqbal", updatedAt: "2026-11-19", changeFrequency: "monthly" as const, priority: 0.85 },
   { path: "/privacy", updatedAt: "2026-11-18", changeFrequency: "yearly" as const, priority: 0.3 },
   {
     path: "/womens-empowerment",
-    updatedAt: "2026-09-26",
+    updatedAt: "2026-11-19",
     changeFrequency: "monthly" as const,
     priority: 0.75,
   },

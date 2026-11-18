@@ -314,7 +314,7 @@ export const businessEnglishCourse: Course = {
     ogTitle: "Business English & Professional Communication",
     ogDescription: "Speaking · Writing · Workplace Confidence",
   },
-  updatedAt: "2026-09-26",
+  updatedAt: "2026-11-19",
   published: true,
   order: 7,
 };

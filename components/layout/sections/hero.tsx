@@ -20,15 +20,15 @@ export const HeroSection = () => {
           </Badge>
 
           <h1 className="mt-5 text-3xl font-bold leading-tight sm:text-4xl md:text-5xl lg:text-[3.25rem]">
-            Professional IT &amp; AI Courses in{" "}
-            <span className="text-primary">Pakistan</span>
+            IT &amp; AI Courses at{" "}
+            <span className="text-primary">Pakish Institute</span>
           </h1>
 
           <p className="mx-auto mt-5 max-w-xl text-base text-muted-foreground md:text-lg lg:mx-0">
             Build practical skills in Generative AI, automation, full-stack
             development, WordPress, cloud and AI-powered freelancing through
-            live, instructor-led training for students, professionals, teams and
-            businesses.
+            live, instructor-led training online across Pakistan or at scheduled
+            cohorts in Gulshan-e-Iqbal, Karachi.
           </p>
 
           <div className="mt-7 flex flex-col items-center gap-3 sm:flex-row lg:justify-start">

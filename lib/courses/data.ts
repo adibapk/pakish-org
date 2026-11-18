@@ -2,9 +2,9 @@ import { businessEnglishCourse } from "./business-english-course";
 import type { Course, CourseCatalogMeta } from "./types";
 
 export const COURSE_CATALOG_META: CourseCatalogMeta = {
-  heroHeading: "Learn Modern Technology Skills. Build Your Future.",
+  heroHeading: "IT, AI and Professional Skills Courses in Karachi and Online",
   heroDescription:
-    "Practical, project-based training in AI, Web Development, Cloud and Digital Skills. Learn online through Google Meet or get customized training at your location.",
+    "Compare project-based technology courses and Business English training. Choose live online learning or ask about a Gulshan-e-Iqbal campus cohort.",
   seo: {
     title: "IT, AI & Digital Skills Courses | Pakish Institute",
     description:
@@ -294,7 +294,7 @@ export const courses: Course[] = [
     integrations: {
       aiTutorId: "tutor-ai-productivity",
     },
-    updatedAt: "2026-09-25",
+    updatedAt: "2026-11-19",
     published: true,
     order: 1,
   },
@@ -511,13 +511,14 @@ export const courses: Course[] = [
     integrations: {
       aiTutorId: "tutor-ai-business",
     },
-    updatedAt: "2026-09-25",
+    updatedAt: "2026-11-19",
     published: true,
     order: 2,
   },
   {
     id: "course-full-stack-ai",
     slug: "full-stack-ai-development",
+    pageHeading: "Full Stack Web Development Course with AI in Karachi and Online",
     title: "Modern Full Stack Web Development with AI",
     shortTitle: "Full Stack + AI",
     category: "web-development",
@@ -735,9 +736,9 @@ export const courses: Course[] = [
       note: "Fee may vary depending on course duration and training format.",
     },
     seo: {
-      title: "Full Stack Web Development with AI Course | Pakish Institute",
+      title: "Full Stack Web Development Course in Karachi & Online | Pakish",
       description:
-        "Learn HTML, CSS, JavaScript, TypeScript, React, Next.js, APIs and deployment with AI coding assistants. Project-based training at Pakish Institute.",
+        "Build and deploy a React and Next.js project in 12 to 16 weeks. Explore the syllabus, starting fee and live training options at Pakish Institute.",
       keywords: [
         "full stack web development course",
         "Next.js course Pakistan",
@@ -753,13 +754,14 @@ export const courses: Course[] = [
     integrations: {
       aiTutorId: "tutor-full-stack-ai",
     },
-    updatedAt: "2026-09-25",
+    updatedAt: "2026-11-19",
     published: true,
     order: 3,
   },
   {
     id: "course-wordpress-woocommerce",
     slug: "wordpress-woocommerce",
+    pageHeading: "WordPress and WooCommerce Course in Karachi and Online",
     title: "Professional WordPress & WooCommerce Development",
     shortTitle: "WordPress & WooCommerce",
     category: "web-development",
@@ -958,9 +960,9 @@ export const courses: Course[] = [
       currency: "PKR",
     },
     seo: {
-      title: "WordPress & WooCommerce Development Course | Pakish Institute",
+      title: "WordPress Course in Karachi & Online | WooCommerce Projects",
       description:
-        "Learn WordPress, theme customization, plugins, security, performance and WooCommerce stores. Practical training for business websites and client projects.",
+        "Build a business website and a demo WooCommerce store in 6 to 8 weeks. Check the starting fee and ask about live online or scheduled Karachi campus training.",
       keywords: [
         "WordPress course Pakistan",
         "WooCommerce training",
@@ -976,7 +978,7 @@ export const courses: Course[] = [
     integrations: {
       aiTutorId: "tutor-wordpress-woocommerce",
     },
-    updatedAt: "2026-09-25",
+    updatedAt: "2026-11-19",
     published: true,
     order: 4,
   },
@@ -1207,7 +1209,7 @@ export const courses: Course[] = [
     integrations: {
       aiTutorId: "tutor-cloud-devops",
     },
-    updatedAt: "2026-09-25",
+    updatedAt: "2026-11-19",
     published: true,
     order: 5,
   },
@@ -1423,7 +1425,7 @@ export const courses: Course[] = [
     integrations: {
       aiTutorId: "tutor-ai-freelancing",
     },
-    updatedAt: "2026-09-25",
+    updatedAt: "2026-11-19",
     published: true,
     order: 6,
   },

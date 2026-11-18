@@ -1,5 +1,5 @@
 import type { Course } from "@/lib/courses/types";
-import { SITE_LOGO, SITE_NAME, SITE_URL, absoluteUrl } from "@/lib/seo";
+import { SITE_URL, absoluteUrl } from "@/lib/seo";
 
 interface CourseJsonLdProps {
   course: Course;
@@ -8,7 +8,6 @@ interface CourseJsonLdProps {
 export function CourseJsonLd({ course }: CourseJsonLdProps) {
   const url = `${SITE_URL}/courses/${course.slug}`;
   const imageUrl = absoluteUrl(course.seo.ogImage ?? "/og/home.png");
-  const logoUrl = absoluteUrl(SITE_LOGO);
 
   const courseSchema: Record<string, unknown> = {
     "@context": "https://schema.org",
@@ -17,60 +16,37 @@ export function CourseJsonLd({ course }: CourseJsonLdProps) {
     description: course.seo.description,
     url,
     image: imageUrl,
-    provider: {
-      "@type": "Organization",
-      name: SITE_NAME,
-      url: SITE_URL,
-      logo: {
-        "@type": "ImageObject",
-        url: logoUrl,
-      },
-    },
+    "@id": `${url}#course`,
+    provider: { "@id": `${SITE_URL}/#organization` },
     educationalLevel: course.level,
     teaches: course.learningOutcomes,
     about: course.tools,
-    offers: course.pricing.startingAmount
-      ? {
-          "@type": "Offer",
-          category: "Paid",
+    offers: {
+      "@type": "Offer",
+      category: "Paid",
+      url: `${SITE_URL}/admission?course=${course.slug}`,
+      description: course.pricing.displayLabel,
+      ...(course.pricing.startingAmount && {
+        priceSpecification: {
+          "@type": "PriceSpecification",
+          minPrice: course.pricing.startingAmount,
           priceCurrency: course.pricing.currency ?? "PKR",
-          price: course.pricing.startingAmount,
-          availability: "https://schema.org/InStock",
-          url: `${SITE_URL}/admission?course=${course.slug}`,
-          description: course.pricing.displayLabel,
-        }
-      : {
-          "@type": "Offer",
-          category: "Paid",
-          availability: "https://schema.org/InStock",
-          url: `${SITE_URL}/admission?course=${course.slug}`,
-          description:
-            course.pricing.displayLabel ?? "Customized training quotation",
         },
+      }),
+    },
+    ...(course.isoDuration && { timeRequired: course.isoDuration }),
+    ...(course.instructor && {
+      hasCourseInstance: {
+        "@type": "CourseInstance",
+        instructor: {
+          "@type": "Person",
+          name: course.instructor.name,
+          jobTitle: course.instructor.role,
+          image: absoluteUrl(course.instructor.image.src),
+        },
+      },
+    }),
   };
-
-  if (course.isoDuration) {
-    courseSchema.timeRequired = course.isoDuration;
-    courseSchema.hasCourseInstance = {
-      "@type": "CourseInstance",
-      courseMode: ["online", "onsite"],
-      courseWorkload: course.isoDuration,
-    };
-  } else {
-    courseSchema.hasCourseInstance = {
-      "@type": "CourseInstance",
-      courseMode: ["online", "onsite"],
-    };
-  }
-
-  if (course.instructor) {
-    courseSchema.instructor = {
-      "@type": "Person",
-      name: course.instructor.name,
-      jobTitle: course.instructor.role,
-      image: absoluteUrl(course.instructor.image.src),
-    };
-  }
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",

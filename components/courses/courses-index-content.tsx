@@ -67,6 +67,9 @@ export function CoursesIndexContent({
             <p className="text-lg text-muted-foreground md:text-xl">
               {heroDescription}
             </p>
+            <Link href="/course-fees" className="text-primary underline underline-offset-4">
+              Compare course fees and duration
+            </Link>
             <div className="flex flex-col items-center gap-3 pt-2 sm:flex-row">
               <Button asChild>
                 <Link href={getAdmissionPath()}>Apply for Admission</Link>
