@@ -127,6 +127,14 @@ export interface Course {
   title: string;
   shortTitle: string;
   pageHeading?: string;
+  projectExample?: {
+    title: string;
+    brief: string;
+    milestones: string[];
+    review: string;
+    relatedCourse: CourseSlug;
+    relatedCourseLabel: string;
+  };
   category: CourseCategory;
   level: CourseLevel;
   /** Human-readable duration, e.g. "4–6 weeks" */

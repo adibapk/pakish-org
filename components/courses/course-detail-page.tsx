@@ -16,6 +16,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { getCoursePath } from "@/lib/courses";
 import { getAdmissionPath, buildCourseInfoWhatsAppUrl } from "@/lib/admission";
 import { TRAINING_FORMAT, TRAINING_OPTIONS } from "@/lib/courses/data";
 import type { Course } from "@/lib/courses/types";
@@ -58,6 +59,7 @@ export function CourseDetailPage({ course }: CourseDetailPageProps) {
   const toolsLabel = course.toolsSectionLabel ?? "Technologies & Tools";
   const heroImage = course.media?.hero;
   const spotlightImage = course.media?.spotlight;
+  const project = course.projectExample;
 
   return (
     <>
@@ -89,6 +91,11 @@ export function CourseDetailPage({ course }: CourseDetailPageProps) {
                 Compare fees and training formats
               </Link>
             </p>
+            {project && (
+              <a href="#sample-project" className="text-sm font-medium text-primary underline underline-offset-4">
+                See a sample course project
+              </a>
+            )}
 
             {heroImage ? (
               <figure className="relative mt-2 w-full overflow-hidden rounded-2xl border border-border/60 bg-muted/20">
@@ -222,6 +229,30 @@ export function CourseDetailPage({ course }: CourseDetailPageProps) {
             </ul>
           </div>
         </section>
+
+        {project && (
+          <section id="sample-project" className="scroll-mt-24 border-t border-border py-12 md:py-16" aria-labelledby="sample-project-heading">
+            <div className="mx-auto max-w-3xl space-y-5">
+              <p className="font-medium text-primary">Sample project brief</p>
+              <h2 id="sample-project-heading" className="text-3xl font-bold md:text-4xl">
+                {project.title}
+              </h2>
+              <p className="leading-relaxed text-muted-foreground">{project.brief}</p>
+              <ol className="list-decimal space-y-3 pl-5 leading-relaxed">
+                {project.milestones.map((milestone) => (
+                  <li key={milestone}>{milestone}</li>
+                ))}
+              </ol>
+              <div className="rounded-xl border border-border bg-muted/30 p-5">
+                <h3 className="font-semibold">How to check your work</h3>
+                <p className="mt-2 leading-relaxed text-muted-foreground">{project.review}</p>
+              </div>
+              <Link href={getCoursePath(project.relatedCourse)} className="font-medium text-primary underline underline-offset-4">
+                {project.relatedCourseLabel}
+              </Link>
+            </div>
+          </section>
+        )}
 
         {/* Curriculum */}
         <section className="border-t border-border py-12 md:py-16">
