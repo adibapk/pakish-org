@@ -57,7 +57,8 @@ export default function PrivacyPage() {
               <p className="mt-3">
                 Admission information can include contact details, city or
                 address, education, skills, interests, social-profile link,
-                chosen course, and training preference. A Women&apos;s Empowerment
+                chosen course, training preference, and an optional answer about
+                how you first heard of Pakish Institute. A Women&apos;s Empowerment
                 fee-support request also asks about financial need, family
                 support, possible contribution, and review consent.
               </p>
@@ -69,7 +70,9 @@ export default function PrivacyPage() {
                 Pakish Institute uses the information to respond to questions,
                 guide course selection, process paid admission, and review
                 eligibility for limited need-based fee support through the
-                Women&apos;s Empowerment initiative. Do not include passwords,
+                Women&apos;s Empowerment initiative. The optional answer about
+                how you found us helps the admissions team understand which
+                channels reach prospective learners. Do not include passwords,
                 financial-account details, identity-document images, or other
                 sensitive records unless an authorized team member later
                 explains why they are needed and how they will be handled.

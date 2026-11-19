@@ -69,6 +69,7 @@ export async function POST(request: Request) {
         trainingPreference: parsed.data
           .trainingPreference as TrainingPreference,
         message: parsed.data.message,
+        discoverySource: parsed.data.discoverySource,
       },
       {
         ip,

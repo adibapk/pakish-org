@@ -10,6 +10,7 @@
  */
 
 import type { CourseSlug } from "@/lib/courses/types";
+import type { DiscoverySource } from "./discovery-source";
 import type { AdmissionLeadLifecycle } from "./lifecycle";
 import type { TrainingPreference } from "./types";
 
@@ -70,6 +71,7 @@ export interface AdmissionLead extends AdmissionLeadLifecycle {
   courseSlug: CourseSlug;
   courseTitle: string;
   trainingPreference: TrainingPreference;
+  discoverySource?: DiscoverySource;
   message?: string;
   createdAt: string;
   updatedAt: string;
@@ -100,6 +102,7 @@ export interface CreateAdmissionLeadInput {
   email?: string;
   courseSlug: CourseSlug;
   trainingPreference: TrainingPreference;
+  discoverySource?: DiscoverySource;
   message?: string;
   enrollmentType?: string;
   /** Honeypot — must be empty */
