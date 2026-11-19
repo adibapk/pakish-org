@@ -34,6 +34,7 @@ import {
   type AdmissionRequestPayload,
   type TrainingPreference,
 } from "@/lib/admission";
+import { DISCOVERY_SOURCES, DISCOVERY_SOURCE_LABELS } from "@/lib/admission/discovery-source";
 import type { PublicAdmissionLeadResponse } from "@/lib/admission/lead";
 import { trackEvent } from "@/lib/analytics";
 import { getAllCourses, getCourseBySlug } from "@/lib/courses";
@@ -71,6 +72,7 @@ const formSchema = z.object({
     { required_error: "Please select a training preference." }
   ),
   message: z.string().optional(),
+  discoverySource: z.union([z.enum(DISCOVERY_SOURCES), z.literal("")]).optional(),
   website: z.string().optional(),
 });
 
@@ -102,6 +104,7 @@ export function CourseAdmissionForm({
       email: "",
       courseSlug: validInitial,
       message: initialMessage ?? "",
+      discoverySource: "",
       website: "",
     },
   });
@@ -136,6 +139,7 @@ export function CourseAdmissionForm({
           courseSlug: values.courseSlug,
           trainingPreference: values.trainingPreference,
           message: values.message?.trim() || undefined,
+          discoverySource: values.discoverySource || undefined,
           website: values.website || "",
         }),
       });
@@ -415,6 +419,28 @@ export function CourseAdmissionForm({
                           ))}
                         </SelectContent>
                       </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="discoverySource"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>How did you first hear about Pakish Institute? (optional)</FormLabel>
+                      <FormControl>
+                        <select
+                          {...field}
+                          className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                        >
+                          <option value="">Select a source</option>
+                          {DISCOVERY_SOURCES.map((source) => (
+                            <option key={source} value={source}>{DISCOVERY_SOURCE_LABELS[source]}</option>
+                          ))}
+                        </select>
+                      </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}

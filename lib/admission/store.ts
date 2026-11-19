@@ -121,6 +121,7 @@ export async function createAdmissionLead(
     courseTitle: course.title,
     trainingPreference: input.trainingPreference,
     message: input.message?.trim() || undefined,
+    discoverySource: input.discoverySource,
     createdAt: now,
     updatedAt: now,
     leadStatus: "New",

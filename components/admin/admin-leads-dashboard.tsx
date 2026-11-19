@@ -9,6 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { TRAINING_PREFERENCE_OPTIONS } from "@/lib/admission/constants";
+import { DISCOVERY_SOURCE_LABELS } from "@/lib/admission/discovery-source";
 import type { AdmissionLead } from "@/lib/admission/lead";
 import type { AdminLeadAction } from "@/lib/admission/lifecycle";
 import {
@@ -202,6 +203,12 @@ export function AdminLeadsDashboard({ initialLeads }: AdminLeadsDashboardProps) 
                       <dt className="text-muted-foreground">Training preference</dt>
                       <dd>{preferenceLabel(lead.trainingPreference)}</dd>
                     </div>
+                    {lead.discoverySource && (
+                      <div>
+                        <dt className="text-muted-foreground">Discovery source (self-reported)</dt>
+                        <dd>{DISCOVERY_SOURCE_LABELS[lead.discoverySource]}</dd>
+                      </div>
+                    )}
                     <div>
                       <dt className="text-muted-foreground">Stages</dt>
                       <dd>

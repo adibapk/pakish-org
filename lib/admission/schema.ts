@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { getCourseSlugs } from "@/lib/courses";
+import { DISCOVERY_SOURCES } from "./discovery-source";
 
 const courseSlugEnum = z.enum(
   getCourseSlugs() as [string, ...string[]]
@@ -28,6 +29,7 @@ export const createAdmissionSchema = z.object({
     "office-team",
     "home-onsite",
   ]),
+  discoverySource: z.enum(DISCOVERY_SOURCES).optional(),
   message: z.preprocess(
     (value) => (value === "" || value === null ? undefined : value),
     z.string().trim().max(2000, "Message is too long.").optional()
