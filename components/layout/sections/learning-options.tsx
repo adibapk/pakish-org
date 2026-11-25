@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { TRAINING_OPTIONS } from "@/lib/courses/data";
+import { WORKSHOP_PATH } from "@/lib/workshops";
 import { ArrowRight, Building2, MapPin, Video } from "lucide-react";
 import Link from "next/link";
 
@@ -86,6 +87,13 @@ export const LearningOptionsSection = () => {
             </Card>
           ))}
         </div>
+
+        <p className="mt-6 text-center text-sm">
+          New to Pakish Institute?{" "}
+          <Link href={WORKSHOP_PATH} className="font-medium text-primary underline underline-offset-4">
+            Try a free weekend workshop in Karachi
+          </Link>.
+        </p>
 
         <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {TRAINING_OPTIONS.map(({ title, description }) => (

@@ -3,6 +3,19 @@ import type { Course } from "./types";
 export const businessEnglishCourse: Course = {
   id: "course-business-english",
   slug: "business-english-professional-communication",
+  pageHeading: "Business English and Professional Communication Course in Karachi",
+  projectExample: {
+    title: "Revise a workplace email and practise the follow-up",
+    brief: "A customer asks for an update on an overdue delivery. In this sample exercise, write a professional reply based on the facts you have and practise explaining the same update aloud.",
+    milestones: [
+      "Put the purpose in the subject line and explain the current status in the first paragraph.",
+      "Give a clear next action and use an agreed update time. Keep any uncertain date open.",
+      "Read the revised email aloud, then practise delivering the same update in a short call.",
+    ],
+    review: "Ask a partner to repeat the status, the next action and when they should expect an update. Revise any sentence that leaves them unsure.",
+    relatedCourse: "ai-productivity",
+    relatedCourseLabel: "Explore AI productivity if you want to draft and review routine workplace documents",
+  },
   title: "Business English & Professional Communication",
   shortTitle: "Business English",
   category: "business",
@@ -314,7 +327,7 @@ export const businessEnglishCourse: Course = {
     ogTitle: "Business English & Professional Communication",
     ogDescription: "Speaking · Writing · Workplace Confidence",
   },
-  updatedAt: "2026-11-19",
+  updatedAt: "2026-11-25",
   published: true,
   order: 7,
 };
