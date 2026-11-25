@@ -69,6 +69,19 @@ export const courses: Course[] = [
   {
     id: "course-ai-productivity",
     slug: "ai-productivity",
+    pageHeading: "AI Productivity and Automation Course in Karachi and Online",
+    projectExample: {
+      title: "Turn meeting notes into an action tracker with AI",
+      brief: "Start with fictional meeting notes. Build a workflow that extracts actions and drafts a follow-up for a human to review.",
+      milestones: [
+        "Ask an AI tool to list each action, owner and deadline, and to mark anything the notes leave unspecified.",
+        "Compare the draft to the notes. Correct invented names, dates or commitments before using it.",
+        "Save the instructions as a reusable template and try them on a second set of sample notes.",
+      ],
+      review: "Check that every action is supported by the notes and that gaps remain visible. Compare the time needed to review the draft with the time needed to write it by hand.",
+      relatedCourse: "ai-business",
+      relatedCourseLabel: "Explore AI training for teams and shared business workflows",
+    },
     title: "AI Productivity & Automation",
     shortTitle: "AI Productivity",
     category: "ai",
@@ -276,9 +289,9 @@ export const courses: Course[] = [
       note: "Final fee depends on training format, duration and customization.",
     },
     seo: {
-      title: "AI Productivity & Automation Course | Pakish Institute",
+      title: "AI Productivity & Automation Course in Karachi | Pakish Institute",
       description:
-        "Learn ChatGPT, Claude and Gemini for productivity, research, documents and workflow automation. Live Google Meet or customized training in Pakistan.",
+        "Practise ChatGPT, Claude and Gemini on everyday office tasks. Build a reusable workflow in 4 to 6 weeks through live training in Karachi or online.",
       keywords: [
         "AI productivity course",
         "AI automation training Pakistan",
@@ -294,7 +307,7 @@ export const courses: Course[] = [
     integrations: {
       aiTutorId: "tutor-ai-productivity",
     },
-    updatedAt: "2026-11-19",
+    updatedAt: "2026-11-25",
     published: true,
     order: 1,
   },
@@ -1009,6 +1022,19 @@ export const courses: Course[] = [
   {
     id: "course-cloud-devops",
     slug: "cloud-devops",
+    pageHeading: "Cloud and DevOps Fundamentals Course in Karachi and Online",
+    projectExample: {
+      title: "Deploy a small web app to a Linux VPS",
+      brief: "In this sample lab, take a simple practice application from a local machine to a test server. Record enough detail that someone else could repeat the deployment.",
+      milestones: [
+        "Deploy the practice app to a Linux VPS and route requests to it through Nginx.",
+        "Connect a test hostname, verify HTTPS and record how to check application and server logs.",
+        "Back up the app configuration and rehearse restoring it on the test server.",
+      ],
+      review: "Confirm that the app still responds after a service restart, the hostname works over HTTPS, and the backup restores a known working configuration.",
+      relatedCourse: "full-stack-ai-development",
+      relatedCourseLabel: "Explore full stack development if you want to build an app before deploying it",
+    },
     title: "Cloud, Servers & DevOps Fundamentals",
     shortTitle: "Cloud & DevOps",
     category: "cloud",
@@ -1215,9 +1241,9 @@ export const courses: Course[] = [
       currency: "PKR",
     },
     seo: {
-      title: "Cloud, Servers & DevOps Fundamentals Course | Pakish Institute",
+      title: "Cloud & DevOps Course in Karachi | Linux and VPS Training",
       description:
-        "Learn Linux, VPS management, cloud concepts, deployment, DNS, SSL, backups, security and troubleshooting with practical training at Pakish Institute.",
+        "Practise Linux, VPS deployment, DNS, HTTPS and backups in 8 to 10 weeks. See the sample deployment lab and check campus or online training options.",
       keywords: [
         "DevOps course Pakistan",
         "Linux cloud training",
@@ -1233,13 +1259,26 @@ export const courses: Course[] = [
     integrations: {
       aiTutorId: "tutor-cloud-devops",
     },
-    updatedAt: "2026-11-19",
+    updatedAt: "2026-11-25",
     published: true,
     order: 5,
   },
   {
     id: "course-ai-freelancing",
     slug: "ai-freelancing",
+    pageHeading: "AI-Powered Freelancing Course in Karachi and Online",
+    projectExample: {
+      title: "Put together a freelance proposal and portfolio sample",
+      brief: "A fictional Karachi tutoring centre needs a simple website. Use that brief to practise scoping, preparing a proposal and showing what you would deliver.",
+      milestones: [
+        "List the client's goal, the pages you would deliver and the questions to resolve before quoting.",
+        "Draft a proposal with milestones, one revision round and clear handover responsibilities.",
+        "Create a short portfolio case study based on your sample work and label it as a practice project.",
+      ],
+      review: "Check whether a client could tell what is included, how they would review the work and what they would receive at handover.",
+      relatedCourse: "wordpress-woocommerce",
+      relatedCourseLabel: "Explore WordPress if you want a website project for your portfolio",
+    },
     title: "AI-Powered Freelancing Career",
     shortTitle: "AI Freelancing",
     category: "freelancing",
@@ -1431,9 +1470,9 @@ export const courses: Course[] = [
       currency: "PKR",
     },
     seo: {
-      title: "AI-Powered Freelancing Career Course | Pakish Institute",
+      title: "AI Freelancing Course in Karachi & Online | Pakish Institute",
       description:
-        "Learn freelancing fundamentals, AI-assisted delivery, proposals, portfolio creation and real project handling. Practical digital career training at Pakish Institute.",
+        "Create a sample freelance proposal, portfolio case study and client handover in 4 to 6 weeks. Check the starting fee and available training formats.",
       keywords: [
         "AI freelancing course",
         "digital freelancing Pakistan",
@@ -1449,7 +1488,7 @@ export const courses: Course[] = [
     integrations: {
       aiTutorId: "tutor-ai-freelancing",
     },
-    updatedAt: "2026-11-19",
+    updatedAt: "2026-11-25",
     published: true,
     order: 6,
   },

@@ -13,9 +13,9 @@ export const DEFAULT_DESCRIPTION =
 export const DEFAULT_OG_IMAGE = "/og/home.png";
 
 export const STATIC_ROUTES = [
-  { path: "/", updatedAt: "2026-11-19", changeFrequency: "weekly" as const, priority: 1 },
+  { path: "/", updatedAt: "2026-11-25", changeFrequency: "weekly" as const, priority: 1 },
   { path: "/admission", updatedAt: "2026-09-27", changeFrequency: "monthly" as const, priority: 0.95 },
-  { path: WORKSHOP_PATH, updatedAt: "2026-11-18", changeFrequency: "weekly" as const, priority: 0.85 },
+  { path: WORKSHOP_PATH, updatedAt: "2026-11-25", changeFrequency: "weekly" as const, priority: 0.85 },
   { path: "/payment-methods", updatedAt: "2026-09-27", changeFrequency: "monthly" as const, priority: 0.9 },
   { path: "/terms", updatedAt: "2026-09-27", changeFrequency: "yearly" as const, priority: 0.55 },
   { path: "/refund-policy", updatedAt: "2026-09-27", changeFrequency: "yearly" as const, priority: 0.55 },

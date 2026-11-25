@@ -3,9 +3,11 @@ import Link from "next/link";
 import { FooterSection } from "@/components/layout/sections/footer";
 import { Button } from "@/components/ui/button";
 import { WorkshopRegistrationForm } from "@/components/workshops/registration-form";
+import { getCoursePath } from "@/lib/courses";
 import { createPageMetadata } from "@/lib/seo";
 import {
   formatSessionTime,
+  formatWorkshopDay,
   getUpcomingWorkshopDays,
   workshop,
   WORKSHOP_EMAIL,
@@ -17,20 +19,21 @@ import {
 export const dynamic = "force-dynamic";
 
 export const metadata = createPageMetadata({
-  title: "Free Weekend Workshops in Karachi",
+  title: "Free AI and English Workshops in Karachi",
   description:
     "Register for free introductory workshops in AI and smart tools, English speaking and communication, and NLP at Pakish Institute's Gulshan-e-Iqbal campus.",
   path: WORKSHOP_PATH,
 });
 
 export default function WorkshopsPage() {
+  const workshopDays = getUpcomingWorkshopDays();
   return (
     <>
       <div>
         <header className="bg-[#073c32] text-white">
           <div className="container py-12 sm:py-16">
             <p className="mb-4 text-sm font-semibold text-emerald-200">Pakish Institute · Karachi</p>
-            <h1 className="max-w-3xl text-4xl font-bold tracking-tight sm:text-5xl">{workshop.title}</h1>
+            <h1 className="max-w-3xl text-4xl font-bold tracking-tight sm:text-5xl">Free Weekend Workshops in Gulshan-e-Iqbal, Karachi</h1>
             <p className="mt-4 max-w-xl text-base leading-relaxed text-emerald-50 sm:text-lg">
               Explore AI tools, practise speaking English and build stronger communication skills.
               All sessions are introductory, with free entry and limited seats.
@@ -57,6 +60,14 @@ export default function WorkshopsPage() {
               <Clock className="h-4 w-4" aria-hidden="true" />
               Suggested timings* · Pakistan time
             </p>
+            <div className="mt-4 text-sm">
+              <p className="font-semibold">Upcoming dates to request</p>
+              <ul className="mt-1 space-y-1 text-muted-foreground">
+                {workshopDays.map((date) => (
+                  <li key={date}><time dateTime={date}>{formatWorkshopDay(date)}</time></li>
+                ))}
+              </ul>
+            </div>
             <ul className="mt-4 divide-y">
               {workshop.sessions.map((session) => (
                 <li key={session.id} className="py-3">
@@ -81,8 +92,28 @@ export default function WorkshopsPage() {
               <a href={`mailto:${WORKSHOP_EMAIL}`} className="mt-2 inline-block text-primary hover:underline">{WORKSHOP_EMAIL}</a>
             </div>
           </aside>
-          <WorkshopRegistrationForm dates={getUpcomingWorkshopDays()} />
+          <WorkshopRegistrationForm dates={workshopDays} />
         </div>
+        <section aria-labelledby="continue-learning" className="container pb-12">
+          <div className="rounded-2xl border bg-card p-6 sm:p-8">
+            <h2 id="continue-learning" className="text-2xl font-bold">Continue learning after the workshop</h2>
+            <ul className="mt-4 grid gap-5 sm:grid-cols-2">
+              <li>
+                <Link className="font-medium text-primary underline" href={getCoursePath("ai-productivity")}>
+                  AI Productivity and Automation course
+                </Link>
+                <p className="mt-1 text-muted-foreground">Practise using AI for documents, research and recurring tasks in a live course.</p>
+              </li>
+              <li>
+                <Link className="font-medium text-primary underline" href={getCoursePath("business-english-professional-communication")}>
+                  Business English and Professional Communication course
+                </Link>
+                <p className="mt-1 text-muted-foreground">Work on emails, interviews and presentations in training tailored to your goals.</p>
+              </li>
+            </ul>
+            <Link className="mt-5 inline-block text-primary underline" href="/course-fees">Compare paid course fees and duration</Link>
+          </div>
+        </section>
       </div>
       <FooterSection />
     </>
