@@ -317,6 +317,9 @@ export const courses: Course[] = [
   {
     id: "course-ai-business",
     slug: "ai-business",
+    practiceLinks: [
+      { slug: "from-customer-enquiry-to-invoice", label: "Map a customer enquiry through to a verified payment" },
+    ],
     title: "AI for Business & Workplace Automation",
     shortTitle: "AI for Business",
     category: "business",
@@ -527,7 +530,7 @@ export const courses: Course[] = [
     integrations: {
       aiTutorId: "tutor-ai-business",
     },
-    updatedAt: "2026-11-19",
+    updatedAt: "2026-11-27",
     published: true,
     order: 2,
   },
@@ -791,6 +794,7 @@ export const courses: Course[] = [
     slug: "wordpress-woocommerce",
     practiceLinks: [
       { slug: "domain-infrastructure-and-women-empowerment", label: "Check the DNS and mail records before handing over a storefront" },
+      { slug: "how-to-hand-over-a-client-website", label: "Complete a client website handover sheet" },
     ],
     pageHeading: "WordPress and WooCommerce Course in Karachi and Online",
     projectExample: {

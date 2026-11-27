@@ -120,6 +120,18 @@ export const OG_CARDS: Record<string, OgCard> = {
     description: "Turn coursework into live portfolio proof",
     accent: "#93c5fd",
   },
+  "how-to-hand-over-a-client-website": {
+    eyebrow: "Freelancing field guide",
+    title: "How to Hand Over a Client Website",
+    description: "Ownership, renewals, DNS and backups",
+    accent: "#fbbf24",
+  },
+  "from-customer-enquiry-to-invoice": {
+    eyebrow: "Business workflow exercise",
+    title: "From Customer Enquiry to Invoice",
+    description: "Qualification, handoff and payment evidence",
+    accent: "#5eead4",
+  },
   "courses-ai-productivity": {
     eyebrow: "Pakish Institute course",
     title: "AI Productivity & Automation",

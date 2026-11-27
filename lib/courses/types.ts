@@ -121,6 +121,7 @@ export interface CourseSeo {
 }
 
 export interface Course {
+  technicalWritingExercise?: import("../insights/types").InsightBlock[];
   /** Stable ID for LMS / portal / enrollment APIs */
   id: string;
   slug: CourseSlug;
