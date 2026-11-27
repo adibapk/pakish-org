@@ -14,7 +14,7 @@ export const freelancingGuideArticle: InsightArticle = {
     "Pakistani women can start a work-from-home IT freelancing career by choosing a focused skill (e.g., WordPress, SMM, Canva, or web development), building a small portfolio, creating profiles on vetted platforms, pricing competitively for first clients, and using secure payment methods — often after 1–3 months of structured training.",
   author: "Pakish.ORG Editorial",
   publishedAt: "2026-01-20",
-  updatedAt: "2026-11-19",
+  updatedAt: "2026-11-27",
   category: "freelancing",
   tags: ["freelancing", "women-in-tech", "pakistan"],
   sections: [
@@ -96,6 +96,22 @@ export const freelancingGuideArticle: InsightArticle = {
       type: "p",
       content:
         "Host portfolio files on Google Drive or a free Notion page initially. Quality beats quantity — three strong samples outperform twenty mediocre ones.",
+    },
+    {
+      type: "h3",
+      content: "Write one portfolio card a client can check",
+    },
+    {
+      type: "p",
+      content: "Read the scope and evidence on [Concrete Shield’s Karachi project page](https://concreteshield.com.pk/projects). Pick one detail a prospective customer can check and one result that would need more evidence. Apply that distinction to your own work.",
+    },
+    {
+      type: "p",
+      content: "For a fictional bakery site, a useful card reads: “I built a mobile menu with prices supplied by the owner. Open the demo, select a cake and find its price.” Add the live URL, label any sample data, and include one limitation. A reader should be able to repeat your check from a phone.",
+    },
+    {
+      type: "p",
+      content: "Before you send the card, open [RankZest’s Meta Tags Analyzer](https://rankzest.com/meta-tags-analyzer) and enter your published portfolio URL. For a practice run, example.com returns the title “Example Domain” and no description. For your page, record the title and description exactly as returned. Rewrite the title if a client could not tell which project they were opening, then check the published page again.",
     },
     {
       type: "h2",

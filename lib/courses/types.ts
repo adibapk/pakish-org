@@ -127,6 +127,7 @@ export interface Course {
   title: string;
   shortTitle: string;
   pageHeading?: string;
+  practiceLinks?: { slug: string; label: string }[];
   projectExample?: {
     title: string;
     brief: string;

@@ -254,6 +254,23 @@ export function CourseDetailPage({ course }: CourseDetailPageProps) {
           </section>
         )}
 
+        {course.practiceLinks && (
+          <section aria-labelledby="guided-practice" className="border-t border-border py-12 md:py-16">
+            <div className="mx-auto max-w-3xl space-y-4">
+              <h2 id="guided-practice" className="text-2xl font-semibold">Practise with a worked example</h2>
+              <ul className="list-disc space-y-3 pl-5">
+                {course.practiceLinks.map(({ slug, label }) => (
+                  <li key={slug}>
+                    <Link href={`/insights/${slug}`} className="font-medium text-primary underline underline-offset-4">
+                      {label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
+        )}
+
         {/* Curriculum */}
         <section className="border-t border-border py-12 md:py-16">
           <div className="mx-auto max-w-4xl">
