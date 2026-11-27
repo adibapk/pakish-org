@@ -3,7 +3,7 @@ export const readingResourceHosts = new Set([
   "adiba.pk", "afifasulehri.com", "apnadomain.net", "civictel.com",
   "concreteshield.com.pk", "globnic.com", "iilma.com", "luraflow.com",
   "namepo.com", "pakish.net", "pakishnews.com", "rankzest.com", "razia.pk",
-  "sami.com.pk", "tndcanada.com", "webcaa.com", "webiost.com", "whoislogic.com",
+  "qaseem.pk", "sami.com.pk", "samina.pk", "tndcanada.com", "webcaa.com", "webiost.com", "whoislogic.com",
 ]);
 
 export function readingActivityPing(href: string): string | undefined {
