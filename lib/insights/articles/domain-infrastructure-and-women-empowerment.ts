@@ -128,7 +128,7 @@ export const domainInfrastructureArticle: InsightArticle = {
     },
     {
       type: "p",
-      content: "Example handover note for a fictional client: “The client controls the registrar account. Keep the current nameservers and mail records. The web lead will update the approved web record, test HTTPS and inbound mail, and restore the saved value if the launch check fails.” Record the actual values privately when working on your own site.",
+      content: "Example handover note for a fictional client: “The client controls the registrar account. Keep the current nameservers and mail records. The web lead will update the approved web record, test HTTPS and inbound mail, and restore the saved value if the launch check fails.” Record the actual values privately when working on your own site. Then use the [client website handover checklist](/insights/how-to-hand-over-a-client-website) to confirm who owns the registrar account, receives renewal notices and can restore a backup.",
     },
     {
       type: "h2",
