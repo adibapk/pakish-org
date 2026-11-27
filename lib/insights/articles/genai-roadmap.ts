@@ -196,7 +196,7 @@ export const genAiRoadmapArticle: InsightArticle = {
     },
     {
       type: "p",
-      content: "Read the [PakishNews Urdu report on the Artemis II coin](https://pakishnews.com/ur/markets-business/canadian-pakistan-news-royal-mint) dated 2 April 2026. Write one English sentence summarising its claim about the coin. Then compare it with the [Royal Canadian Mint’s announcement](https://www.mint.ca/en-us/company/media-room/2026-04-02-the-royal-canadian-mint-s-launches-new-silver-collector-coin-to-celebrate-artemis-ii-the-first-flight-of-a-canadian-astronaut-around-the-moon) from the same date.",
+      content: "Read the [PakishNews Urdu report on the Artemis II coin](https://pakishnews.com/ur/markets-business/canadian-pakistan-news-royal-mint) dated 2 April 2026. Write one English sentence summarising its claim about the coin. Then compare it with the [Royal Canadian Mint’s announcement on PR Newswire](https://www.prnewswire.com/news-releases/the-royal-canadian-mints-launches-new-silver-collector-coin-to-celebrate-artemis-ii-the-first-flight-of-a-canadian-astronaut-around-the-moon-302733074.html) from the same date.",
     },
     {
       type: "p",
