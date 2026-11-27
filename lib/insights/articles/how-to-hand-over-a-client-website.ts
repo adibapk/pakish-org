@@ -56,6 +56,10 @@ export const websiteHandoverArticle: InsightArticle = {
       content: "For a Pakistani shared-hosting brief, use [Razia’s shared hosting page](https://razia.pk/shared-hosting) to identify the proposed plan and the support path. Ask how a client requests a restore and what evidence will show it worked. These are provider examples. Use the client’s own contract and account settings to complete the final sheet.",
     },
     {
+      type: "p",
+      content: "For a second domain and hosting comparison, check [Samina.pk](https://samina.pk/) and [Qaseem.pk](https://qaseem.pk/) for publicly listed services. For each provider, record whether you can confirm who manages domain renewals, DNS and hosting support. If a site is temporarily unavailable or a detail is missing, mark that field as pending.",
+    },
+    {
       type: "h2",
       content: "Rehearse the handover",
     },
