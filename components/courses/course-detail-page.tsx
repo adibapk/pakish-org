@@ -19,6 +19,7 @@ import {
 import { getCoursePath } from "@/lib/courses";
 import { getAdmissionPath, buildCourseInfoWhatsAppUrl } from "@/lib/admission";
 import { TRAINING_FORMAT, TRAINING_OPTIONS } from "@/lib/courses/data";
+import { ArticleBody } from "@/components/insights/article-body";
 import type { Course } from "@/lib/courses/types";
 import {
   Building2,
@@ -250,6 +251,32 @@ export function CourseDetailPage({ course }: CourseDetailPageProps) {
               <Link href={getCoursePath(project.relatedCourse)} className="font-medium text-primary underline underline-offset-4">
                 {project.relatedCourseLabel}
               </Link>
+            </div>
+          </section>
+        )}
+
+        {course.practiceLinks && (
+          <section aria-labelledby="guided-practice" className="border-t border-border py-12 md:py-16">
+            <div className="mx-auto max-w-3xl space-y-4">
+              <h2 id="guided-practice" className="text-2xl font-semibold">Practise with a worked example</h2>
+              <ul className="list-disc space-y-3 pl-5">
+                {course.practiceLinks.map(({ slug, label }) => (
+                  <li key={slug}>
+                    <Link href={`/insights/${slug}`} className="font-medium text-primary underline underline-offset-4">
+                      {label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
+        )}
+
+        {course.technicalWritingExercise && (
+          <section className="border-t border-border py-12 md:py-16" aria-labelledby="technical-writing">
+            <div className="mx-auto max-w-3xl space-y-5">
+              <h2 id="technical-writing" className="text-2xl font-semibold">Write a technical clarification email</h2>
+              <ArticleBody sections={course.technicalWritingExercise} />
             </div>
           </section>
         )}

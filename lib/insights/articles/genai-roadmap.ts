@@ -14,7 +14,7 @@ export const genAiRoadmapArticle: InsightArticle = {
     "Pakistani women can build generative AI skills in four stages: (1) master ChatGPT and daily productivity workflows, (2) learn prompt engineering for marketing and content, (3) integrate AI into real projects like websites and automations, and (4) monetize through freelancing or tech roles — ideally with mentor-led training and portfolio proof.",
   author: "Pakish.ORG Editorial",
   publishedAt: "2026-01-10",
-  updatedAt: "2026-11-19",
+  updatedAt: "2026-11-27",
   category: "generative-ai",
   tags: ["generative-ai", "women-in-tech", "pakistan", "freelancing"],
   sections: [
@@ -123,6 +123,26 @@ export const genAiRoadmapArticle: InsightArticle = {
         "Document each project: problem, tools used, your role, AI's role, and results. Transparency builds trust. Never present raw AI output as solely your work without disclosure when clients expect human originality.",
     },
     {
+      type: "h3",
+      content: "Write a one-page workflow brief",
+    },
+    {
+      type: "p",
+      content: "A fictional Karachi training centre receives the same timetable questions every week. Read [Adiba’s Pakistan business automation playbook](https://adiba.pk/blog/ai-automation-for-pakistan-businesses-2026) and choose one repetitive task. Use [iilma’s AI implementation FAQ](https://iilma.com/ai-faq) to identify what information the team must supply before a trial.",
+    },
+    {
+      type: "ul",
+      items: [
+        "Input and owner: the coordinator supplies a dated timetable and three invented enquiries.",
+        "Output and review: draft a reply with the course and start time. Send questions about a fee exception to the coordinator.",
+        "Acceptance check: compare each draft with the timetable. A missing date should produce a clarification question. Record the correction before trying another example.",
+      ],
+    },
+    {
+      type: "p",
+      content: "Hand in the one-page brief with the three test inputs, expected replies and the name of the role that can approve an answer.",
+    },
+    {
       type: "h2",
       content: "Stage 4: Monetize and specialize",
     },
@@ -169,6 +189,18 @@ export const genAiRoadmapArticle: InsightArticle = {
       type: "p",
       content:
         "The UN ITU AI for Good framework and practitioners like Dr. Saira Osama emphasize ethical deployment in high-stakes domains. Even entry-level freelancers benefit from adopting those habits early.",
+    },
+    {
+      type: "h3",
+      content: "Check an AI summary against the original announcement",
+    },
+    {
+      type: "p",
+      content: "Read the [PakishNews Urdu report on the Artemis II coin](https://pakishnews.com/ur/markets-business/canadian-pakistan-news-royal-mint) dated 2 April 2026. Write one English sentence summarising its claim about the coin. Then compare it with the [Royal Canadian Mint’s announcement on PR Newswire](https://www.prnewswire.com/news-releases/the-royal-canadian-mints-launches-new-silver-collector-coin-to-celebrate-artemis-ii-the-first-flight-of-a-canadian-astronaut-around-the-moon-302733074.html) from the same date.",
+    },
+    {
+      type: "p",
+      content: "Worked example: the Mint announced a silver collector coin with a face value of 20 Canadian dollars. Its announcement gives the designer’s name and describes the engraving. A prediction about future resale value would need separate evidence. Mark each sentence in your summary as supported or still to verify, and attach the source that supports it.",
     },
     {
       type: "h2",

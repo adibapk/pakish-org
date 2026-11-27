@@ -22,6 +22,8 @@ const cards = {
   "pakistani-women-wfh-it-freelancing-career-guide": ["Practical career guide", "WFH IT Freelancing for Pakistani Women", "Skills · Portfolio · Clients · Payment safety", "#fbbf24"],
   "generative-ai-skills-roadmap-women-pakistan": ["Generative AI learning roadmap", "From ChatGPT Basics to Real AI Projects", "A practical roadmap for women in Pakistan", "#f0abfc"],
   "domain-infrastructure-and-women-empowerment": ["Portfolio infrastructure", "Domains, Hosting & Credible Remote Work", "Turn coursework into live portfolio proof", "#93c5fd"],
+  "how-to-hand-over-a-client-website": ["Freelancing field guide","How to Hand Over a Client Website","Ownership, renewals, DNS and backups","#fbbf24"],
+  "from-customer-enquiry-to-invoice": ["Business workflow exercise","From Customer Enquiry to Invoice","Qualification, handoff and payment evidence","#5eead4"],
   "courses-ai-productivity": ["Pakish Institute course", "AI Productivity & Automation", "ChatGPT · Claude · Gemini · Workflow automation", "#34d399"],
   "courses-ai-business": ["Corporate AI training", "AI for Business & Workplace Automation", "Customized packages for teams and companies", "#5eead4"],
   "courses-full-stack-ai-development": ["Full stack development", "Modern Full Stack Web Development with AI", "React · Next.js · APIs · AI coding assistants", "#2dd4bf"],

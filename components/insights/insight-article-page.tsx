@@ -18,6 +18,7 @@ import {
 } from "@/lib/insights/utils";
 import { ArrowLeft, Calendar, ExternalLink, User } from "lucide-react";
 import Link from "next/link";
+import { readingActivityPing } from "@/lib/reading-activity";
 
 interface InsightArticlePageProps {
   article: InsightArticle;
@@ -86,7 +87,9 @@ export function InsightArticlePage({ article }: InsightArticlePageProps) {
                     <a
                       href={source.url}
                       target="_blank"
-                      rel="noopener noreferrer"
+                      rel="noopener"
+                      referrerPolicy="strict-origin"
+                      ping={readingActivityPing(source.url)}
                       className="inline-flex items-center gap-1.5 text-primary underline underline-offset-4 hover:text-primary/80"
                     >
                       {source.title}

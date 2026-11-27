@@ -14,7 +14,7 @@ export const domainInfrastructureArticle: InsightArticle = {
     "Modern remote careers require learners to register a domain, deploy projects to cloud hosting, and manage DNS and SSL so clients can visit live work. Pakistani women in IT training benefit from structured infrastructure partners that simplify deployment, keep sites online, and turn coursework into credible portfolio URLs.",
   author: "Pakish.ORG Editorial",
   publishedAt: "2026-07-21",
-  updatedAt: "2026-07-21",
+  updatedAt: "2026-11-27",
   category: "women-in-tech",
   tags: ["women-in-tech", "pakistan", "freelancing"],
   externalSources: [
@@ -115,13 +115,29 @@ export const domainInfrastructureArticle: InsightArticle = {
       ],
     },
     {
+      type: "h3",
+      content: "Make a DNS handover note",
+    },
+    {
+      type: "p",
+      content: "A client wants to move a portfolio while keeping its email. Use the [WhoisLogic guide to reading RDAP results](https://whoislogic.com/guides/how-to-read-whois-results) with a domain you manage. Record the registrar and authoritative nameservers. Then check the mail records separately in the DNS dashboard. Registration data alone cannot tell you where the mailbox is hosted.",
+    },
+    {
+      type: "p",
+      content: "Suppose the website will be parked until the new portfolio is ready. Read [GlobNIC’s guide to parking a domain while keeping DNS control](https://globnic.com/learn/how-to-park-domains-without-losing-dns-control). In your handover, list which web record may change, which MX and TXT records must stay, and who can restore the previous values.",
+    },
+    {
+      type: "p",
+      content: "Example handover note for a fictional client: “The client controls the registrar account. Keep the current nameservers and mail records. The web lead will update the approved web record, test HTTPS and inbound mail, and restore the saved value if the launch check fails.” Record the actual values privately when working on your own site.",
+    },
+    {
       type: "h2",
       content: "Where to learn deployment alongside mentorship",
     },
     {
       type: "p",
       content:
-        "[Pakish.ORG](/) integrates career-ready skills with community support at our [Karachi Gulshan-e-Iqbal campus](/campus/gulshan-e-iqbal) and live online. As you progress from coursework to client work, treat domain registration and cloud deployment as core competencies — not optional extras. When you are ready to go live, [Pakish.NET](https://pakish.net) provides the infrastructure layer so your projects stay online while you focus on learning, pitching, and delivering value.",
+        "[Pakish.ORG](/) integrates career-ready skills with community support at our [Karachi Gulshan-e-Iqbal campus](/campus/gulshan-e-iqbal) and live online. As you progress from coursework to client work, treat domain registration and cloud deployment as core competencies — not optional extras. For a storefront handover, compare the responsibilities in your note with [Pakish.NET’s store DNS and business email setup scope](https://pakish.net/shopify-dns-setup).",
     },
     {
       type: "p",

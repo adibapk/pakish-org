@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { readingActivityPing } from "@/lib/reading-activity";
 import type { ReactNode } from "react";
 import type { InsightBlock } from "@/lib/insights/types";
 
@@ -30,7 +31,9 @@ function renderInlineContent(text: string): ReactNode[] {
           key={key++}
           href={href}
           target="_blank"
-          rel="noopener noreferrer"
+          rel="noopener"
+          referrerPolicy="strict-origin"
+          ping={readingActivityPing(href)}
           className="font-medium text-primary underline underline-offset-4 hover:text-primary/80"
         >
           {label}

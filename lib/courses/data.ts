@@ -69,6 +69,9 @@ export const courses: Course[] = [
   {
     id: "course-ai-productivity",
     slug: "ai-productivity",
+    practiceLinks: [
+      { slug: "generative-ai-skills-roadmap-women-pakistan", label: "Write a one-page AI workflow brief and check a source" },
+    ],
     pageHeading: "AI Productivity and Automation Course in Karachi and Online",
     projectExample: {
       title: "Turn meeting notes into an action tracker with AI",
@@ -307,13 +310,16 @@ export const courses: Course[] = [
     integrations: {
       aiTutorId: "tutor-ai-productivity",
     },
-    updatedAt: "2026-11-25",
+    updatedAt: "2026-11-27",
     published: true,
     order: 1,
   },
   {
     id: "course-ai-business",
     slug: "ai-business",
+    practiceLinks: [
+      { slug: "from-customer-enquiry-to-invoice", label: "Map a customer enquiry through to a verified payment" },
+    ],
     title: "AI for Business & Workplace Automation",
     shortTitle: "AI for Business",
     category: "business",
@@ -524,7 +530,7 @@ export const courses: Course[] = [
     integrations: {
       aiTutorId: "tutor-ai-business",
     },
-    updatedAt: "2026-11-19",
+    updatedAt: "2026-11-27",
     published: true,
     order: 2,
   },
@@ -786,6 +792,10 @@ export const courses: Course[] = [
   {
     id: "course-wordpress-woocommerce",
     slug: "wordpress-woocommerce",
+    practiceLinks: [
+      { slug: "domain-infrastructure-and-women-empowerment", label: "Check the DNS and mail records before handing over a storefront" },
+      { slug: "how-to-hand-over-a-client-website", label: "Complete a client website handover sheet" },
+    ],
     pageHeading: "WordPress and WooCommerce Course in Karachi and Online",
     projectExample: {
       title: "Build a WooCommerce store for a small Karachi retailer",
@@ -1015,13 +1025,16 @@ export const courses: Course[] = [
     integrations: {
       aiTutorId: "tutor-wordpress-woocommerce",
     },
-    updatedAt: "2026-11-19",
+    updatedAt: "2026-11-27",
     published: true,
     order: 4,
   },
   {
     id: "course-cloud-devops",
     slug: "cloud-devops",
+    practiceLinks: [
+      { slug: "domain-infrastructure-and-women-empowerment", label: "Write a DNS handover note for a portfolio launch" },
+    ],
     pageHeading: "Cloud and DevOps Fundamentals Course in Karachi and Online",
     projectExample: {
       title: "Deploy a small web app to a Linux VPS",
@@ -1259,13 +1272,16 @@ export const courses: Course[] = [
     integrations: {
       aiTutorId: "tutor-cloud-devops",
     },
-    updatedAt: "2026-11-25",
+    updatedAt: "2026-11-27",
     published: true,
     order: 5,
   },
   {
     id: "course-ai-freelancing",
     slug: "ai-freelancing",
+    practiceLinks: [
+      { slug: "pakistani-women-wfh-it-freelancing-career-guide", label: "Build a portfolio card a client can verify" },
+    ],
     pageHeading: "AI-Powered Freelancing Course in Karachi and Online",
     projectExample: {
       title: "Put together a freelance proposal and portfolio sample",
@@ -1488,7 +1504,7 @@ export const courses: Course[] = [
     integrations: {
       aiTutorId: "tutor-ai-freelancing",
     },
-    updatedAt: "2026-11-25",
+    updatedAt: "2026-11-27",
     published: true,
     order: 6,
   },

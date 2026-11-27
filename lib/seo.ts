@@ -25,9 +25,9 @@ export const STATIC_ROUTES = [
   { path: "/course-fees", updatedAt: "2026-11-19", changeFrequency: "monthly" as const, priority: 0.8 },
   { path: "/ur/course-fees", updatedAt: "2026-11-19", changeFrequency: "monthly" as const, priority: 0.75 },
   { path: "/courses", updatedAt: "2026-11-19", changeFrequency: "weekly" as const, priority: 0.95 },
-  { path: "/insights", updatedAt: "2026-08-08", changeFrequency: "weekly" as const, priority: 0.9 },
+  { path: "/insights", updatedAt: "2026-11-27", changeFrequency: "weekly" as const, priority: 0.9 },
   { path: "/campus/gulshan-e-iqbal", updatedAt: "2026-11-19", changeFrequency: "monthly" as const, priority: 0.85 },
-  { path: "/privacy", updatedAt: "2026-11-18", changeFrequency: "yearly" as const, priority: 0.3 },
+  { path: "/privacy", updatedAt: "2026-11-27", changeFrequency: "yearly" as const, priority: 0.3 },
   {
     path: "/womens-empowerment",
     updatedAt: "2026-11-19",

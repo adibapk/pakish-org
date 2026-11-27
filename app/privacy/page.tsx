@@ -38,7 +38,7 @@ export default function PrivacyPage() {
           <h1 className="text-3xl font-bold md:text-5xl">Pakish Institute Privacy Notice</h1>
           <p className="mt-5 text-lg text-muted-foreground">
             This notice explains how Pakish Institute handles information you
-            share through its website forms. Last updated 18 November 2026.
+            share through its forms and how it counts visits to learning resources. Last updated 27 November 2026.
           </p>
 
           <div className="mt-10 space-y-9 text-base leading-7 text-muted-foreground">
@@ -101,6 +101,16 @@ export default function PrivacyPage() {
                 contact the applicant directly only when the separate contact
                 consent is given. Consent does not guarantee funding or
                 admission.
+              </p>
+            </section>
+
+            <section>
+              <h2 className="text-2xl font-bold text-foreground">Learning resource links</h2>
+              <p className="mt-3">
+                When you open selected resources in an exercise, your browser can send us a
+                click count. We keep daily totals by destination website. These counts contain
+                no names, IP addresses or individual browsing histories. We skip counting when
+                the request carries Global Privacy Control or Do Not Track.
               </p>
             </section>
 

@@ -2,6 +2,28 @@ import type { Course } from "./types";
 
 export const businessEnglishCourse: Course = {
   id: "course-business-english",
+  technicalWritingExercise: [
+    {
+      type: "p",
+      content: "A fictional office manager asks for “new phones and cabling” before a move. Read [TND Canada’s structured cabling scope](https://tndcanada.com/structured-cabling-design) to identify the physical work. Then read [CivicTel’s business phone and VoIP scope](https://civictel.com/business-phone-systems) to identify the call-handling requirements. Draft a reply that lets an estimator distinguish those two jobs.",
+    },
+    {
+      type: "h3",
+      content: "Model reply",
+    },
+    {
+      type: "p",
+      content: "Subject: Details for your office move",
+    },
+    {
+      type: "p",
+      content: "Hello Alex, could you send the floor plan, desk count and move-in date? Please mark the rooms that already have network outlets. For the phone setup, how many extensions do you need, and where should unanswered calls go? Once we have those details, our estimator can confirm the scope and propose a site visit. Thank you, Sam.",
+    },
+    {
+      type: "p",
+      content: "Check your draft: the recipient should know what to send, why the phone and cabling details are needed, and who will reply next. Leave cost and installation dates open until the estimator confirms them.",
+    },
+  ],
   slug: "business-english-professional-communication",
   pageHeading: "Business English and Professional Communication Course in Karachi",
   projectExample: {
@@ -327,7 +349,7 @@ export const businessEnglishCourse: Course = {
     ogTitle: "Business English & Professional Communication",
     ogDescription: "Speaking · Writing · Workplace Confidence",
   },
-  updatedAt: "2026-11-25",
+  updatedAt: "2026-11-27",
   published: true,
   order: 7,
 };
